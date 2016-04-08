@@ -7,7 +7,6 @@
     "require": {
         "php": ">=5.5.9",
         "laravel/framework": "5.2.*"
-       
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -22,10 +21,7 @@
         ],
         "psr-4": {
             "App\\": "app/"
-        },
-         "files" : [
-            "app/library/library.php"
-        ]
+        }
     },
     "autoload-dev": {
         "classmap": [

@@ -38,7 +38,13 @@
     <body>
         <div class="container">
             <div class="content">
-                <div class="title">Laravel 5</div>
+                <div class="title">Application Managers</div>
+                @can('UserController.edit')
+               <h1></h1> <a href="">Edit USER</a>
+                @endcan
+                  @can('UserController.delete')
+                <a href="">delete topica</a>
+                @endcan
             </div>
         </div>
     </body>

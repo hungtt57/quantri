@@ -4,7 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
-
+use Route;
+use App\Permission;
 class Authenticate
 {
     /**
@@ -25,6 +26,8 @@ class Authenticate
             }
         }
 
+                   
+                    
         return $next($request);
     }
 }

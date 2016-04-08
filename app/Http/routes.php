@@ -10,34 +10,19 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Route::group(['middleware' => ['web']], function () {
-    
-Route::get('/user',
-	[ 'uses' => 'Backend\UserController@index',
-	  'as' => 'UserController.index'
-	]);
+	
+	Auth::loginUsingId(1);
+	
+			Route::get('/edit',
+			[ 'uses' => 'UserController@edit',
+			  'as' => 'UserController.edit'
+			]);
 
-$get ='edit user,edit post';
-
-Route::get('/user/{post}', [
-   'uses' => 'Backend\UserController@edit',
-   'as' => 'UserController.edit'
-]);
-
-
-Route::get('/articale/{post}', [
-   'middleware'=> 'can:'.$get,
-   'uses' => 'Backend\UserController@articale',
-   'as' => 'UserController.article'
-]);
+			Route::get('/delete',
+			[ 'uses' => 'UserController@delete',
+			  'as' => 'UserController.delete'
+			]);
 
 
-
-
-
-}); //end middleware web
+});
