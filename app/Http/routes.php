@@ -12,6 +12,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::get('role', ['as' => 'RoleController.index', 'uses' => 'RoleController@index']);
 	Route::post('role/add', ['as' => 'RoleController.store', 'uses' => 'RoleController@store']);
 	Route::get('synchronous', ['as' => 'RoleController.synchronous', 'uses' => 'RoleController@synchronous']);
+	
 	//User management
     Route::get('user', ['as' => 'UserController.index', 'uses' => 'UserController@index']);
 	Route::get('user/{id}', ['as' => 'UserController.edit', 'uses' => 'UserController@edit']);
@@ -26,4 +27,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::patch('article/{id}', ['as' => 'ArticleController.update', 'uses' => 'ArticleController@update']);
 	Route::delete('article/destroy/{id}', ['as' => 'ArticleController.destroy', 'uses' => 'ArticleController@destroy']);
 
+	//Get list by Ajax
+    Route::get('listArticle', ['as' => 'AjaxController..article.list', 'uses' => 'AjaxController@listArticle']);
+    Route::get('listUser', ['as' => 'AjaxController.user.list', 'uses' => 'AjaxController@listUser']);
 });
