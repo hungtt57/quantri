@@ -12,6 +12,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::get('role', ['as' => 'RoleController.index', 'uses' => 'RoleController@index']);
 	Route::post('role/add', ['as' => 'RoleController.store', 'uses' => 'RoleController@store']);
 	Route::get('synchronous', ['as' => 'RoleController.synchronous', 'uses' => 'RoleController@synchronous']);
+	
 	//User management
     Route::get('user', ['as' => 'UserController.index', 'uses' => 'UserController@index']);
 	Route::get('user/{id}', ['as' => 'UserController.edit', 'uses' => 'UserController@edit']);
