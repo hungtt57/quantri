@@ -8,19 +8,10 @@ use App\User;
 use App\Http\Requests\UserRequest;
 use Response;
 use Auth;
-use App\Role_User;
 use App\Role;
 
 class UserController extends Controller
-{
-    public function listUser(){
-        $users = User::orderBy('id', 'DESC')->get();
-        foreach ($users as $user) {
-            $user->roles = Role_User::rolesOfUser($user->id);
-        }
-        return Response::json(['data' => $users]);
-    }
-    
+{   
     public function index(){
         $roles = Role::all();
         //$users = User::orderBy('id', 'DESC')->get();

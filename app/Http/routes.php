@@ -27,4 +27,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::patch('article/{id}', ['as' => 'ArticleController.update', 'uses' => 'ArticleController@update']);
 	Route::delete('article/destroy/{id}', ['as' => 'ArticleController.destroy', 'uses' => 'ArticleController@destroy']);
 
+	//Get list by Ajax
+    Route::get('listArticle', ['as' => 'AjaxController..article.list', 'uses' => 'AjaxController@listArticle']);
+    Route::get('listUser', ['as' => 'AjaxController.user.list', 'uses' => 'AjaxController@listUser']);
 });
