@@ -28,7 +28,8 @@ class UserRequest extends Request
             return [
                 'name' => 'required',
                 'email' => 'required|email|unique:users,email',
-                'password' => 'required'
+                'password' => 'required',
+                'role' => 'required'
             ];
         }
         case 'PUT':
@@ -50,7 +51,8 @@ class UserRequest extends Request
             'email.unique' => 'Email này đã được sử dụng.',
             'email.email' => 'Email này không đúng định dạng.',
             'email.required' => 'Vui lòng điền email người dùng.',
-            'password.required' => 'Vui lòng điền mật khẩu người dùng.'
+            'password.required' => 'Vui lòng điền mật khẩu người dùng.',
+            'role.required' => 'Vui lòng chọn role cho người dùng.'
         ];
     }
 }

@@ -10,9 +10,10 @@ use Response;
 use App\Permission_Role;
 use App\Permission;
 use Route;
+
 class RoleController extends Controller
 {
-	public function index(){
+	  public function index(){
         $roles = Role::all();
         $role_first = Role::first();
         $role_permission = Permission_Role::permissionsOfRole($role_first->id);

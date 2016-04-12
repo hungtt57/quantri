@@ -29,6 +29,21 @@ Quản lý người dùng
     </div>
 
   <div class="col-lg-12">
+        <div class="col-lg-4 col-lg-offset-2">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                <input type="text" class="form-control column_filter" placeholder="Tìm theo tên người dùng" id="col2_filter" data-column="2">
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-inbox"></i></span>
+                <input type="text" class="form-control column_filter" placeholder="Tìm theo email người dùng" id="col3_filter" data-column="3">
+            </div>
+        </div>
+  </div>
+
+  <div class="col-lg-12">
     <div class="col-lg-6 col-lg-offset-3" id="userAlert">
             
     </div>
@@ -64,7 +79,10 @@ Quản lý người dùng
             <div class="col-lg-4" align="right"><strong>Email</strong>   :</div>
             <div id="user_email" class="col-lg-8" align="left"></div>
             <br>
-            </div>
+            <div class="col-lg-4" align="right"><strong>Role</strong>   :</div>
+            <div id="user_role" class="col-lg-8" align="left"></div>
+            <br>
+          </div>
         </div>
         <div class="modal-footer">
         </div>
@@ -127,6 +145,19 @@ Quản lý người dùng
             <div id="errorUserPassword">
             </div>
           </div>
+          <div class="form-group">
+            <label for="">Role</label>:
+            <div class="checkbox">
+              <label><input type="checkbox" id="{{ $default_role->name }}" value="{{ $default_role->id }}" disabled checked>{{ $default_role->name }}</label>
+            </div>
+            @foreach($roles as $role)
+            <div class="checkbox">
+              <label><input type="checkbox" id="{{ $role->name }}" name="role[]" value="{{ $role->id }}">{{ $role->name }}</label>
+            </div>
+            @endforeach
+            <div id="errorUserRole">
+            </div>
+          </div>
         </div>
         </form>
       
@@ -144,7 +175,14 @@ Quản lý người dùng
 
 @section('js')
 <script type="text/javascript">
-	/* Formatting function for row details - modify as you need */
+    // Advanced searching
+    function filterColumn ( i ) {
+        $('#userList').DataTable().column( i ).search(
+            $('#col'+i+'_filter').val()
+        ).draw();
+    }
+
+	// User's details
 	function format ( d ) {
 	    // `d` is the original data object for the row
 	    var role_str = 'Người dùng này thuộc các role:<br><ul>';
@@ -229,6 +267,7 @@ Quản lý người dùng
                             $('#closeErrorUserName').click();
                             $('#closeErrorUserEmail').click();
                             $('#closeErrorUserPassword').click();
+                            $('#closeErrorUserRole').click();
                         });
                         $('#userCreateEditModal').modal('show');
                     }
@@ -311,6 +350,11 @@ Quản lý người dùng
 	        }
 	    } );
 
+        // Advanced searching
+        $('input.column_filter').on( 'keyup click', function () {
+            filterColumn( $(this).attr('data-column') );
+        } );
+
         $('input.toggle-article').change(function() {
             var column = userList.column( $(this).attr('value') );
             column.visible( ! column.visible() );
@@ -321,6 +365,7 @@ Quản lý người dùng
             $('#closeErrorUserName').click();
             $('#closeErrorUserEmail').click();
             $('#closeErrorUserPassword').click();
+            $('#closeErrorUserRole').click();
         });
 
         var userUrl = baseUrl+"/user";
@@ -334,6 +379,15 @@ Quản lý người dùng
             $.get(userUrl + '/' + user_id, function (data) {
                 $('#user_name').html(data.name);
                 $('#user_email').html(data.email);
+
+                var role_str = '<ul>';
+                var roles = data.roles;
+                $.each( roles, function( key, role ) {
+                    role_str += '<li>' + role.name + '</li>';
+                });
+                role_str += '</ul>';
+                $('#user_role').html(role_str);
+
                 $('#userViewModal').modal('show');
             }) 
         } );
@@ -348,6 +402,12 @@ Quản lý người dùng
                 $('#user_id').val(data.id);
                 $('#name').val(data.name);
                 $('#email').val(data.email);
+
+                var roles = data.roles;
+                $.each( roles, function( key, role ) {
+                    $('#'+role.name).prop('checked', true);
+                });
+
                 $('#btn-save-user').val("update");
                 $('#btn-save-user').addClass('btn-warning');
                 $('#userCreateEditModalTitle').text("Sửa người dùng");
@@ -360,6 +420,7 @@ Quản lý người dùng
                     $('#closeErrorUserName').click();
                     $('#closeErrorUserEmail').click();
                     $('#closeErrorUserPassword').click();
+                    $('#closeErrorUserRole').click();
                 });
                 $('#userCreateEditModal').modal('show');
             })
@@ -370,6 +431,7 @@ Quản lý người dùng
             $('#closeErrorUserName').click();
             $('#closeErrorUserEmail').click();
             $('#closeErrorUserPassword').click();
+            $('#closeErrorUserRole').click();
 
             formmodified = 0;
             $.ajaxSetup({
@@ -383,6 +445,9 @@ Quản lý người dùng
             var formData = {
                 name: $('#name').val(),
                 email: $('#email').val(),
+                role: $('input:checkbox:checked').map(function () {
+                    return this.value;
+                }).get()
             }
 
             if($('#password').val()){
@@ -422,6 +487,9 @@ Quản lý người dùng
                 }
                 if (errors.password){
                     $('#errorUserPassword').append('<div class="alert alert-warning alert-dismissable"><button id="closeErrorUserPassword" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+errors.password+'</div>');
+                }
+                if (errors.role){
+                    $('#errorUserRole').append('<div class="alert alert-warning alert-dismissable"><button id="closeErrorUserRole" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+errors.role+'</div>');
                 }
             }
             });
