@@ -17,6 +17,7 @@ class RoleController extends Controller
         $role_first = Role::first();
         $role_permission = Permission_Role::permissionsOfRole($role_first->id);
         $permissions = Permission::all();
+       
         return view('admin.pages.role', array('roles' => $roles, 'menuActive' => 'role','role_permission' => $role_permission,'permissions' => $permissions));
     }
 
@@ -37,7 +38,7 @@ class RoleController extends Controller
               $method = $array[1];
 
               $permission= Permission::where('name','=',$permissionName)->first();
-                if($permissionName == 'HomeController.dashboard' || $controller=='AuthController'){
+                if($permissionName == 'HomeController.dashboard' || $controller=='AuthController' || $controller == 'AjaxController'){
                     continue;
                 } //ko tao permission vs dashboard va auth
 
@@ -79,6 +80,7 @@ class RoleController extends Controller
 
             }
           Permission::where('active', 0)->delete();
-          return redirect()->back();
+       
+          return redirect('role');
     }
 }

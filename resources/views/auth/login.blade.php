@@ -5,7 +5,7 @@
 @section('content')
 <div class="pen-title">
     <h1>Trang BACKEND</h1>
-    <span><i class='fa fa-paint-brush'></i> by <a href='#'>Quan NH</a></span>
+  
 </div>
 
 <div class="module form-module">
