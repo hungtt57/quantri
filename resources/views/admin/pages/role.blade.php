@@ -377,6 +377,20 @@ Quản lý phân quyền
   $(".list-group-item:first-child").addClass("active");
   $(".bhoechie-tab-content:first-child").addClass("active");
 </script>
+<!-- tree checkbox -->
+<script type="text/javascript">
+  $(".acidjs-css3-treeview").delegate("label input:checkbox", "change", function() {
+    var
+        checkbox = $(this),
+        nestedList = checkbox.parent().next().next(),
+        selectNestedListCheckbox = nestedList.find("label:not([for]) input:checkbox");
+ 
+    if(checkbox.is(":checked")) {
+        return selectNestedListCheckbox.prop("checked", true);
+    }
+    selectNestedListCheckbox.prop("checked", false);
+});
+</script>
 <script src="http://malihu.github.io/custom-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
 <script>
   (function($){
