@@ -4,8 +4,9 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
-use Route;
 use App\Permission;
+use Route;
+
 class Authenticate
 {
     /**
@@ -25,9 +26,18 @@ class Authenticate
                 return redirect()->guest('login');
             }
         }
+        
+        //Quet cac routing va them vao bang Permission neu chua co
+        // $routeCollection = Route::getRoutes();
+        // foreach ($routeCollection as $route) {
+        //     $num_permission = Permission::where('name', '=', $route->getName())->count();
+        //     if($num_permission == 0){
+        //         $permission = new Permission();
+        //         $permission->name = $route->getName();
+        //         $permission->save();
+        //     }
+        // }
 
-                   
-                    
         return $next($request);
     }
 }
