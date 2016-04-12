@@ -7,7 +7,9 @@ return [
     'destroy' => 'Xóa',
     'store' => 'Tạo mới',
     'index' => 'Danh sách',
-    'synchronous' => 'đồng bộ quyền',
+    'synchronous' => 'Đồng bộ quyền',
+    'ArticleController' => 'Quản lý bài viết',
+    'RoleController' => 'Quản lý quyền'
     
 ];
 
