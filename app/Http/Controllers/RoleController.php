@@ -81,6 +81,6 @@ class RoleController extends Controller
             }
           Permission::where('active', 0)->delete();
        
-          return redirect('role');
+          return redirect('role')->with('message', 'Đồng bộ thành công!!');
     }
 }
