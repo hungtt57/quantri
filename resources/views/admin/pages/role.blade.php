@@ -93,11 +93,11 @@ Quản lý phân quyền
         margin-left: 50px;">
         <button class="btn btn-primary open-add-role-modal">Thêm role mới</button>
         <a href="{{asset('synchronous')}}"><button class="btn btn-primary ">Đồng bộ quyền</button></a>
-           <!--   @if (Session::has('dongbo'))
-            <div class="alert alert-success">
-                {{ Session::get('dongbo') }}
-            </div> 
-          @endif    -->  
+         @if (session('message'))
+        <div class="alert alert-success">
+            {{ session('message') }}
+        </div>
+    @endif
     </div>
 
 
