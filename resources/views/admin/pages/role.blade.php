@@ -89,8 +89,10 @@ Quản lý phân quyền
 
     <div class="cotaniner" style="margin-top: 20px;
         margin-left: 50px;">
-        <button class="btn btn-primary open-add-role-modal">Add New Role</button>
+        <button class="btn btn-primary open-add-role-modal">Thêm role mới</button>
+        <a href="{{asset('synchronous')}}"><button class="btn btn-primary ">Đồng bộ quyền</button></a>
     </div>
+
 
     <!-- Add role modal -->
     <div class="modal fade" id="roleAddModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true" data-backdrop="static" data-keyboard="false">
@@ -138,7 +140,7 @@ Quản lý phân quyền
           <div class="col-sm-8">
             <div id='jqxTree' class="jqxTree">
               <ul>
-                <li item-checked='true' item-expanded='true'><a href="#">Tất cả</a>
+                <li item-expanded='true' ><a href="#">Tất cả</a>
                   <ul>
                   @foreach($permissions as $permission)
                     @if ($permission_childs = DB::table('permissions')->where('parent_id','=',$permission->id)->get())
@@ -152,7 +154,7 @@ Quản lý phân quyền
                     @endif
                   @endforeach    
                   </ul>
-                </li>                         
+                </li>                       
               </ul>
             </div>
           </div>

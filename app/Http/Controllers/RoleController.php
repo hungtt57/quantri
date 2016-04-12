@@ -79,6 +79,6 @@ class RoleController extends Controller
 
             }
           Permission::where('active', 0)->delete();
-
+          return redirect()->back();
     }
 }
