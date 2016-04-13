@@ -262,7 +262,7 @@ Quản lý bài viết
                     text: 'Tải lại danh sách',
                     titleAttr: 'Tải lại danh sách',
                     action: function (e) {
-                        articleList.ajax.reload();
+                        articleList.ajax.reload(null, false);
                     }  
                 },
                 {
@@ -420,7 +420,7 @@ Quản lý bài viết
             dataType: 'json',
             success: function (data) {
                 $('#articleCreateEditModal').modal('hide');
-                articleList.ajax.reload();
+                articleList.ajax.reload(null, false);
                 $('#articleAlert').append('<div class="text-center alert alert-'+data.message_level+'"><button id="closeArticleAlert" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><h4> <i class="icon fa fa-'+data.message_icon+'"></i>'+' '+data.flash_message+'</h4></div>');
             },
             error: function (data) {
@@ -469,7 +469,7 @@ Quản lý bài viết
                 data: formData,
                 success: function (data) {
                     $('#articleDeleteModal').modal('hide');
-                    articleList.ajax.reload();
+                    articleList.ajax.reload(null, false);
                     $('#articleAlert').append('<div id="flash_message" class="text-center alert alert-'+data.message_level+'"><button id="closeArticleAlert" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><h4> <i class="icon fa fa-'+data.message_icon+'"></i>'+' '+data.flash_message+'</h4></div>');
                 },
                 error: function (data) {

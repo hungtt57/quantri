@@ -358,7 +358,7 @@ Quản lý người dùng
                     text: 'Tải lại danh sách',
                     titleAttr: 'Tải lại danh sách',
                     action: function (e) {
-                        userList.ajax.reload();
+                        userList.ajax.reload(null, false);
                     }  
                 },
                 {
@@ -550,7 +550,7 @@ Quản lý người dùng
             dataType: 'json',
             success: function (data) {
                 $('#userCreateEditModal').modal('hide');
-                userList.ajax.reload();
+                userList.ajax.reload(null, false);
                 $('#userAlert').append('<div class="text-center alert alert-'+data.message_level+'"><button id="closeUserAlert" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><h4> <i class="icon fa fa-'+data.message_icon+'"></i>'+' '+data.flash_message+'</h4></div>');
             },
             error: function (data) {
@@ -605,7 +605,7 @@ Quản lý người dùng
                 data: formData,
                 success: function (data) {
                     $('#userDeleteModal').modal('hide');
-                    userList.ajax.reload();
+                    userList.ajax.reload(null, false);
                     $('#userAlert').append('<div id="flash_message" class="text-center alert alert-'+data.message_level+'"><button id="closeUserAlert" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><h4> <i class="icon fa fa-'+data.message_icon+'"></i>'+' '+data.flash_message+'</h4></div>');
                 },
                 error: function (data) {
