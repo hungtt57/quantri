@@ -11,6 +11,7 @@ Quản lý bài viết
 <link rel="stylesheet" href="{{  url('public/admin/plugins/datatables/extensions/Buttons/css/buttons.dataTables.min.css') }}">
 <link rel="stylesheet" href="{{  url('public/admin/plugins/datatables/extensions/ColReorder/css/colReorder.dataTables.min.css') }}">
 <link rel="stylesheet" href="{{  url('public/admin/plugins/datatables/extensions/FixedColumns/css/fixedColumns.dataTables.min.css') }}">
+<link rel="stylesheet" href="{{  url('public/admin/plugins/datatables/extensions/Select/css/select.dataTables.min.css') }}">
 @endsection
 
 @section('content')
@@ -28,7 +29,8 @@ Quản lý bài viết
   <table class="table table-striped table-bordered table-hover" id="articleList">
       <thead>
         <tr>
-          <th>ID</th>
+          <th></th>
+          <th></th>
           <th>Tiêu đề</th>
           <th>Thao tác</th>
         </tr>
@@ -74,7 +76,7 @@ Quản lý bài viết
         <form>
         <div class="modal-body">
           <div class="text-center">
-              <p>Xác nhận xóa bài viết này?</p>
+              <p>Xác nhận xóa (các) bài viết này?</p>
                 <input type="hidden" id="article_id" name="article_id" value="">
             </div>
         </div>
@@ -140,6 +142,10 @@ Quản lý bài viết
         var articleList = $('#articleList').DataTable({
             ajax: baseUrl+"/listArticle",
             columns: [
+                {
+                    "className": "select-checkbox center",
+                    "defaultContent": " "
+                },
                 { "data": "id" },
                 { "data": "title" },
                 { "data": null }
@@ -150,16 +156,22 @@ Quản lý bài viết
                 [ 'Mặc định', 'Hiện 20 bản ghi', 'Hiện 50 bản ghi', 'Hiện tất cả' ]
             ],
             columnDefs: [
-            { "targets": 0, "visible": false, "searchable": true, "orderable": true }, 
-            { "targets": 1, "visible": true, "searchable": true, "orderable": true },
-            { "targets": 2, "defaultContent": '<button class="btn btn-success open-view-article-modal"><span class="glyphicon glyphicon-eye-open"></span></button> <button class="btn btn-warning open-edit-article-modal"><span class="glyphicon glyphicon-pencil"></span></button> <button class="btn btn-danger open-delete-article-modal"><span class="glyphicon glyphicon-trash"></span></button>', "visible": true, "searchable": false, "orderable": false } 
+            { "targets": 0, "visible": true, "searchable": false, "orderable": false },
+            { "targets": 1, "visible": false, "searchable": false, "orderable": false }, 
+            { "targets": 2, "visible": true, "searchable": true, "orderable": true },
+            { "targets": 3, "defaultContent": '<button class="btn btn-success open-view-article-modal"><span class="glyphicon glyphicon-eye-open"></span></button> <button class="btn btn-warning open-edit-article-modal"><span class="glyphicon glyphicon-pencil"></span></button> <button class="btn btn-danger open-delete-article-modal"><span class="glyphicon glyphicon-trash"></span></button>', "visible": true, "searchable": false, "orderable": false } 
             ],
+            select: {
+                //style:    'os',
+                style:    'multi',
+                selector: 'td:first-child'
+            },
             //Disable automatic sorting on the first column
             sorting: [],
             //order: [[ 0, 'asc' ]],
             language: {
                 "emptyTable":     "Không có dữ liệu.",
-                "info":           "Tổng: _TOTAL_ bài viết",
+                "info":           "Tổng: _TOTAL_ bài viết.",
                 "infoEmpty":      "Tổng: 0 bài viết",
                 "infoThousands":  ".",
                 "lengthMenu":     "Hiện _MENU_ bài viết",
@@ -174,11 +186,14 @@ Quản lý bài viết
                     "sNext":     "Sau",
                     "sPrevious": "Trước"
                 },
-                "infoFiltered":   "(Tìm kiếm từ _MAX_ bài viết)"
+                "infoFiltered":   "(Tìm kiếm từ _MAX_ bài viết)",
+                select: {
+                    rows: "Đã chọn: %d danh mục."
+                }
             },
             buttons: [
                 {
-                    text: '<i class="fa fa-plus"></i>',
+                    text: 'Thêm bài viết',
                     titleAttr: 'Thêm bài viết',
                     action: function (e) {
                         e.preventDefault();
@@ -198,35 +213,35 @@ Quản lý bài viết
                 },
                 {
                     extend: 'excel',
-                    text: '<i class="fa fa-file-excel-o"></i>',
-                    titleAttr: 'Xuất file Excel',
+                    text: 'Xuất tệp Excel',
+                    titleAttr: 'Xuất tệp Excel',
                     title: 'Danh sách bài viết',
                     exportOptions: {
-                        columns: [1]
+                        columns: [2]
                     }
                 },
                 {
                     extend: 'pdf',
-                    text: '<i class="fa fa-file-pdf-o"></i>',
-                    titleAttr: 'Xuất file PDF',
+                    text: 'Xuất tệp PDF',
+                    titleAttr: 'Xuất tệp PDF',
                     title: 'Danh sách bài viết',
                     message: 'Tài liệu chỉ lưu hành nội bộ.',
                     exportOptions: {
-                        columns: [1]
+                        columns: [2]
                     }
                 },
                 {
                     extend: 'print',
-                    text: '<i class="fa fa-print"></i>',
+                    text: 'In danh sách',
                     titleAttr: 'In danh sách',
                     title: 'Danh sách bài viết',
                     exportOptions: {
-                        columns: [1]
+                        columns: [2]
                     }
                 },
                 {
                     extend: 'pageLength',
-                    text: '<i class="fa fa-minus-square-o"></i>',
+                    text: 'Hiện số bài viết trên một trang',
                     titleAttr: 'Hiện số bài viết trên một trang'
                 },
                 // {
@@ -244,11 +259,47 @@ Quản lý bài viết
                 //     }
                 // },
                 {
-                    text: '<i class="fa fa-refresh"></i>',
+                    text: 'Tải lại danh sách',
                     titleAttr: 'Tải lại danh sách',
                     action: function (e) {
                         articleList.ajax.reload();
                     }  
+                },
+                {
+                    text: 'Chọn tất cả',
+                    titleAttr: 'Chọn tất cả',
+                    action: function (e) {
+                        articleList.rows().select();
+                    }
+                },
+                {
+                    text: 'Chọn trang hiện tại',
+                    titleAttr: 'Chọn trang hiện tại',
+                    action: function (e) {
+                        articleList.rows().deselect();
+                        articleList.rows({page: 'current'}).select();
+                    }
+                },
+                {
+                    text: 'Bỏ chọn tất cả',
+                    titleAttr: 'Bỏ chọn tất cả',
+                    action: function (e) {
+                        articleList.rows().deselect();
+                    },
+                    enabled: false
+                },
+                {
+                    text: 'Xóa (các) bản ghi đã chọn',
+                    titleAttr: 'Xóa (các) bản ghi đã chọn',
+                    action: function (e) {
+                        ids = '';
+                        //Gộp id các bản ghi đã chọn thành 1 chuỗi, mỗi id cách nhau bởi dấu cách
+                        articleList.rows({selected: true}).data().each(function (group, i) {
+                            ids += ' ' + group.id;
+                        });
+                        deleteArticle(ids);
+                    },
+                    enabled: false
                 }
             ],
             // colReorder: {
@@ -256,6 +307,28 @@ Quản lý bài viết
             //     fixedColumnsRight: 1
             // }
         });
+
+        //Nếu không có bản ghi nào được chọn thì disable các nút không cần thiết
+        function en_dis_button() {
+            var selectedRows = articleList.rows({selected: true}).count();
+            if (selectedRows > 0) {
+                articleList.button(8).enable();
+                articleList.button(9).enable();
+            } else {
+                articleList.button(8).disable();
+                articleList.button(9).disable();
+            }
+        }
+
+        articleList.on('select', function () {
+                    en_dis_button();
+                })
+                .on('deselect', function () {
+                    en_dis_button();
+                })
+                .on('processing.dt', function () {
+                    en_dis_button();
+                });
 
         $('input.toggle-article').change(function() {
             var column = articleList.column( $(this).attr('value') );
@@ -348,7 +421,7 @@ Quản lý bài viết
             success: function (data) {
                 $('#articleCreateEditModal').modal('hide');
                 articleList.ajax.reload();
-                $('#articleAlert').append('<div class="text-center alert alert-'+data.message_level+'"><button id="closeArticleAlert" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><h4> <i class="icon fa fa-'+data.message_icon+'"></i>'+data.flash_message+'</h4></div>');
+                $('#articleAlert').append('<div class="text-center alert alert-'+data.message_level+'"><button id="closeArticleAlert" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><h4> <i class="icon fa fa-'+data.message_icon+'"></i>'+' '+data.flash_message+'</h4></div>');
             },
             error: function (data) {
                 var errors = data.responseJSON;
@@ -362,15 +435,19 @@ Quản lý bài viết
             });
         });
 
-        //Display modal form for deleting category
         $('#articleList tbody').on('click', '.open-delete-article-modal', function () {
-            $('#articleAlert').empty();
             var row = $(this).closest("tr");
             var article = articleList.row(row).data();
             var article_id = article.id;
-            $('#article_id').val(article_id);
-            $('#articleDeleteModal').modal('show');
+            deleteArticle(article_id);
         } );
+
+        //Display modal form for deleting article
+        function deleteArticle(id) {
+            $('#articleAlert').empty();
+            $('#article_id').val(id);
+            $('#articleDeleteModal').modal('show');
+        }
 
         //Delete article
         $('#btn-delete-article').click(function(){
@@ -378,16 +455,22 @@ Quản lý bài viết
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
                 }
-            }) 
+            })
 
-            var article_id = $('#article_id').val();
+            var article_ids = $('#article_id').val();
+
+            var formData = {
+                ids: article_ids
+            }
+
             $.ajax({
                 type: "DELETE",
-                url: articleUrl + '/destroy/' + article_id,
+                url: articleUrl + '/destroy',
+                data: formData,
                 success: function (data) {
                     $('#articleDeleteModal').modal('hide');
                     articleList.ajax.reload();
-                    $('#articleAlert').append('<div id="flash_message" class="text-center alert alert-'+data.message_level+'"><button id="closeArticleAlert" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><h4> <i class="icon fa fa-'+data.message_icon+'"></i>'+data.flash_message+'</h4></div>');
+                    $('#articleAlert').append('<div id="flash_message" class="text-center alert alert-'+data.message_level+'"><button id="closeArticleAlert" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><h4> <i class="icon fa fa-'+data.message_icon+'"></i>'+' '+data.flash_message+'</h4></div>');
                 },
                 error: function (data) {
                     console.log('Error:', data);
@@ -410,4 +493,5 @@ Quản lý bài viết
 <script src="{{  url('public/admin/plugins/datatables/extensions/Buttons/js/buttons.colVis.min.js') }}"></script>
 <script src="{{  url('public/admin/plugins/datatables/extensions/ColReorder/js/dataTables.colReorder.min.js') }}"></script>
 <script src="{{  url('public/admin/plugins/datatables/extensions/FixedColumns/js/dataTables.fixedColumns.min.js') }}"></script>
+<script src="{{  url('public/admin/plugins/datatables/extensions/Select/js/dataTables.select.min.js') }}"></script>
 @endsection

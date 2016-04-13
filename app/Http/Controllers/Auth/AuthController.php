@@ -24,7 +24,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $this->validate($request, [
-            $this->loginUsername() => 'required|email|max:255', 'password' => 'required|min:6|max:60',
+            $this->loginUsername() => 'required|email|max:255', 'password' => 'required|min:4|max:60',
         ], [
             $this->loginUsername().'.required' => 'Vui lòng điền địa chỉ email.',
             $this->loginUsername().'.max' => 'Địa chỉ email chỉ dài tối đa 255 kí tự.',

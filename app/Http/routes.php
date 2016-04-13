@@ -21,14 +21,14 @@ Route::group(['middleware' => ['web']], function () {
 		Route::get('user/{id}', ['as' => 'UserController.edit', 'uses' => 'UserController@edit']);
 		Route::post('user/add', ['as' => 'UserController.store', 'uses' => 'UserController@store']);
 		Route::patch('user/{id}', ['as' => 'UserController.update', 'uses' => 'UserController@update']);
-		Route::delete('user/destroy/{id}', ['as' => 'UserController.destroy', 'uses' => 'UserController@destroy']);
+		Route::delete('user/destroy', ['as' => 'UserController.destroy', 'uses' => 'UserController@destroy']);
 
 		//Article management
 	    Route::get('article', ['as' => 'ArticleController.index', 'uses' => 'ArticleController@index']);
 		Route::get('article/{id}', ['as' => 'ArticleController.edit', 'uses' => 'ArticleController@edit']);
 		Route::post('article/add', ['as' => 'ArticleController.store', 'uses' => 'ArticleController@store']);
 		Route::patch('article/{id}', ['as' => 'ArticleController.update', 'uses' => 'ArticleController@update']);
-		Route::delete('article/destroy/{id}', ['as' => 'ArticleController.destroy', 'uses' => 'ArticleController@destroy']);
+		Route::delete('article/destroy', ['as' => 'ArticleController.destroy', 'uses' => 'ArticleController@destroy']);
 
 		//Get list by Ajax
 	    Route::get('listArticle', ['as' => 'AjaxController.article.list', 'uses' => 'AjaxController@listArticle']);
