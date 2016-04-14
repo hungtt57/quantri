@@ -30,8 +30,15 @@ class ArticleController extends Controller
         return Response::json(['flash_message' => 'Đã cập nhật bài viết!', 'message_level' => 'success', 'message_icon' => 'check']);
     }
 
-    public function destroy($id){
-        Article::findOrFail($id)->delete();
+    public function destroy(ArticleRequest $request){
+        if (is_string($request->ids)) {
+            $article_ids = explode(' ', $request->ids);
+            foreach ($article_ids as $article_id) {
+                if ($article_id != NULL) {
+                    Article::findOrFail($article_id)->delete();
+                }
+            }
+        }
         return Response::json(['flash_message' => 'Đã xóa bài viết!', 'message_level' => 'success', 'message_icon' => 'check']);
     }
 }

@@ -11,6 +11,7 @@ Quản lý người dùng
 <link rel="stylesheet" href="{{  url('public/admin/plugins/datatables/extensions/Buttons/css/buttons.dataTables.min.css') }}">
 <link rel="stylesheet" href="{{  url('public/admin/plugins/datatables/extensions/ColReorder/css/colReorder.dataTables.min.css') }}">
 <link rel="stylesheet" href="{{  url('public/admin/plugins/datatables/extensions/FixedColumns/css/fixedColumns.dataTables.min.css') }}">
+<link rel="stylesheet" href="{{  url('public/admin/plugins/datatables/extensions/Select/css/select.dataTables.min.css') }}">
 <style type="text/css">
 	td.details-control {
 	    background: url('{{ asset('public/admin/plugins/datatables/images/details_open.png') }}') no-repeat center center;
@@ -29,9 +30,9 @@ Quản lý người dùng
     </div>
 
   <div class="col-lg-12">
-        <div class="col-lg-4 col-lg-offset-2">
+        <div class="col-lg-4">
             <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                <span class="input-group-addon"><i class="fa fa-user"></i></span>
                 <input type="text" class="form-control column_filter" placeholder="Tìm theo tên người dùng" id="col2_filter" data-column="2">
             </div>
         </div>
@@ -39,6 +40,12 @@ Quản lý người dùng
             <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-inbox"></i></span>
                 <input type="text" class="form-control column_filter" placeholder="Tìm theo email người dùng" id="col3_filter" data-column="3">
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-group"></i></span>
+                <input type="text" class="form-control column_filter" placeholder="Tìm theo role" id="col4_filter" data-column="4">
             </div>
         </div>
   </div>
@@ -56,6 +63,7 @@ Quản lý người dùng
           <th></th>
           <th>Tên</th>
           <th>Địa chỉ email</th>
+          <th>Role</th>
           <th>Thao tác</th>
         </tr>
       </thead>
@@ -103,7 +111,7 @@ Quản lý người dùng
         <form>
         <div class="modal-body">
           <div class="text-center">
-              <p>Xác nhận xóa người dùng này?</p>
+              <p>Xác nhận xóa (các) người dùng này?</p>
                 <input type="hidden" id="user_id" name="user_id" value="">
             </div>
         </div>
@@ -182,18 +190,6 @@ Quản lý người dùng
         ).draw();
     }
 
-	// User's details
-	function format ( d ) {
-	    // `d` is the original data object for the row
-	    var role_str = 'Người dùng này thuộc các role:<br><ul>';
-	    var roles = d.roles;
-	    $.each( roles, function( key, role ) {
-		  	role_str += '<li>' + role.name + '</li>';
-		});
-		role_str += '</ul>';
-	    return role_str;
-	}
-
     $(document).ready(function() {
         var baseUrl = $('meta[name="base_url"]').attr('content');
 
@@ -206,34 +202,70 @@ Quản lý người dùng
         var userList = $('#userList').DataTable({
             ajax: baseUrl+"/listUser",
             columns: [
-            	{
-	                "className":      'details-control',
-	                "data":           null,
-	                "defaultContent": ''
-            	},
-                { "data": "id" },
-                { "data": "name" },
-                { "data": "email" },
-                { "data": null }
+                {
+                    "visible": true, 
+                    "searchable": false, 
+                    "orderable": false,
+                    "className": "select-checkbox center",
+                    "defaultContent": " "
+                },
+                { 
+                    "visible": false, 
+                    "searchable": false, 
+                    "orderable": false,
+                    "data": "id" 
+                },
+                { 
+                    "visible": true, 
+                    "searchable": true, 
+                    "orderable": true,
+                    "data": "name" 
+                },
+                { 
+                    "visible": true, 
+                    "searchable": true, 
+                    "orderable": true,
+                    "data": "email" 
+                },
+                {
+                    "visible": true, 
+                    "searchable": true, 
+                    "orderable": true,
+                    "data": function (source, type, val) {
+                        var role_str = '<ul>';
+                        var roles = source.roles;
+                        $.each( roles, function( key, value ) {
+                            role_str += '<li>' + value.name + '</li>';
+                        });
+                        role_str += '</ul>';
+                        return role_str;
+                    },
+                    "defaultContent": ""
+                },
+                { 
+                    "visible": true, 
+                    "searchable": false, 
+                    "orderable": false,
+                    "data": null,
+                    "defaultContent": '<button class="btn btn-success open-view-user-modal"><span class="glyphicon glyphicon-eye-open"></span></button> <button class="btn btn-warning open-edit-user-modal"><span class="glyphicon glyphicon-pencil"></span></button> <button class="btn btn-danger open-delete-user-modal"><span class="glyphicon glyphicon-trash"></span></button>'
+                }
             ],
             dom: 'Bfrtip',
             lengthMenu: [
                 [10, 20, 50, -1],
                 [ 'Mặc định', 'Hiện 20 bản ghi', 'Hiện 50 bản ghi', 'Hiện tất cả' ]
             ],
-            columnDefs: [
-            { "targets": 0, "visible": true, "searchable": false, "orderable": false },
-            { "targets": 1, "visible": false, "searchable": true, "orderable": true }, 
-            { "targets": 2, "visible": true, "searchable": true, "orderable": true },
-            { "targets": 3, "visible": true, "searchable": true, "orderable": true },
-            { "targets": 4, "defaultContent": '<button class="btn btn-success open-view-user-modal"><span class="glyphicon glyphicon-eye-open"></span></button> <button class="btn btn-warning open-edit-user-modal"><span class="glyphicon glyphicon-pencil"></span></button> <button class="btn btn-danger open-delete-user-modal"><span class="glyphicon glyphicon-trash"></span></button>', "visible": true, "searchable": false, "orderable": false } 
-            ],
+            select: {
+                //style:    'os',
+                style:    'multi',
+                selector: 'td:first-child'
+            },
             //Disable automatic sorting on the first column
             sorting: [],
             //order: [[ 0, 'asc' ]],
             language: {
                 "emptyTable":     "Không có dữ liệu.",
-                "info":           "Tổng: _TOTAL_ người dùng",
+                "info":           "Tổng: _TOTAL_ người dùng.",
                 "infoEmpty":      "Tổng: 0 người dùng",
                 "infoThousands":  ".",
                 "lengthMenu":     "Hiện _MENU_ người dùng",
@@ -248,11 +280,14 @@ Quản lý người dùng
                     "sNext":     "Sau",
                     "sPrevious": "Trước"
                 },
-                "infoFiltered":   "(Tìm kiếm từ _MAX_ người dùng)"
+                "infoFiltered":   "(Tìm kiếm từ _MAX_ người dùng)",
+                select: {
+                    rows: "Đã chọn: %d người dùng."
+                }
             },
             buttons: [
                 {
-                    text: '<i class="fa fa-plus"></i>',
+                    text: 'Thêm người dùng',
                     titleAttr: 'Thêm người dùng',
                     action: function (e) {
                         e.preventDefault();
@@ -274,45 +309,45 @@ Quản lý người dùng
                 },
                 {
                     extend: 'excel',
-                    text: '<i class="fa fa-file-excel-o"></i>',
-                    titleAttr: 'Xuất file Excel',
+                    text: 'Xuất tệp Excel',
+                    titleAttr: 'Xuất tệp Excel',
                     title: 'Danh sách người dùng',
                     exportOptions: {
-                        columns: [2, 3]
+                        columns: [2, 3, 4]
                     }
                 },
                 {
                     extend: 'pdf',
-                    text: '<i class="fa fa-file-pdf-o"></i>',
-                    titleAttr: 'Xuất file PDF',
+                    text: 'Xuất tệp PDF',
+                    titleAttr: 'Xuất tệp PDF',
                     title: 'Danh sách người dùng',
                     message: 'Tài liệu chỉ lưu hành nội bộ.',
                     exportOptions: {
-                        columns: [2, 3]
+                        columns: [2, 3, 4]
                     }
                 },
                 {
                     extend: 'print',
-                    text: '<i class="fa fa-print"></i>',
+                    text: 'In danh sách',
                     titleAttr: 'In danh sách',
                     title: 'Danh sách người dùng',
                     exportOptions: {
-                        columns: [2, 3]
+                        columns: [2, 3, 4]
                     }
                 },
                 {
                     extend: 'pageLength',
-                    text: '<i class="fa fa-minus-square-o"></i>',
+                    text: 'Hiện số người dùng trên một trang',
                     titleAttr: 'Hiện số người dùng trên một trang'
                 },
                 {
                     extend: 'colvis',
-                    text: '<i class="fa fa-check-square-o"></i>',
+                    text: 'Chọn các cột muốn hiển thị',
                     titleAttr: 'Chọn các cột muốn hiển thị',
-                    columns: [2, 3]
+                    columns: [2, 3, 4]
                 },
                 {
-                    text: '<i class="fa fa-close"></i>',
+                    text: 'Khôi phục thứ tự cột mặc định',
                     titleAttr: 'Khôi phục thứ tự cột mặc định',
                     action: function (e) {
                         e.preventDefault();
@@ -320,11 +355,47 @@ Quản lý người dùng
                     }
                 },
                 {
-                    text: '<i class="fa fa-refresh"></i>',
+                    text: 'Tải lại danh sách',
                     titleAttr: 'Tải lại danh sách',
                     action: function (e) {
-                        userList.ajax.reload();
+                        userList.ajax.reload(null, false);
                     }  
+                },
+                {
+                    text: 'Chọn tất cả',
+                    titleAttr: 'Chọn tất cả',
+                    action: function (e) {
+                        userList.rows().select();
+                    }
+                },
+                {
+                    text: 'Chọn trang hiện tại',
+                    titleAttr: 'Chọn trang hiện tại',
+                    action: function (e) {
+                        userList.rows().deselect();
+                        userList.rows({page: 'current'}).select();
+                    }
+                },
+                {
+                    text: 'Bỏ chọn tất cả',
+                    titleAttr: 'Bỏ chọn tất cả',
+                    action: function (e) {
+                        userList.rows().deselect();
+                    },
+                    enabled: false
+                },
+                {
+                    text: 'Xóa bản ghi đã chọn',
+                    titleAttr: 'Xóa bản ghi đã chọn',
+                    action: function (e) {
+                        ids = '';
+                        //Gộp id các bản ghi đã chọn thành 1 chuỗi, mỗi id cách nhau bởi dấu cách
+                        userList.rows({selected: true}).data().each(function (group, i) {
+                            ids += ' ' + group.id;
+                        });
+                        deleteUser(ids);
+                    },
+                    enabled: false
                 }
             ],
             colReorder: {
@@ -333,22 +404,27 @@ Quản lý người dùng
             }
         });
 
-		// Add event listener for opening and closing details
-	    $('#userList tbody').on('click', 'td.details-control', function () {
-	        var tr = $(this).closest('tr');
-	        var row = userList.row( tr );
-	 
-	        if ( row.child.isShown() ) {
-	            // This row is already open - close it
-	            row.child.hide();
-	            tr.removeClass('shown');
-	        }
-	        else {
-	            // Open this row
-	            row.child( format(row.data()) ).show();
-	            tr.addClass('shown');
-	        }
-	    } );
+        //Nếu không có bản ghi nào được chọn thì disable các nút không cần thiết
+        function en_dis_button() {
+            var selectedRows = userList.rows({selected: true}).count();
+            if (selectedRows > 0) {
+                userList.button(10).enable();
+                userList.button(11).enable();
+            } else {
+                userList.button(10).disable();
+                userList.button(11).disable();
+            }
+        }
+
+        userList.on('select', function () {
+                    en_dis_button();
+                })
+                .on('deselect', function () {
+                    en_dis_button();
+                })
+                .on('processing.dt', function () {
+                    en_dis_button();
+                });
 
         // Advanced searching
         $('input.column_filter').on( 'keyup click', function () {
@@ -474,8 +550,8 @@ Quản lý người dùng
             dataType: 'json',
             success: function (data) {
                 $('#userCreateEditModal').modal('hide');
-                userList.ajax.reload();
-                $('#userAlert').append('<div class="text-center alert alert-'+data.message_level+'"><button id="closeUserAlert" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><h4> <i class="icon fa fa-'+data.message_icon+'"></i>'+data.flash_message+'</h4></div>');
+                userList.ajax.reload(null, false);
+                $('#userAlert').append('<div class="text-center alert alert-'+data.message_level+'"><button id="closeUserAlert" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><h4> <i class="icon fa fa-'+data.message_icon+'"></i>'+' '+data.flash_message+'</h4></div>');
             },
             error: function (data) {
                 var errors = data.responseJSON;
@@ -495,15 +571,19 @@ Quản lý người dùng
             });
         });
 
-        //Display modal form for deleting user
         $('#userList tbody').on('click', '.open-delete-user-modal', function () {
-            $('#userAlert').empty();
             var row = $(this).closest("tr");
             var user = userList.row(row).data();
             var user_id = user.id;
-            $('#user_id').val(user_id);
-            $('#userDeleteModal').modal('show');
+            deleteUser(user_id);
         } );
+
+        //Display modal form for deleting user
+        function deleteUser(id) {
+            $('#userAlert').empty();
+            $('#user_id').val(id);
+            $('#userDeleteModal').modal('show');
+        }
 
         //Delete user
         $('#btn-delete-user').click(function(){
@@ -513,14 +593,20 @@ Quản lý người dùng
                 }
             }) 
 
-            var user_id = $('#user_id').val();
+            var user_ids = $('#user_id').val();
+
+            var formData = {
+                ids: user_ids
+            }
+
             $.ajax({
                 type: "DELETE",
-                url: userUrl + '/destroy/' + user_id,
+                url: userUrl + '/destroy',
+                data: formData,
                 success: function (data) {
                     $('#userDeleteModal').modal('hide');
-                    userList.ajax.reload();
-                    $('#userAlert').append('<div id="flash_message" class="text-center alert alert-'+data.message_level+'"><button id="closeUserAlert" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><h4> <i class="icon fa fa-'+data.message_icon+'"></i>'+data.flash_message+'</h4></div>');
+                    userList.ajax.reload(null, false);
+                    $('#userAlert').append('<div id="flash_message" class="text-center alert alert-'+data.message_level+'"><button id="closeUserAlert" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><h4> <i class="icon fa fa-'+data.message_icon+'"></i>'+' '+data.flash_message+'</h4></div>');
                 },
                 error: function (data) {
                     console.log('Error:', data);
@@ -543,4 +629,5 @@ Quản lý người dùng
 <script src="{{  url('public/admin/plugins/datatables/extensions/Buttons/js/buttons.colVis.min.js') }}"></script>
 <script src="{{  url('public/admin/plugins/datatables/extensions/ColReorder/js/dataTables.colReorder.min.js') }}"></script>
 <script src="{{  url('public/admin/plugins/datatables/extensions/FixedColumns/js/dataTables.fixedColumns.min.js') }}"></script>
+<script src="{{  url('public/admin/plugins/datatables/extensions/Select/js/dataTables.select.min.js') }}"></script>
 @endsection
