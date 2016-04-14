@@ -15,7 +15,9 @@ class UserController extends Controller
 {   
     public function index(){
         $roles = Role::where('name', '<>', 'Default')->get();
+
         $default_role = Role::where('name', '=', 'Default')->firstOrFail();
+
         return view('admin.pages.user', array('roles' => $roles, 'default_role' => $default_role, 'menuActive' => 'User'));
     }
 
