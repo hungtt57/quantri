@@ -18,14 +18,16 @@ Route::group(['middleware' => ['web']], function () {
 		
 		//User management
 	    Route::get('user', ['as' => 'UserController.index', 'uses' => 'UserController@index']);
-		Route::get('user/{id}', ['as' => 'UserController.edit', 'uses' => 'UserController@edit']);
+		Route::get('user/edit/{id}', ['as' => 'UserController.edit', 'uses' => 'UserController@edit']);
+		Route::get('user/show/{id}', ['as' => 'UserController.show', 'uses' => 'UserController@show']);
 		Route::post('user/add', ['as' => 'UserController.store', 'uses' => 'UserController@store']);
 		Route::patch('user/{id}', ['as' => 'UserController.update', 'uses' => 'UserController@update']);
 		Route::delete('user/destroy', ['as' => 'UserController.destroy', 'uses' => 'UserController@destroy']);
 
 		//Article management
 	    Route::get('article', ['as' => 'ArticleController.index', 'uses' => 'ArticleController@index']);
-		Route::get('article/{id}', ['as' => 'ArticleController.edit', 'uses' => 'ArticleController@edit']);
+		Route::get('article/edit/{id}', ['as' => 'ArticleController.edit', 'uses' => 'ArticleController@edit']);
+		Route::get('article/show/{id}', ['as' => 'ArticleController.show', 'uses' => 'ArticleController@show']);
 		Route::post('article/add', ['as' => 'ArticleController.store', 'uses' => 'ArticleController@store']);
 		Route::patch('article/{id}', ['as' => 'ArticleController.update', 'uses' => 'ArticleController@update']);
 		Route::delete('article/destroy', ['as' => 'ArticleController.destroy', 'uses' => 'ArticleController@destroy']);

@@ -25,15 +25,20 @@
     <ul class="nav" id="side-menu">
         <li class="sidebar-search">
             <ul id="menu">
-                <li><a href="{{ url('user') }}"><i class="fa fa-user"></i></a></li>
-                <li><a href="{{ url('role') }}"><i class="fa fa-lock"></i></a></li>
-                <li><a href=""><i class="fa fa-cog"></i></a></li>
+                @can('UserController.index')
+                <li><a href="{{ url('user') }}" title="Danh sách người dùng"><i class="fa fa-user"></i></a></li>
+                @endcan
+                 @can('RoleController.index')
+                <li><a href="{{ url('role') }}" title="Quản lý quyền"><i class="fa fa-lock"></i></a></li>
+                @endcan
+                <li><a href="" title="Thiết lập cấu hình"><i class="fa fa-cog"></i></a></li>
             </ul>  
         </li>
-
+        @can('ArticleController.index')
         <li>
             <a href="{{ url('article') }}"><i class="fa fa-dashboard fa-fw"></i> Bài viết</a>
         </li>
+        @endcan
         <li>
             <a href="{{asset('/')}}"><i class="fa fa-dashboard fa-fw"></i> Menu</a>
         </li>

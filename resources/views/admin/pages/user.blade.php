@@ -81,15 +81,18 @@ Quản lý người dùng
         </div>
         <div class="modal-body">
           <div class="text-center">
-            <div class="col-lg-4" align="right"><strong>Tên</strong>   :</div>
-            <div id="user_name" class="col-lg-8" align="left"></div>
-            <br>
-            <div class="col-lg-4" align="right"><strong>Email</strong>   :</div>
-            <div id="user_email" class="col-lg-8" align="left"></div>
-            <br>
-            <div class="col-lg-4" align="right"><strong>Role</strong>   :</div>
-            <div id="user_role" class="col-lg-8" align="left"></div>
-            <br>
+             <div class='row'>
+                <div class="col-lg-4" align="right"><strong>Tên</strong>   :</div>
+                <div id="user_name" class="col-lg-8" align="left"></div>
+            </div>
+            <div class='row'>
+                <div class="col-lg-4" align="right"><strong>Email</strong>   :</div>
+                <div id="user_email" class="col-lg-8" align="left"></div>
+            </div>
+              <div class='row'>
+                <div class="col-lg-4" align="right"><strong>Role</strong>   :</div>
+                <div id="user_role" class="col-lg-8" align="left"></div>
+            </div>
           </div>
         </div>
         <div class="modal-footer">
@@ -232,7 +235,7 @@ Quản lý người dùng
                     "searchable": true, 
                     "orderable": true,
                     "data": function (source, type, val) {
-                        var role_str = '<ul>';
+                        var role_str = '<ul style="list-style: none;padding: 0;">';
                         var roles = source.roles;
                         $.each( roles, function( key, value ) {
                             role_str += '<li>' + value.name + '</li>';
@@ -247,7 +250,7 @@ Quản lý người dùng
                     "searchable": false, 
                     "orderable": false,
                     "data": null,
-                    "defaultContent": '<button class="btn btn-success open-view-user-modal"><span class="glyphicon glyphicon-eye-open"></span></button> <button class="btn btn-warning open-edit-user-modal"><span class="glyphicon glyphicon-pencil"></span></button> <button class="btn btn-danger open-delete-user-modal"><span class="glyphicon glyphicon-trash"></span></button>'
+                    "defaultContent": '@can('UserController.show')<button class="btn btn-success open-view-user-modal"><span class="glyphicon glyphicon-eye-open"></span></button>@endcan @can('UserController.edit') <button class="btn btn-warning open-edit-user-modal"><span class="glyphicon glyphicon-pencil"></span></button> @endcan @can('UserController.destroy')<button class="btn btn-danger open-delete-user-modal"><span class="glyphicon glyphicon-trash"></span></button> @endcan'
                 }
             ],
             dom: 'Bfrtip',
@@ -452,7 +455,7 @@ Quản lý người dùng
             var row = $(this).closest("tr");
             var user = userList.row(row).data();
             var user_id = user.id;
-            $.get(userUrl + '/' + user_id, function (data) {
+            $.get(userUrl + '/show/' + user_id, function (data) {
                 $('#user_name').html(data.name);
                 $('#user_email').html(data.email);
 
@@ -474,7 +477,7 @@ Quản lý người dùng
             var row = $(this).closest("tr");
             var user = userList.row(row).data();
             var user_id = user.id;
-            $.get(userUrl + '/' + user_id, function (data) {
+            $.get(userUrl + '/edit/' + user_id, function (data) {
                 $('#user_id').val(data.id);
                 $('#name').val(data.name);
                 $('#email').val(data.email);

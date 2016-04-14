@@ -20,7 +20,11 @@ class ArticleController extends Controller
         return Response::json(['flash_message' => 'Đã thêm bài viết!', 'message_level' => 'success', 'message_icon' => 'check']);
     }
 
-    public function edit($id){
+    public function show($id){
+        $article = Article::findOrFail($id);
+        return Response::json($article);
+    }
+     public function edit($id){
         $article = Article::findOrFail($id);
         return Response::json($article);
     }

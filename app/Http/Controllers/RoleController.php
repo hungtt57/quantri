@@ -44,7 +44,7 @@ class RoleController extends Controller
                 } //ko tao permission vs dashboard va auth
 
               if($permission){ //da co permission tương ứng controller
-               
+                $permission->label= trans('messages.'.$method);
                 $permission->active='1';
                 $permission->save(); //update lai gia tri active thanh 1
                 continue;

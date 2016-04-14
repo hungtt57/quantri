@@ -209,8 +209,12 @@ Quản lý phân quyền
 
   <div class="cotaniner" style="margin-top: 20px;
   margin-left: 50px;">
+  @can('RoleController.store')
   <button class="btn btn-primary open-add-role-modal">Thêm role mới</button>
+  @endcan
+  @can('RoleController.synchronous')
   <a href="{{asset('synchronous')}}"><button class="btn btn-primary ">Đồng bộ quyền</button></a>
+  @endcan
   @if (Session::has('message1'))
   <div class="alert alert-info">{{ Session::get('message1') }}</div>
   @endif

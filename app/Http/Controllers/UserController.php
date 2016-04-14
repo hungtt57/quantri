@@ -10,10 +10,15 @@ use Response;
 use Auth;
 use App\Role;
 use App\Role_User;
-
+use Gate;
 class UserController extends Controller
 {   
     public function index(){
+
+
+            if (Gate::denies('UserController.index')){
+               abort(403);
+           }
         $roles = Role::where('name', '<>', 'Default')->get();
 
         $default_role = Role::where('name', '=', 'Default')->firstOrFail();
@@ -36,7 +41,12 @@ class UserController extends Controller
         return Response::json(['flash_message' => 'Đã thêm người dùng!', 'message_level' => 'success', 'message_icon' => 'check']);
     }
 
-    public function edit($id){
+    public function show($id){
+        $user = User::findOrFail($id);
+        $user->roles = Role_User::rolesOfUser($id);
+        return Response::json($user);
+    }
+       public function edit($id){
         $user = User::findOrFail($id);
         $user->roles = Role_User::rolesOfUser($id);
         return Response::json($user);

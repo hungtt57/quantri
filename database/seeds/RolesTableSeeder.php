@@ -12,22 +12,12 @@ class RolesTableSeeder extends Seeder
     public function run()
     {
         DB::table('roles')->insert([
-            'name' => 'Default'
+            'name' => 'Mặc định'
         ]);
         DB::table('roles')->insert([
             'name' => 'Admin'
         ]);
-        DB::table('roles')->insert([
-            'name' => 'Supervisor'
-        ]);
-        DB::table('roles')->insert([
-            'name' => 'Manager'
-        ]);
-        DB::table('roles')->insert([
-            'name' => 'Distributor'
-        ]);
-        DB::table('roles')->insert([
-            'name' => 'Operator'
-        ]);
+        DB::table('permissions')->insert(['name' => 'RoleController@index']);
+        DB::table('permission_role')->insert(['role_id' => '2','permission_id' => '1']);
     }
 }

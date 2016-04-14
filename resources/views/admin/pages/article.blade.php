@@ -159,7 +159,7 @@ Quản lý bài viết
             { "targets": 0, "visible": true, "searchable": false, "orderable": false },
             { "targets": 1, "visible": false, "searchable": false, "orderable": false }, 
             { "targets": 2, "visible": true, "searchable": true, "orderable": true },
-            { "targets": 3, "defaultContent": '<button class="btn btn-success open-view-article-modal"><span class="glyphicon glyphicon-eye-open"></span></button> <button class="btn btn-warning open-edit-article-modal"><span class="glyphicon glyphicon-pencil"></span></button> <button class="btn btn-danger open-delete-article-modal"><span class="glyphicon glyphicon-trash"></span></button>', "visible": true, "searchable": false, "orderable": false } 
+            { "targets": 3, "defaultContent": '@can('ArticleController.show')<button class="btn btn-success open-view-article-modal"><span class="glyphicon glyphicon-eye-open"></span></button>@endcan @can('ArticleController.edit')<button class="btn btn-warning open-edit-article-modal"><span class="glyphicon glyphicon-pencil"></span></button>@endcan @can('ArticleController.destroy') <button class="btn btn-danger open-delete-article-modal"><span class="glyphicon glyphicon-trash"></span></button> @endcan', "visible": true, "searchable": false, "orderable": false } 
             ],
             select: {
                 //style:    'os',

@@ -30,10 +30,9 @@ class AjaxController extends Controller
             $data = Request::input('data');
             $id = explode(',',$data);
             $role_id = $id[0];
-            if(empty($id[1])){
-                return 'oke';
-            }
+            
             Permission_Role::where('role_id',$role_id)->delete();
+
             for($i = 1 ;$i < sizeof($id);$i++){
               
                    $permission_role = new Permission_Role;
