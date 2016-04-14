@@ -1,6 +1,6 @@
 <?php
     
-
+Route::group(['middleware' => ['web']], function () {
 
 	Route::get('/', ['as' => 'HomeController.dashboard', 'uses' => 'HomeController@index']);
 
@@ -9,7 +9,7 @@
 	Route::post('login', ['as' => 'AuthController.login', 'uses' => 'Auth\AuthController@login']);
 	Route::get('logout', ['as' => 'AuthController.logout', 'uses' => 'Auth\AuthController@logout']);
 
-Route::group(['middleware' => ['web']], function () {
+
 	Route::group(['middleware' => 'auth'], function(){
 		//Role management
 		Route::get('role', ['as' => 'RoleController.index', 'uses' => 'RoleController@index']);
@@ -33,6 +33,7 @@ Route::group(['middleware' => ['web']], function () {
 		//Get list by Ajax
 	    Route::get('listArticle', ['as' => 'AjaxController.article.list', 'uses' => 'AjaxController@listArticle']);
 	    Route::get('listUser', ['as' => 'AjaxController.user.list', 'uses' => 'AjaxController@listUser']);
+	    Route::get('updatePermission', ['as' => 'AjaxController.update.permission', 'uses' => 'AjaxController@updatePermission']);
 	});
 
 });

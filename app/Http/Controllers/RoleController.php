@@ -10,7 +10,7 @@ use Response;
 use App\Permission_Role;
 use App\Permission;
 use Route;
-
+use Session;
 class RoleController extends Controller
 {
 	  public function index(){
@@ -76,12 +76,9 @@ class RoleController extends Controller
               }
               
 
-
-
-
             }
           Permission::where('active', 0)->delete();
-       
-          return redirect('role')->with('message', 'Đồng bộ thành công!!');
+          Session::flash('message1', 'My message');
+          return redirect('role')->with('messages', 'Đồng bộ thành công!!');
     }
 }
