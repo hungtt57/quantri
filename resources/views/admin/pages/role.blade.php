@@ -309,6 +309,7 @@ Quản lý phân quyền
       </div> -->
       <br>
       <button  value='{{$role->id}}' class="btn btn-primary updater-permission">Cập nhật quyền</button>
+      <a href="{{asset('/role/destroy/'.$role->id)}}" onclick="return confirm('Bạn có chắn chắn xóa?')" style="margin-top: 10px;display: block;"><button  class="btn btn-primary updater-permission">Xóa quyền {{$role->name}}</button></a>
     </div>
   </div>
   @endforeach              

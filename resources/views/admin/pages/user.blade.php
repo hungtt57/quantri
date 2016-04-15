@@ -66,7 +66,7 @@ Quản lý người dùng
           <th>Tên</th>
           <th>Địa chỉ email</th>
           <th>Role</th>
-          @if ( Gate::allows('UserController.show') | Gate::allows('UserController.edit') && Gate::allows('UserController.update') | Gate::allows('UserController.destroy') )
+          @if ( Gate::allows('UserController.show') | Gate::allows('UserController.edit') | Gate::allows('UserController.destroy') )
           <th>Thao tác</th>
           @endif
         </tr>
@@ -251,7 +251,7 @@ Quản lý người dùng
                     },
                     "defaultContent": ""
                 },
-                @if ( Gate::allows('UserController.show') | Gate::allows('UserController.edit') && Gate::allows('UserController.update') | Gate::allows('UserController.destroy') )
+                @if ( Gate::allows('UserController.show') | Gate::allows('UserController.edit') | Gate::allows('UserController.destroy') )
                 { 
                     "visible": true, 
                     "searchable": false, 
