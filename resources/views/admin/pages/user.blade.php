@@ -66,7 +66,9 @@ Quản lý người dùng
           <th>Tên</th>
           <th>Địa chỉ email</th>
           <th>Role</th>
+          @if ( Gate::allows('UserController.show') | Gate::allows('UserController.edit') | Gate::allows('UserController.destroy') )
           <th>Thao tác</th>
+          @endif
         </tr>
       </thead>
   </table>
@@ -249,6 +251,7 @@ Quản lý người dùng
                     },
                     "defaultContent": ""
                 },
+                @if ( Gate::allows('UserController.show') | Gate::allows('UserController.edit') | Gate::allows('UserController.destroy') )
                 { 
                     "visible": true, 
                     "searchable": false, 
@@ -256,6 +259,7 @@ Quản lý người dùng
                     "data": null,
                     "defaultContent": '@can('UserController.show')<button class="btn btn-success open-view-user-modal"><span class="glyphicon glyphicon-eye-open"></span></button>@endcan @can('UserController.edit') <button class="btn btn-warning open-edit-user-modal"><span class="glyphicon glyphicon-pencil"></span></button> @endcan @can('UserController.destroy')<button class="btn btn-danger open-delete-user-modal"><span class="glyphicon glyphicon-trash"></span></button> @endcan'
                 }
+                @endif
             ],
             dom: 'Bfrtip',
             lengthMenu: [

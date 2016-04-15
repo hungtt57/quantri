@@ -455,8 +455,8 @@ Quản lý phân quyền
               var roleName = $('#rolename'+ role).text();
               // alert('Cập nhật quyền thành công cho role : ' + roleName);
                 // $('#roleAlert').append('<div class="text-center alert alert-success"><button id="closeUserAlert" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><h4>Cập nhật quyền thành công cho role : '+ roleName +'</h4></div>');
-                toastr.success('Cập nhật quyền thành công cho role : ' + roleName);
-                
+                toastr.success('Cập nhật quyền thành công cho role ' + roleName);
+                location.reload();
               }
             },
             error: function (data) {
