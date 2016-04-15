@@ -375,6 +375,7 @@ Quản lý phân quyền
             success: function (data) {
               $('#roleAddModal').modal('hide');
               $('#roleAlert').append('<div class="text-center alert alert-'+data.message_level+'"><button id="closeRoleAlert" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><h4> <i class="icon fa fa-'+data.message_icon+'"></i>'+data.flash_message+'</h4></div>');
+              location.reload();
             },
             error: function (data) {
               var errors = data.responseJSON;
@@ -456,7 +457,6 @@ Quản lý phân quyền
               // alert('Cập nhật quyền thành công cho role : ' + roleName);
                 // $('#roleAlert').append('<div class="text-center alert alert-success"><button id="closeUserAlert" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><h4>Cập nhật quyền thành công cho role : '+ roleName +'</h4></div>');
                 toastr.success('Cập nhật quyền thành công cho role ' + roleName);
-            
               }
             },
             error: function (data) {

@@ -34,7 +34,7 @@ Quản lý bài viết
           @endcan
           <th></th>
           <th>Tiêu đề</th>
-          @if ( Gate::allows('ArticleController.show') | Gate::allows('ArticleController.edit') | Gate::allows('ArticleController.destroy') )
+          @if ( Gate::allows('ArticleController.show') | Gate::allows('ArticleController.edit') && Gate::allows('ArticleController.update') | Gate::allows('ArticleController.destroy') )
           <th>Thao tác</th>
           @endif
         </tr>
@@ -167,7 +167,7 @@ Quản lý bài viết
                     "orderable": true,
                     "data": "title" 
                 },
-                @if ( Gate::allows('ArticleController.show') | Gate::allows('ArticleController.edit') | Gate::allows('ArticleController.destroy') )
+                @if ( Gate::allows('ArticleController.show') | Gate::allows('ArticleController.edit') && Gate::allows('ArticleController.update') | Gate::allows('ArticleController.destroy') )
                 { 
                     "defaultContent": '@can('ArticleController.show')<button class="btn btn-success open-view-article-modal"><span class="glyphicon glyphicon-eye-open"></span></button>@endcan @can('ArticleController.edit')<button class="btn btn-warning open-edit-article-modal"><span class="glyphicon glyphicon-pencil"></span></button>@endcan @can('ArticleController.destroy') <button class="btn btn-danger open-delete-article-modal"><span class="glyphicon glyphicon-trash"></span></button> @endcan', 
                     "visible": true, 
