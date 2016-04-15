@@ -6,7 +6,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{{ url('/') }}">BACKEND</a>
+                <a class="navbar-brand" href="{{ url('/') }}"><img width="110" src="{{asset('public/admin/image/vnesport.png')}}"></a>
             </div>
             <!-- /.navbar-header -->
 
