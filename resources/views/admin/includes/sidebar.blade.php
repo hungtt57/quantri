@@ -20,7 +20,7 @@
     }
 </style>
 <div class="navbar-default sidebar" role="navigation">
-    <div class="sidebar-nav navbar-collapse">
+    <div class="sidebar-nav ">
 
     <ul class="nav" id="side-menu">
         <li class="sidebar-search">
@@ -40,7 +40,7 @@
         </li>
         @endcan
         <li>
-            <a href="{{asset('/')}}"><i class="fa fa-dashboard fa-fw"></i> Menu</a>
+            <a href="#"><i class="fa fa-dashboard fa-fw"></i> Menu</a>
         </li>
     </ul>
 </div>
