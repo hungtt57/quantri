@@ -33,19 +33,19 @@ Quản lý người dùng
         <div class="col-lg-4">
             <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                <input type="text" class="form-control column_filter" placeholder="Tìm theo tên người dùng" id="col2_filter" data-column="2">
+                <input type="text" class="form-control column_filter" placeholder="Tìm theo tên người dùng" id="input_userName" data-column="userName">
             </div>
         </div>
         <div class="col-lg-4">
             <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-inbox"></i></span>
-                <input type="text" class="form-control column_filter" placeholder="Tìm theo email người dùng" id="col3_filter" data-column="3">
+                <input type="text" class="form-control column_filter" placeholder="Tìm theo email người dùng" id="input_userEmail" data-column="userEmail">
             </div>
         </div>
         <div class="col-lg-4">
             <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-group"></i></span>
-                <input type="text" class="form-control column_filter" placeholder="Tìm theo role" id="col4_filter" data-column="4">
+                <input type="text" class="form-control column_filter" placeholder="Tìm theo role" id="input_userRole" data-column="userRole">
             </div>
         </div>
   </div>
@@ -192,8 +192,8 @@ Quản lý người dùng
 <script type="text/javascript">
     // Advanced searching
     function filterColumn ( i ) {
-        $('#userList').DataTable().column( i ).search(
-            $('#col'+i+'_filter').val()
+        $('#userList').DataTable().column( i+':name' ).search(
+            $('#input_'+i+'').val()
         ).draw();
     }
 
