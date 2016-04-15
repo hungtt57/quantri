@@ -66,7 +66,7 @@ Quản lý người dùng
           <th>Tên</th>
           <th>Địa chỉ email</th>
           <th>Role</th>
-          @if ( Gate::allows('UserController.show') | Gate::allows('UserController.edit') && Gate::allows('UserController.update') | Gate::allows('UserController.destroy') )
+          @if ( Gate::allows('UserController.show') | Gate::allows('UserController.edit') | Gate::allows('UserController.destroy') )
           <th>Thao tác</th>
           @endif
         </tr>
@@ -228,13 +228,15 @@ Quản lý người dùng
                     "visible": true, 
                     "searchable": true, 
                     "orderable": true,
-                    "data": "name" 
+                    "data": "name",
+                    "name": "userName"
                 },
                 { 
                     "visible": true, 
                     "searchable": true, 
                     "orderable": true,
-                    "data": "email" 
+                    "data": "email",
+                    "name": "userEmail" 
                 },
                 {
                     "visible": true, 
@@ -249,9 +251,10 @@ Quản lý người dùng
                         role_str += '</ul>';
                         return role_str;
                     },
-                    "defaultContent": ""
+                    "defaultContent": "",
+                    "name": "userRole"
                 },
-                @if ( Gate::allows('UserController.show') | Gate::allows('UserController.edit') && Gate::allows('UserController.update') | Gate::allows('UserController.destroy') )
+                @if ( Gate::allows('UserController.show') | Gate::allows('UserController.edit') | Gate::allows('UserController.destroy') )
                 { 
                     "visible": true, 
                     "searchable": false, 
@@ -326,7 +329,7 @@ Quản lý người dùng
                     titleAttr: 'Xuất tệp Excel',
                     title: 'Danh sách người dùng',
                     exportOptions: {
-                        columns: [2, 3, 4]
+                        columns: ["userName:name", "userEmail:name", "userRole:name"]
                     }
                 },
                 {
@@ -336,7 +339,7 @@ Quản lý người dùng
                     title: 'Danh sách người dùng',
                     message: 'Tài liệu chỉ lưu hành nội bộ.',
                     exportOptions: {
-                        columns: [2, 3, 4]
+                        columns: ["userName:name", "userEmail:name", "userRole:name"]
                     }
                 },
                 {
@@ -345,7 +348,7 @@ Quản lý người dùng
                     titleAttr: 'In danh sách',
                     title: 'Danh sách người dùng',
                     exportOptions: {
-                        columns: [2, 3, 4]
+                        columns: ["userName:name", "userEmail:name", "userRole:name"]
                     }
                 },
                 {
@@ -357,7 +360,7 @@ Quản lý người dùng
                     extend: 'colvis',
                     text: 'Chọn các cột muốn hiển thị',
                     titleAttr: 'Chọn các cột muốn hiển thị',
-                    columns: [2, 3, 4]
+                    columns: ["userName:name", "userEmail:name", "userRole:name"]
                 },
                 {
                     text: 'Khôi phục thứ tự cột mặc định',
