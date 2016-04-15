@@ -186,7 +186,7 @@ h1{
 </head>
 <body>
 <div class="wrap">
-    <h1>Việt Nam Esport</h1>
+    {{-- <h1>Việt Nam Esport</h1> --}}
       <div class="page">
         <h2>Không tìm thấy hoặc bạn không có quyền truy cập!</h2>
         <h2>Click vào <a href="javascript:history.back()"> đây</a> để quay lại trang trước </h2>

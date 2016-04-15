@@ -638,6 +638,7 @@ Quản lý người dùng
 <script src="{{  url('public/admin/specify/jszip.min.js') }}"></script>
 <script src="{{  url('public/admin/specify/pdfmake.min.js') }}"></script>
 <script src="{{  url('public/admin/specify/vfs_fonts.js') }}"></script>
+<script src="{{  url('public/admin/specify/buttons.html5.min.js') }}"></script>
 <script src="{{  url('public/admin/plugins/datatables/extensions/Button/js/buttons.html5.min.js') }}"></script>
 <script src="{{  url('public/admin/plugins/datatables/extensions/Buttons/js/buttons.colVis.min.js') }}"></script>
 <script src="{{  url('public/admin/plugins/datatables/extensions/ColReorder/js/dataTables.colReorder.min.js') }}"></script>
