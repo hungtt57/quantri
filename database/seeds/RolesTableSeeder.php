@@ -19,7 +19,7 @@ class RolesTableSeeder extends Seeder
             'name' => 'Admin'
         ]);
         DB::table('roles')->insert([
-            'name' => 'Mặc định'
+            'name' => 'Default'
         ]);
        
 
