@@ -31,6 +31,7 @@ Quản lý phân quyền
     max-height: 400px;
   }
   div.bhoechie-tab-menu div.list-group{
+    width: 90%;
     margin-bottom: 0;
   }
   div.bhoechie-tab-menu div.list-group>a{
