@@ -11,14 +11,13 @@ use Auth;
 use App\Role;
 use App\Role_User;
 use Gate;
+
 class UserController extends Controller
 {   
     public function index(){
-
-
-            if (Gate::denies('UserController.index')){
-               abort(403);
-           }
+        if (Gate::denies('UserController.index')){
+           abort(403);
+        }
         $roles = Role::where('name', '<>', 'Default')->get();
 
         $default_role = Role::where('name', '=', 'Default')->firstOrFail();
@@ -27,10 +26,9 @@ class UserController extends Controller
     }
 
     public function store(UserRequest $request){
-
-            if (Gate::denies('UserController.store')){
-               abort(403);
-           }
+        if (Gate::denies('UserController.store')){
+           abort(403);
+        }
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
@@ -46,29 +44,27 @@ class UserController extends Controller
     }
 
     public function show($id){
-
-            if (Gate::denies('UserController.show')){
-               abort(403);
-           }
+        if (Gate::denies('UserController.show')){
+            abort(403);
+        }
         $user = User::findOrFail($id);
         $user->roles = Role_User::rolesOfUser($id);
         return Response::json($user);
     }
-       public function edit($id){
 
-            if (Gate::denies('UserController.edit')){
-               abort(403);
-           }
+    public function edit($id){
+        if (Gate::denies('UserController.edit')){
+           abort(403);
+        }
         $user = User::findOrFail($id);
         $user->roles = Role_User::rolesOfUser($id);
         return Response::json($user);
     }
 
     public function update($id, UserRequest $request){
-
-            if (Gate::denies('UserController.update')){
-               abort(403);
-           }
+        if (Gate::denies('UserController.update')){
+           abort(403);
+        }
         $user = User::findOrFail($id);
         $user->name = $request->name;
         $user->email = $request->email;
@@ -87,10 +83,9 @@ class UserController extends Controller
     }
 
     public function destroy(UserRequest $request){
-
-            if (Gate::denies('UserController.destroy')){
-               abort(403);
-           }
+        if (Gate::denies('UserController.destroy')){
+           abort(403);
+        }
         $i = 0;
         if (is_string($request->ids)) {
             $user_ids = explode(' ', $request->ids);

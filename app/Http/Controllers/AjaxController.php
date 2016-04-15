@@ -11,6 +11,7 @@ use App\Role_User;
 use App\Permission_Role;
 use Request;
 use Input;
+
 class AjaxController extends Controller
 {
     public function listArticle(){
@@ -34,15 +35,12 @@ class AjaxController extends Controller
             Permission_Role::where('role_id',$role_id)->delete();
 
             for($i = 1 ;$i < sizeof($id);$i++){
-              
                    $permission_role = new Permission_Role;
                    $permission_role->role_id = $role_id;
                    $permission_role->permission_id = $id[$i];
                    $permission_role->save();
-                
             } 
-             return 'oke';    
-         }
-        
+            return 'oke';    
+        } 
     }
 }
