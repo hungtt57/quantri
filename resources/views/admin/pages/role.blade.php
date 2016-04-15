@@ -208,7 +208,7 @@ Quản lý phân quyền
   <button class="btn btn-primary open-add-role-modal">Thêm role mới</button>
   @endcan
   @can('RoleController.synchronous')
-  <a href="{{asset('synchronous')}}"><button class="btn btn-primary ">Đồng bộ quyền</button></a>
+  <a href="{{asset('synchronous')}}" onclick='return confirm("Bạn có chắc chắn thực hiện ??")'><button class="btn btn-primary ">Đồng bộ quyền</button></a>
   @endcan
 </div>
 @if (Session::has('messages'))
@@ -456,7 +456,7 @@ Quản lý phân quyền
               // alert('Cập nhật quyền thành công cho role : ' + roleName);
                 // $('#roleAlert').append('<div class="text-center alert alert-success"><button id="closeUserAlert" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><h4>Cập nhật quyền thành công cho role : '+ roleName +'</h4></div>');
                 toastr.success('Cập nhật quyền thành công cho role ' + roleName);
-                location.reload();
+            
               }
             },
             error: function (data) {
