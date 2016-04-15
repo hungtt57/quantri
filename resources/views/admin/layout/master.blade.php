@@ -49,7 +49,7 @@
                 @include('admin.includes.header')
                 @include('admin.includes.sidebar')
             </nav>
-            <div id="page-wrapper">
+            <div id="page-wrapper" style="height: 100%;">
                @yield('content')
            </div>
            
