@@ -11,6 +11,7 @@ use App\Permission_Role;
 use App\Permission;
 use Route;
 use Session;
+
 class RoleController extends Controller
 {
 	  public function index(){
@@ -26,59 +27,57 @@ class RoleController extends Controller
         $role = Role::create($request->all());
         return Response::json(['flash_message' => 'Đã thêm role!', 'message_level' => 'success', 'message_icon' => 'check']);
     }
+
     public function synchronous(){
-      
       $update = Permission::updateAll(); // update lai active permission về 0
-         $routes= Route::getRoutes();
-           foreach ($routes as $value) {
-      
-               $array = array();
-                $array = explode('.',$value->getName());
-                $permissionName = $value->getName();
-              $controller = $array[0];
-              $method = $array[1];
+      $routes= Route::getRoutes();
+      foreach ($routes as $value) {
+          $array = array();
+          $array = explode('.',$value->getName());
+          $permissionName = $value->getName();
+          $controller = $array[0];
+          $method = $array[1];
 
-              $permission= Permission::where('name','=',$permissionName)->first();
-                if($permissionName == 'HomeController.dashboard' || $controller=='AuthController' || $controller == 'AjaxController'){
-                    continue;
-                } //ko tao permission vs dashboard va auth
-
-              if($permission){ //da co permission tương ứng controller
-                $permission->label= trans('messages.'.$method);
-                $permission->active='1';
-                $permission->save(); //update lai gia tri active thanh 1
+          $permission= Permission::where('name','=',$permissionName)->first();
+            if($permissionName == 'HomeController.dashboard' || $controller=='AuthController' || $controller == 'AjaxController'){
                 continue;
-              }else{ // chua co permission
-                    $permissionParent= Permission::where('name','=',$controller)->first();
-                    if($permissionParent){ // đã có controller cha
-                       $newPermission = new Permission;
-                       $newPermission->parent_id = $permissionParent->id;
-                       $newPermission->name=$permissionName;
-                       $newPermission->label= trans('messages.'.$method);
-                       $newPermission->active='1';
-                       $newPermission->save();
-                     
-                    }else{ // chưa có controller cha;
-                        $permissionParent = new Permission;
-                        $permissionParent->name = $controller;
-                        $permissionParent->parent_id = '0';
-                        $permissionParent->active = '1';
-                        $permissionParent->label= trans('messages.'.$controller);
-                        $permissionParent->save();
+            } //ko tao permission vs dashboard va auth
 
-                        $newPermission = new Permission;
-                        $newPermission->parent_id = $permissionParent->id;
-                        $newPermission->name = $permissionName;
-                        $newPermission->active='1';
-                        $newPermission->label= trans('messages.'.$method);
-                        $newPermission->save();
-                    }
-              }
-              
+          if($permission){ 
+            //Da co permission tương ứng controller
+            $permission->label= trans('messages.'.$method);
+            $permission->active='1';
+            $permission->save(); //update lai gia tri active thanh 1
+            continue;
+          }else{ 
+                // Chua co permission
+                $permissionParent= Permission::where('name','=',$controller)->first();
+                if($permissionParent){ // đã có controller cha
+                   $newPermission = new Permission;
+                   $newPermission->parent_id = $permissionParent->id;
+                   $newPermission->name=$permissionName;
+                   $newPermission->label= trans('messages.'.$method);
+                   $newPermission->active='1';
+                   $newPermission->save();
+                 
+                }else{ // chưa có controller cha;
+                    $permissionParent = new Permission;
+                    $permissionParent->name = $controller;
+                    $permissionParent->parent_id = '0';
+                    $permissionParent->active = '1';
+                    $permissionParent->label= trans('messages.'.$controller);
+                    $permissionParent->save();
 
-            }
-          Permission::where('active', 0)->delete();
-         
-          return redirect('role')->with('messages', 'Đồng bộ thành công!!');
+                    $newPermission = new Permission;
+                    $newPermission->parent_id = $permissionParent->id;
+                    $newPermission->name = $permissionName;
+                    $newPermission->active='1';
+                    $newPermission->label= trans('messages.'.$method);
+                    $newPermission->save();
+                }
+          }
+        }
+      Permission::where('active', 0)->delete();
+      return redirect('role')->with('messages', 'Đồng bộ thành công!!');
     }
 }

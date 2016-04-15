@@ -40,10 +40,10 @@
         </li>
         @endcan
         <li>
-            <a href="{{asset('/')}}"><i class="fa fa-dashboard fa-fw"></i> Menu</a>
+            <a href="#"><i class="fa fa-dashboard fa-fw"></i> Menu</a>
         </li>
     </ul>
 </div>
 <!-- /.sidebar-collapse -->
 </div>
-            <!-- /.navbar-static-side -->
+<!-- /.navbar-static-side -->

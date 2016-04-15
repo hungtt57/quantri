@@ -8,6 +8,7 @@ use DB;
 class Permission_Role extends Model
 {
     public $timestamps = false;
+
     protected $table = 'permission_role';
 
     protected $fillable = array('permission_id', 'role_id');
@@ -27,6 +28,4 @@ class Permission_Role extends Model
                 ->get();
         return $roles;
     }
-    
-
 }
