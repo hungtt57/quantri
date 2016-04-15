@@ -192,14 +192,9 @@ Quản lý phân quyền
 </style>
 <!-- custom scrollbar CSS -->
 <link rel="stylesheet" href="http://malihu.github.io/custom-scrollbar/jquery.mCustomScrollbar.min.css">
-
-
 @endsection
 
 @section('content')
-
-
-
 <div class="row" style="margin-bottom: 100px">
   <div class="col-lg-12">
     <div class="col-lg-6 col-lg-offset-3" id="roleAlert">
@@ -218,10 +213,8 @@ Quản lý phân quyền
   @if (Session::has('message1'))
   <div class="alert alert-info">{{ Session::get('message1') }}</div>
   @endif
-
 </div>
   
-
 <!-- Add role modal -->
 <div class="modal fade" id="roleAddModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog" role="document">
@@ -443,6 +436,7 @@ Quản lý phân quyền
     <!-- button update permission -->
     <script type="text/javascript">
       $('.updater-permission').click(function(){
+        var baseUrl = $('meta[name="base_url"]').attr('content');
         var role = $(this).val();
         var string = role;
         $('#'+role+' input.check_permission:checkbox:checked').each(function () {
@@ -453,7 +447,7 @@ Quản lý phân quyền
         console.log(string);
         $.ajax({
           type: 'get',
-          url: '/updatePermission',
+          url: baseUrl+'/updatePermission',
           data: { 'data': string },
           dataType: 'text',
           success: function (data) {

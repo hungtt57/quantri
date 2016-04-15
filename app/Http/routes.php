@@ -1,6 +1,6 @@
 <?php
     
-Route::group(['middleware' => ['web']], function () {
+//Route::group(['middleware' => ['web']], function () {
 
 	Route::get('/', ['as' => 'HomeController.dashboard', 'uses' => 'HomeController@index']);
 
@@ -38,4 +38,4 @@ Route::group(['middleware' => ['web']], function () {
 	    Route::get('updatePermission', ['as' => 'AjaxController.update.permission', 'uses' => 'AjaxController@updatePermission']);
 	});
 
-});
+//});

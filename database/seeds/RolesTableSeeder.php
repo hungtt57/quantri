@@ -22,8 +22,6 @@ class RolesTableSeeder extends Seeder
             'name' => 'Default'
         ]);
        
-
-        
         $permission = new Permission;
         $permission->name = 'RoleController';
           $permission->label= 'Quản lý quyền';
@@ -51,7 +49,7 @@ class RolesTableSeeder extends Seeder
         $user_role->user_id = User::where('name','=','Admin')->first()->id;
         $user_role->save();
 
-           $permission_role = new Permission_Role;
+        $permission_role = new Permission_Role;
         $permission_role->role_id = Role::where('name','=','Admin')->first()->id;
         $permission_role->permission_id = Permission::where('name','=','RoleController.synchronous')->first()->id;
         $permission_role->save();

@@ -59,7 +59,9 @@ Quản lý người dùng
   <table class="table table-striped table-bordered table-hover" id="userList">
       <thead>
         <tr>
+          @can('UserController.destroy')
           <th></th>
+          @endcan
           <th></th>
           <th>Tên</th>
           <th>Địa chỉ email</th>
@@ -205,6 +207,7 @@ Quản lý người dùng
         var userList = $('#userList').DataTable({
             ajax: baseUrl+"/listUser",
             columns: [
+                @can('UserController.destroy')
                 {
                     "visible": true, 
                     "searchable": false, 
@@ -212,6 +215,7 @@ Quản lý người dùng
                     "className": "select-checkbox center",
                     "defaultContent": " "
                 },
+                @endcan
                 { 
                     "visible": false, 
                     "searchable": false, 
@@ -289,6 +293,7 @@ Quản lý người dùng
                 }
             },
             buttons: [
+                @can('UserController.store')
                 {
                     text: 'Thêm người dùng',
                     titleAttr: 'Thêm người dùng',
@@ -310,6 +315,7 @@ Quản lý người dùng
                         $('#userCreateEditModal').modal('show');
                     }
                 },
+                @endcan
                 {
                     extend: 'excel',
                     text: 'Xuất tệp Excel',
@@ -364,6 +370,7 @@ Quản lý người dùng
                         userList.ajax.reload(null, false);
                     }  
                 },
+                @can('UserController.destroy')
                 {
                     text: 'Chọn tất cả',
                     titleAttr: 'Chọn tất cả',
@@ -385,7 +392,8 @@ Quản lý người dùng
                     action: function (e) {
                         userList.rows().deselect();
                     },
-                    enabled: false
+                    enabled: false,
+                    name: 'deselectAll'
                 },
                 {
                     text: 'Xóa bản ghi đã chọn',
@@ -398,8 +406,10 @@ Quản lý người dùng
                         });
                         deleteUser(ids);
                     },
-                    enabled: false
+                    enabled: false,
+                    name: 'destroyRecords'
                 }
+                @endcan
             ],
             colReorder: {
                 //fixedColumnsLeft: 1,
@@ -411,11 +421,11 @@ Quản lý người dùng
         function en_dis_button() {
             var selectedRows = userList.rows({selected: true}).count();
             if (selectedRows > 0) {
-                userList.button(10).enable();
-                userList.button(11).enable();
+                userList.button('deselectAll:name').enable();
+                userList.button('destroyRecords:name').enable();
             } else {
-                userList.button(10).disable();
-                userList.button(11).disable();
+                userList.button('deselectAll:name').disable();
+                userList.button('destroyRecords:name').disable();
             }
         }
 

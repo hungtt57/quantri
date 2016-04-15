@@ -7,14 +7,14 @@ use App\Http\Requests;
 use App\Article;
 use App\Http\Requests\ArticleRequest;
 use Response;
+use Gate;
 
 class ArticleController extends Controller
 {   
     public function index(){
-
-            if (Gate::denies('ArticleController.index')){
-               abort(403);
-           }
+        if (Gate::denies('ArticleController.index')){
+             abort(403);
+        }
         $articles = Article::orderBy('id', 'DESC')->get();
         return view('admin.pages.article', array('articles' => $articles, 'menuActive' => 'article'));
     }

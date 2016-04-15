@@ -29,7 +29,9 @@ Quản lý bài viết
   <table class="table table-striped table-bordered table-hover" id="articleList">
       <thead>
         <tr>
+          @can('ArticleController.destroy')
           <th></th>
+          @endcan
           <th></th>
           <th>Tiêu đề</th>
           <th>Thao tác</th>
@@ -142,24 +144,39 @@ Quản lý bài viết
         var articleList = $('#articleList').DataTable({
             ajax: baseUrl+"/listArticle",
             columns: [
+                @can('ArticleController.destroy')
                 {
+                    "visible": true, 
+                    "searchable": false, 
+                    "orderable": false,
                     "className": "select-checkbox center",
                     "defaultContent": " "
                 },
-                { "data": "id" },
-                { "data": "title" },
-                { "data": null }
+                @endcan
+                { 
+                    "visible": false, 
+                    "searchable": false, 
+                    "orderable": false,
+                    "data": "id" 
+                },
+                { 
+                    "visible": true, 
+                    "searchable": true, 
+                    "orderable": true,
+                    "data": "title" 
+                },
+                { 
+                    "defaultContent": '@can('ArticleController.show')<button class="btn btn-success open-view-article-modal"><span class="glyphicon glyphicon-eye-open"></span></button>@endcan @can('ArticleController.edit')<button class="btn btn-warning open-edit-article-modal"><span class="glyphicon glyphicon-pencil"></span></button>@endcan @can('ArticleController.destroy') <button class="btn btn-danger open-delete-article-modal"><span class="glyphicon glyphicon-trash"></span></button> @endcan', 
+                    "visible": true, 
+                    "searchable": false, 
+                    "orderable": false,
+                    "data": null
+                }
             ],
             dom: 'Bfrtip',
             lengthMenu: [
                 [10, 20, 50, -1],
                 [ 'Mặc định', 'Hiện 20 bản ghi', 'Hiện 50 bản ghi', 'Hiện tất cả' ]
-            ],
-            columnDefs: [
-            { "targets": 0, "visible": true, "searchable": false, "orderable": false },
-            { "targets": 1, "visible": false, "searchable": false, "orderable": false }, 
-            { "targets": 2, "visible": true, "searchable": true, "orderable": true },
-            { "targets": 3, "defaultContent": '@can('ArticleController.show')<button class="btn btn-success open-view-article-modal"><span class="glyphicon glyphicon-eye-open"></span></button>@endcan @can('ArticleController.edit')<button class="btn btn-warning open-edit-article-modal"><span class="glyphicon glyphicon-pencil"></span></button>@endcan @can('ArticleController.destroy') <button class="btn btn-danger open-delete-article-modal"><span class="glyphicon glyphicon-trash"></span></button> @endcan', "visible": true, "searchable": false, "orderable": false } 
             ],
             select: {
                 //style:    'os',
@@ -192,6 +209,7 @@ Quản lý bài viết
                 }
             },
             buttons: [
+                @can('ArticleController.store')
                 {
                     text: 'Thêm bài viết',
                     titleAttr: 'Thêm bài viết',
@@ -211,6 +229,7 @@ Quản lý bài viết
                         $('#articleCreateEditModal').modal('show');
                     }
                 },
+                @endcan
                 {
                     extend: 'excel',
                     text: 'Xuất tệp Excel',
@@ -265,6 +284,7 @@ Quản lý bài viết
                         articleList.ajax.reload(null, false);
                     }  
                 },
+                @can('ArticleController.destroy')
                 {
                     text: 'Chọn tất cả',
                     titleAttr: 'Chọn tất cả',
@@ -286,7 +306,8 @@ Quản lý bài viết
                     action: function (e) {
                         articleList.rows().deselect();
                     },
-                    enabled: false
+                    enabled: false,
+                    name: 'deselectAll'
                 },
                 {
                     text: 'Xóa (các) bản ghi đã chọn',
@@ -299,8 +320,10 @@ Quản lý bài viết
                         });
                         deleteArticle(ids);
                     },
-                    enabled: false
+                    enabled: false,
+                    name: 'destroyRecords'
                 }
+                @endcan
             ],
             // colReorder: {
             //     fixedColumnsLeft: 1,
@@ -312,11 +335,11 @@ Quản lý bài viết
         function en_dis_button() {
             var selectedRows = articleList.rows({selected: true}).count();
             if (selectedRows > 0) {
-                articleList.button(8).enable();
-                articleList.button(9).enable();
+                articleList.button('deselectAll:name').enable();
+                articleList.button('destroyRecords:name').enable();
             } else {
-                articleList.button(8).disable();
-                articleList.button(9).disable();
+                articleList.button('deselectAll:name').disable();
+                articleList.button('destroyRecords:name').disable();
             }
         }
 
@@ -349,7 +372,7 @@ Quản lý bài viết
             var row = $(this).closest("tr");
             var article = articleList.row(row).data();
             var article_id = article.id;
-            $.get(articleUrl + '/' + article_id, function (data) {
+            $.get(articleUrl + '/show/' + article_id, function (data) {
                 $('#article_title').html(data.title);
                 $('#article_content').html(data.content);
                 $('#articleViewModal').modal('show');
