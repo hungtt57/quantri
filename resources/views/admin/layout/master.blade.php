@@ -37,37 +37,37 @@
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
- @yield('css')
-</head>
+        <![endif]-->
+        @yield('css')
+    </head>
 
-<body>
+    <body>
 
-    <div id="wrapper">
-        <!-- Navigation -->
-        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-        @include('admin.includes.header')
-        @include('admin.includes.sidebar')
-        </nav>
-        <div id="page-wrapper">
-         @yield('content')
-        </div>
-       
-    </div>
-    <!-- /#wrapper -->
+        <div id="wrapper">
+            <!-- Navigation -->
+            <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+                @include('admin.includes.header')
+                @include('admin.includes.sidebar')
+            </nav>
+            <div id="page-wrapper">
+               @yield('content')
+           </div>
+           
+       </div>
+       <!-- /#wrapper -->
 
-    <!-- jQuery -->
-    <script src="{{asset('public/admin/bower_components/jquery/dist/jquery.min.js')}}"></script>
+       <!-- jQuery -->
+       <script src="{{asset('public/admin/bower_components/jquery/dist/jquery.min.js')}}"></script>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="{{asset('public/admin/bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
+       <!-- Bootstrap Core JavaScript -->
+       <script src="{{asset('public/admin/bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
 
-    <!-- Metis Menu Plugin JavaScript -->
-    <script src="{{asset('public/admin/bower_components/metisMenu/dist/metisMenu.min.js')}}"></script>
+       <!-- Metis Menu Plugin JavaScript -->
+       <script src="{{asset('public/admin/bower_components/metisMenu/dist/metisMenu.min.js')}}"></script>
 
-    <!-- Custom Theme JavaScript -->
-    <script src="{{asset('public/admin/dist/js/sb-admin-2.js')}}"></script>
-     @yield('js')
-</body>
+       <!-- Custom Theme JavaScript -->
+       <script src="{{asset('public/admin/dist/js/sb-admin-2.js')}}"></script>
+       @yield('js')
+   </body>
 
-</html>
+   </html>

@@ -5,7 +5,7 @@ Quản lý phân quyền
 @stop
 
 @section('css')
-    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+<link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
 <style type="text/css">
   /*  bhoechie tab */
   div.bhoechie-tab-container{
@@ -211,10 +211,10 @@ Quản lý phân quyền
   <a href="{{asset('synchronous')}}"><button class="btn btn-primary ">Đồng bộ quyền</button></a>
   @endcan
 </div>
-  @if (Session::has('messages'))
-  <div class="alert alert-info" style="margin-top: 10px;">{{ Session::get('messages') }}</div>
-  @endif
-  
+@if (Session::has('messages'))
+<div class="alert alert-info" style="margin-top: 10px;">{{ Session::get('messages') }}</div>
+@endif
+
 <!-- Add role modal -->
 <div class="modal fade" id="roleAddModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog" role="document">
@@ -418,7 +418,7 @@ Quản lý phân quyền
         });
       })(jQuery);
     </script>
-     <script>
+    <script>
       (function($){
         $(window).load(function(){
           /* initialize scrollbar */
@@ -456,22 +456,22 @@ Quản lý phân quyền
               // alert('Cập nhật quyền thành công cho role : ' + roleName);
                 // $('#roleAlert').append('<div class="text-center alert alert-success"><button id="closeUserAlert" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><h4>Cập nhật quyền thành công cho role : '+ roleName +'</h4></div>');
                 toastr.success('Cập nhật quyền thành công cho role : ' + roleName);
-           
-            }
-          },
-          error: function (data) {
+                
+              }
+            },
+            error: function (data) {
                 // var errors = data.responseJSON;
                 // if (errors.name){
                 //     $('#errorRoleName').append('<div class="alert alert-warning alert-dismissable"><button id="closeErrorRoleName" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+errors.name+'</div>');
                 // }
-                   toastr.success('Đã xảy ra lỗi,vui lòng thử lại', 'Cập nhật quyền!!');
+                toastr.success('Đã xảy ra lỗi,vui lòng thử lại', 'Cập nhật quyền!!');
               }
             });
 
        }); //end button update permission
      </script>
 
- <script type="text/javascript">
-    $("div.alert").delay(3000).slideUp();
-  </script>
-     @endsection
+     <script type="text/javascript">
+      $("div.alert").delay(3000).slideUp();
+    </script>
+    @endsection
