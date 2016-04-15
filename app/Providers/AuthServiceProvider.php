@@ -40,7 +40,7 @@ class AuthServiceProvider extends ServiceProvider
             return Permission::with('roles')->get();
         } catch (\Exception $e) {
             return [];
-        }
+        } 
      
     }
 }
