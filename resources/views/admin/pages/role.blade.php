@@ -210,10 +210,10 @@ Quản lý phân quyền
   @can('RoleController.synchronous')
   <a href="{{asset('synchronous')}}"><button class="btn btn-primary ">Đồng bộ quyền</button></a>
   @endcan
-  @if (Session::has('message1'))
-  <div class="alert alert-info">{{ Session::get('message1') }}</div>
-  @endif
 </div>
+  @if (Session::has('messages'))
+  <div class="alert alert-info" style="margin-top: 10px;">{{ Session::get('messages') }}</div>
+  @endif
   
 <!-- Add role modal -->
 <div class="modal fade" id="roleAddModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true" data-backdrop="static" data-keyboard="false">
@@ -471,5 +471,7 @@ Quản lý phân quyền
        }); //end button update permission
      </script>
 
-
+ <script type="text/javascript">
+    $("div.alert").delay(3000).slideUp();
+  </script>
      @endsection
