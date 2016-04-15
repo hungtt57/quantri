@@ -8,7 +8,7 @@ use DB;
 class Role_User extends Model
 {
     protected $table = 'role_user';
-
+    public $timestamps = false;
     protected $fillable = array('role_id', 'user_id');
 
     public static function rolesOfUser($id) {
