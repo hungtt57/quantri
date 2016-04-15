@@ -9,6 +9,7 @@ Route::get('logout', ['as' => 'AuthController.logout', 'uses' => 'Auth\AuthContr
 Route::group(['middleware' => 'auth'], function(){
 	//Role management
 	Route::get('role', ['as' => 'RoleController.index', 'uses' => 'RoleController@index']);
+	Route::get('role/destroy/{id}', ['as' => 'RoleController.destroy', 'uses' => 'RoleController@destroy']);
 	Route::post('role/add', ['as' => 'RoleController.store', 'uses' => 'RoleController@store']);
 	Route::get('synchronous', ['as' => 'RoleController.synchronous', 'uses' => 'RoleController@synchronous']);
 	

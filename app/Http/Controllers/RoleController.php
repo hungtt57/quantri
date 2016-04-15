@@ -80,4 +80,11 @@ class RoleController extends Controller
       Permission::where('active', 0)->delete();
       return redirect('role')->with('messages', 'Đồng bộ thành công!!');
     }
+
+    public function destroy($id){
+      $role=Role::find($id);
+      $name = $role->name;
+      $role->delete();
+      return redirect('role')->with('messages', 'Xóa quyền '.$name.' thành công!!');
+    }
 }
