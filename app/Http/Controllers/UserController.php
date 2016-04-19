@@ -111,4 +111,14 @@ class UserController extends Controller
             return Response::json(['flash_message' => 'Bạn không thể xóa!', 'message_level' => 'danger', 'message_icon' => 'ban']);
         }
     }
+
+    public function showProfile(){
+
+        return view('admin.pages.profile', array('menuActive' => 'Profile'));
+    }
+
+    public function updateProfile(){
+        
+        
+    }
 }

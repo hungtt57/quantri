@@ -28,7 +28,7 @@ class UserRequest extends Request
             return [
                 'name' => 'required',
                 'email' => 'required|email|unique:users,email',
-                'password' => 'required',
+                'password' => 'required|confirmed',
                 'role' => 'required'
             ];
         }
@@ -52,6 +52,7 @@ class UserRequest extends Request
             'email.email' => 'Email này không đúng định dạng.',
             'email.required' => 'Vui lòng điền email người dùng.',
             'password.required' => 'Vui lòng điền mật khẩu người dùng.',
+            'password.confirmed' => 'Mật khẩu xác nhận không khớp.',
             'role.required' => 'Vui lòng chọn role cho người dùng.'
         ];
     }

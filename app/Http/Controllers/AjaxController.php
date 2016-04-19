@@ -9,6 +9,7 @@ use Response;
 use App\User;
 use App\Role_User;
 use App\Permission_Role;
+use Auth;
 use Request;
 use Input;
 
@@ -20,7 +21,8 @@ class AjaxController extends Controller
     }
 
     public function listUser(){
-        $users = User::orderBy('id', 'DESC')->get();
+        //$users = User::orderBy('id', 'DESC')->get();
+        $users = User::where('id', '!=', Auth::id())->orderBy('id', 'DESC')->get();
         foreach ($users as $user) {
             $user->roles = Role_User::rolesOfUser($user->id);
         }

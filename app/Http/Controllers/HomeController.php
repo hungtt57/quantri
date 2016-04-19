@@ -16,4 +16,9 @@ class HomeController extends Controller
     {
         return view('admin.pages.dashboard');
     }
+
+    public function showSettingGeneral(){
+
+        return view('admin.pages.setting-general', array('menuActive' => 'Setting General'));
+    }
 }

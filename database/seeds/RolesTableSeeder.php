@@ -15,29 +15,30 @@ class RolesTableSeeder extends Seeder
      */
     public function run()
     {
-         DB::table('roles')->insert([
-            'name' => 'Admin'
-        ]);
         DB::table('roles')->insert([
             'name' => 'Default'
+        ]);
+
+        DB::table('roles')->insert([
+            'name' => 'Admin'
         ]);
        
         $permission = new Permission;
         $permission->name = 'RoleController';
-          $permission->label= 'Quản lý quyền';
+        $permission->label= 'Quản lý quyền';
         $permission->save();
 
         $new = new Permission;
         $new->name = 'RoleController.index';
         $new->label = 'Danh sách';
-         $new->parent_id = $permission->id;
-         $new->save();
+        $new->parent_id = $permission->id;
+        $new->save();
 
-          $new1 = new Permission;
+        $new1 = new Permission;
         $new1->name = 'RoleController.synchronous';
         $new1->label = 'Đồng bộ quyền';
-         $new1->parent_id = $permission->id;
-         $new1->save();
+        $new1->parent_id = $permission->id;
+        $new1->save();
 
         $permission_role = new Permission_Role;
         $permission_role->role_id = Role::where('name','=','Admin')->first()->id;
@@ -53,6 +54,5 @@ class RolesTableSeeder extends Seeder
         $permission_role->role_id = Role::where('name','=','Admin')->first()->id;
         $permission_role->permission_id = Permission::where('name','=','RoleController.synchronous')->first()->id;
         $permission_role->save();
-
     }
 }

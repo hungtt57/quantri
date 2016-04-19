@@ -161,6 +161,10 @@ Quản lý người dùng
             </div>
           </div>
           <div class="form-group">
+            <label for="password_confirmation">Xác nhận mật khẩu</label>:
+            <input type="password" value="" name="password_confirmation" class="form-control" placeholder="" id="password_confirmation">
+          </div>
+          <div class="form-group">
             <label for="">Role</label>:
             <div class="checkbox">
               <label><input type="checkbox" id="{{ $default_role->name }}" value="{{ $default_role->id }}" disabled checked>{{ $default_role->name }}</label>
@@ -312,6 +316,7 @@ Quản lý người dùng
                         $('#userCreateEditModalTitle').text("Thêm người dùng");
                         $('#btn-reset-user').text("Xóa trắng");
                         $('#btn-save-user').text("Thêm");
+                        $('#email').removeAttr('disabled');
                         $('#btn-reset-user').click(function(){
                             $('#userCreateEditModal').find('form')[0].reset();
                             $('#closeErrorUserName').click();
@@ -498,6 +503,7 @@ Quản lý người dùng
                 $('#user_id').val(data.id);
                 $('#name').val(data.name);
                 $('#email').val(data.email);
+                $('#email').prop('disabled', true);
 
                 var roles = data.roles;
                 $.each( roles, function( key, role ) {
@@ -513,6 +519,10 @@ Quản lý người dùng
                     $('#name').val(data.name);
                     $('#email').val(data.email);
                     $('#password').val('');
+                    $('#password_confirmation').val('');
+                    $.each( roles, function( key, role ) {
+                        $('#'+role.name).prop('checked', true);
+                    });
                     $('#closeErrorUserName').click();
                     $('#closeErrorUserEmail').click();
                     $('#closeErrorUserPassword').click();
