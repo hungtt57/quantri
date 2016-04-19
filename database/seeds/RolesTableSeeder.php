@@ -47,7 +47,7 @@ class RolesTableSeeder extends Seeder
 
         $user_role = new Role_User;
         $user_role->role_id = Role::where('name','=','Admin')->first()->id;
-        $user_role->user_id = User::where('name','=','Admin')->first()->id;
+        $user_role->user_id = User::first()->id;
         $user_role->save();
 
         $permission_role = new Permission_Role;
