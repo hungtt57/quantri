@@ -12,7 +12,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::get('role/destroy/{id}', ['as' => 'RoleController.destroy', 'uses' => 'RoleController@destroy']);
 	Route::post('role/add', ['as' => 'RoleController.store', 'uses' => 'RoleController@store']);
 	Route::get('synchronous', ['as' => 'RoleController.synchronous', 'uses' => 'RoleController@synchronous']);
-	
+	  Route::get('test', ['as' => 'TestController.test', 'uses' => 'TestController@test']);
 	//User management
     Route::get('user', ['as' => 'UserController.index', 'uses' => 'UserController@index']);
 	Route::get('user/edit/{id}', ['as' => 'UserController.edit', 'uses' => 'UserController@edit']);
