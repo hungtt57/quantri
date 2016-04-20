@@ -32,7 +32,8 @@ class UserController extends Controller
            abort(403);
         }
         $user = new User();
-        $user->name = $request->name;
+        $user->first_name = $request->first_name;
+        $user->last_name = $request->last_name;
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
         $user->save();
@@ -68,7 +69,8 @@ class UserController extends Controller
            abort(403);
         }
         $user = User::findOrFail($id);
-        $user->name = $request->name;
+        $user->first_name = $request->first_name;
+        $user->last_name = $request->last_name;
         $user->email = $request->email;
         if(isset($request->password)){
             $user->password = bcrypt($request->password);
