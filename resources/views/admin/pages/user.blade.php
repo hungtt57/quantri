@@ -149,7 +149,7 @@ Quản lý người dùng
             </div>
           </div>
           <div class="form-group">
-            <label for="name">Tên</label>:
+            <label for="last_name">Đệm và tên</label>:
             <input type="text" value="{{ old('last_name') }}" name="last_name" class="form-control" placeholder="" id="last_name">
             <div id="errorUserLastName">
             </div>
@@ -169,6 +169,8 @@ Quản lý người dùng
           <div class="form-group">
             <label for="password_confirmation">Xác nhận mật khẩu</label>:
             <input type="password" value="" name="password_confirmation" class="form-control" placeholder="" id="password_confirmation">
+            <div id="errorUserPasswordConfirmation">
+            </div>
           </div>
           <div class="form-group">
             <label for="">Role</label>:
@@ -332,6 +334,7 @@ Quản lý người dùng
                             $('#closeErrorUserLastName').click();
                             $('#closeErrorUserEmail').click();
                             $('#closeErrorUserPassword').click();
+                            $('#closeErrorUserPasswordConfirmation').click();
                             $('#closeErrorUserRole').click();
                         });
                         $('#userCreateEditModal').modal('show');
@@ -477,6 +480,7 @@ Quản lý người dùng
             $('#closeErrorUserFirstName').click();
             $('#closeErrorUserEmail').click();
             $('#closeErrorUserPassword').click();
+            $('#closeErrorUserPasswordConfirmation').click();
             $('#closeErrorUserRole').click();
         });
 
@@ -540,6 +544,7 @@ Quản lý người dùng
                     $('#closeErrorUserLastName').click();
                     $('#closeErrorUserEmail').click();
                     $('#closeErrorUserPassword').click();
+                    $('#closeErrorUserPasswordConfirmation').click();
                     $('#closeErrorUserRole').click();
                 });
                 $('#userCreateEditModal').modal('show');
@@ -552,6 +557,7 @@ Quản lý người dùng
             $('#closeErrorUserLastName').click();
             $('#closeErrorUserEmail').click();
             $('#closeErrorUserPassword').click();
+            $('#closeErrorUserPasswordConfirmation').click();
             $('#closeErrorUserRole').click();
 
             formmodified = 0;
@@ -574,6 +580,7 @@ Quản lý người dùng
 
             if($('#password').val()){
             	formData.password = $('#password').val();
+              formData.password_confirmation = $('#password_confirmation').val();
             }
 
             //Used to determine the http verb to use [add=POST], [update=PATCH]
@@ -602,16 +609,19 @@ Quản lý người dùng
             error: function (data) {
                 var errors = data.responseJSON;
                 if (errors.first_name){
-                    $('#errorUserName').append('<div class="alert alert-warning alert-dismissable"><button id="closeErrorUserFirstName" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+errors.first_name+'</div>');
+                    $('#errorUserFirstName').append('<div class="alert alert-warning alert-dismissable"><button id="closeErrorUserFirstName" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+errors.first_name+'</div>');
                 }
                 if (errors.last_name){
-                    $('#errorUserName').append('<div class="alert alert-warning alert-dismissable"><button id="closeErrorUserLastName" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+errors.last_name+'</div>');
+                    $('#errorUserLastName').append('<div class="alert alert-warning alert-dismissable"><button id="closeErrorUserLastName" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+errors.last_name+'</div>');
                 }
                 if (errors.email){
                     $('#errorUserEmail').append('<div class="alert alert-warning alert-dismissable"><button id="closeErrorUserEmail" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+errors.email+'</div>');
                 }
                 if (errors.password){
                     $('#errorUserPassword').append('<div class="alert alert-warning alert-dismissable"><button id="closeErrorUserPassword" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+errors.password+'</div>');
+                }
+                if (errors.password_confirmation){
+                    $('#errorUserPasswordConfirmation').append('<div class="alert alert-warning alert-dismissable"><button id="closeErrorUserPasswordConfirmation" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+errors.password_confirmation+'</div>');
                 }
                 if (errors.role){
                     $('#errorUserRole').append('<div class="alert alert-warning alert-dismissable"><button id="closeErrorUserRole" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+errors.role+'</div>');

@@ -37,5 +37,6 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('profile', ['as' => 'UserController.profile.show', 'uses' => 'UserController@showProfile']);
     Route::post('profile', ['as' => 'UserController.profile.update', 'uses' => 'UserController@updateProfile']);
 
-    Route::get('setting-general', ['as' => 'HomeController.setting.general', 'uses' => 'HomeController@showSettingGeneral']);
+    Route::get('setting-general', ['as' => 'HomeController.setting.general.show', 'uses' => 'HomeController@showSettingGeneral']);
+    Route::post('setting-general', ['as' => 'HomeController.setting.general.update', 'uses' => 'HomeController@updateSettingGeneral']);
 });

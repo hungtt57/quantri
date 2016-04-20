@@ -11,7 +11,18 @@ Cài đặt chung
     </div>
     <!-- /.col-lg-12 -->
 
-    <form class="form-horizontal" role="form">
+	<div class="col-lg-12">
+	    <div class="col-lg-offset-3 col-lg-6">
+	    @if (Session::has('flash_message'))
+	        <div id="flash_message" class="text-center alert alert-{!! Session::get('message_level') !!}"><i class="icon fa fa-{!! Session::get('message_icon') !!}"></i> 
+	        {!! Session::get('flash_message') !!}
+	        </div>
+	    @endif
+	    </div>
+    </div>
+
+    <form class="form-horizontal" role="form" enctype="multipart/form-data" method="POST" action="{{ route('HomeController.setting.general.update') }}">
+      {!! csrf_field() !!}
 	  <div class="form-group">
 	    <label class="control-label col-md-3" for="email">Địa chỉ email:</label>
 	    <div class="col-md-6">
@@ -29,7 +40,7 @@ Cài đặt chung
 	    <label class="control-label col-md-3" for="default_role">Vai trò khi mới đăng ký:</label>
 	    <div class="col-md-6">
 	      <select class="form-control" id="default_role" name="default_role">
-		    
+		    <?php role_select($roles, old('default_role')); ?>
 		  </select>
 	    </div>
 	  </div>
@@ -101,4 +112,10 @@ Cài đặt chung
 	</form>
 </div>
 <!-- /.row -->
+@endsection
+
+@section('js')
+<script>
+	$('#flash_message').delay(3000).slideUp();
+</script>
 @endsection

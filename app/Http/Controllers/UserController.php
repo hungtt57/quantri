@@ -20,9 +20,9 @@ class UserController extends Controller
         if (Gate::denies('UserController.index')){
            abort(403);
         }
-        $roles = Role::where('name', '<>', 'Default')->get();
-
-        $default_role = Role::where('name', '=', 'Default')->firstOrFail();
+        $default_role_name = config('setting.default_role');
+        $roles = Role::where('name', '<>', $default_role_name)->get();
+        $default_role = Role::where('name', '=', $default_role_name)->firstOrFail();
 
         return view('admin.pages.user', array('roles' => $roles, 'default_role' => $default_role, 'menuActive' => 'User'));
     }
