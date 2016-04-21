@@ -1,2 +1,6 @@
-Đã kết hợp code của tất cả. Bản hoàn thiện nhất tính đến giờ.
-Có: Module quản lý người dùng + Module quản lý bài viết + Module quản lý phân quyền.
+Tải code về
+Chạy composer update
+php artisan migrate để tạo db
+php artisan db:seed chạy db dùng thử.
+tài khảon :admin@gmail.com
+mật khẩu : admin
