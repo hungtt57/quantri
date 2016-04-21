@@ -98,7 +98,7 @@ Quản lý phân quyền
     height: 13px;
     vertical-align: top;
     text-align: center;
-    color: white;
+    color: red;
     font-size: 8px;
     line-height: 13px;
   }
@@ -160,10 +160,10 @@ Quản lý phân quyền
     transform: translatex(16px);
   }
 
-/*.acidjs-css3-treeview input[type="checkbox"][id]:checked ~ label[for]::before
+.acidjs-css3-treeview input[type="checkbox"][id]:checked ~ label[for]::before
 {
     content: "\25bc";
-  }*/
+  }
 
   .acidjs-css3-treeview input[type="checkbox"][id]:not(:checked) ~ ul
   {
@@ -264,24 +264,30 @@ Quản lý phân quyền
         <div class="acidjs-css3-treeview">
           <ul>
             <li>
-              <label><input type="checkbox" /><span></span></label><label for="node-0">Tất cả</label>
+               <input type="checkbox" id="node-0" checked="checked" /><label><input type="checkbox" /><span></span></label><label for="node-0">Tất cả</label>
               <ul>
+              <?php $temp1 = 0; 
+              $temp2 = 0?>
                @foreach($permissions as $permission)
+            
                @if ($permission_childs = DB::table('permissions')->where('parent_id','=',$permission->id)->get())
                <li>
                  <label><input type="checkbox" id = '{{$permission->name}}'/><span></span></label>
-                 <label for="node-0-0">{{$permission->label}}</label>
+                 <input type="checkbox" id="node-0-<?php echo $temp1;?>"  /><label for="node-0-<?php echo $temp1;?>">{{$permission->label}}</label>
+                    <?php $temp1++; ?>
                  <ul>
                    @foreach($permission_childs as $permission_child)
+                   
                    <li>
                     <?php 
+                     $temp2++;
                     $check=DB::table('permission_role')->where('role_id','=',$role->id)->where('permission_id','=',$permission_child->id)->first();
                     if($check){
                       $check = 'checked';
                     }
                     ?>
 
-                    <label><input type = "checkbox" class="check_permission" <?php echo $check; ?> value='{{$permission_child->id}}' id ='{{$permission_child->name}}'/><span></span></label>
+                     <label><input type = "checkbox" class="check_permission" <?php echo $check; ?> value='{{$permission_child->id}}' id ='{{$permission_child->name}}'/><span></span></label>
 
                     <label for="node-0-0-0">{{$permission_child->label}}</label>
                   </li>
