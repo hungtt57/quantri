@@ -98,7 +98,7 @@ Quản lý phân quyền
     height: 13px;
     vertical-align: top;
     text-align: center;
-    color: white;
+    color: red;
     font-size: 8px;
     line-height: 13px;
   }
@@ -160,10 +160,10 @@ Quản lý phân quyền
     transform: translatex(16px);
   }
 
-/*.acidjs-css3-treeview input[type="checkbox"][id]:checked ~ label[for]::before
+.acidjs-css3-treeview input[type="checkbox"][id]:checked ~ label[for]::before
 {
     content: "\25bc";
-  }*/
+  }
 
   .acidjs-css3-treeview input[type="checkbox"][id]:not(:checked) ~ ul
   {
@@ -258,32 +258,40 @@ Quản lý phân quyền
     </div>
   </div>
   <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 bhoechie-tab">
+  <?php $temp = 0;?>
     @foreach ($roles as $role)
     <div id='{{$role->id}}' class="bhoechie-tab-content">
       <div class="col-sm-8">
         <div class="acidjs-css3-treeview">
           <ul>
             <li>
-              <label><input type="checkbox" /><span class="all_cb"></span></label><label for="node-0">Tất cả</label>
+               <input type="checkbox" id="node-<?php echo $temp;?>" checked="checked" /><label><input type="checkbox" /><span class="all_cb"></span></label><label for="node-<?php echo $temp;?>">Tất cả</label>
               <ul>
+              <?php $temp++;
+              $temp1 = 0; 
+             ?>
                @foreach($permissions as $permission)
+            
                @if ($permission_childs = DB::table('permissions')->where('parent_id','=',$permission->id)->get())
-               <li >
-                 <label><input type="checkbox" id = '{{$permission->name}}'/><span class="role_cb"></span></label>
-                 <label for="node-0-0">{{$permission->label}}</label>
+               <li>
+                  <input type="checkbox" id="node-<?php echo $temp;?>-<?php echo $temp1;?>"  /><label><input type="checkbox" id = '{{$permission->name}}'/><span lass="role_cb"></span></label>
+                  <label for="node-<?php echo $temp;?>-<?php echo $temp1;?>">{{$permission->label}}</label>
+                    <?php $temp1++; ?>
                  <ul>
                    @foreach($permission_childs as $permission_child)
+                   
                    <li class="role_li">
                     <?php 
+                     
                     $check=DB::table('permission_role')->where('role_id','=',$role->id)->where('permission_id','=',$permission_child->id)->first();
                     if($check){
                       $check = 'checked';
                     }
                     ?>
 
-                    <label><input type = "checkbox" class="check_permission" <?php echo $check; ?> value='{{$permission_child->id}}' id ='{{$permission_child->name}}'/><span></span></label>
+                     <label><input type = "checkbox" class="check_permission" <?php echo $check; ?> value='{{$permission_child->id}}' id ='{{$permission_child->name}}'/><span></span></label>
 
-                    <label for="node-0-0-0" class="permission_name">{{$permission_child->label}}</label>
+                    <label for="node-0-0-0">{{$permission_child->label}}</label>
                   </li>
                   @endforeach
                 </ul>
@@ -297,19 +305,19 @@ Quản lý phân quyền
       </div>
     </div>
     <div class="col-sm-4"> 
-      <div class="sidebar-search">
+     <!--  <div class="sidebar-search">
         <div class="input-group custom-search-form">
-          <input type="text"  class="form-control search_role" role="{{$role->id}}" placeholder="Search...">
+          <input type="text" class="form-control" placeholder="Search...">
           <span class="input-group-btn">
             <button class="btn btn-default" type="button">
               <i class="fa fa-search"></i>
             </button>
           </span>
         </div>
-
-      </div>
+      
+      </div> -->
       <br>
-      <button value='{{$role->id}}' class="btn btn-primary updater-permission">Cập nhật quyền</button>
+      <button  value='{{$role->id}}' class="btn btn-primary updater-permission">Cập nhật quyền</button>
       <a href="{{asset('/role/destroy/'.$role->id)}}" onclick="return confirm('Bạn có chắn chắn xóa?')" style="margin-top: 10px;display: block;"><button  class="btn btn-primary updater-permission">Xóa quyền {{$role->name}}</button></a>
     </div>
   </div>
@@ -476,6 +484,7 @@ Quản lý phân quyền
      <script type="text/javascript">
       $("div.alert").delay(3000).slideUp();
     </script>
+
     <!-- search role -->
     <script type="text/javascript">
      $(".search_role").on("input", function() {
@@ -521,4 +530,4 @@ Quản lý phân quyền
     }
   </script>
   <!-- end search role -->
-  @endsection
+    @endsection
