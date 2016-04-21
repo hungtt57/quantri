@@ -1,10 +1,12 @@
 <?php
-Route::get('/', ['as' => 'HomeController.dashboard', 'uses' => 'HomeController@index']);
+// đặt tên route có as theo định dạng Controller.method
+// KO muốn add vào permission thêm Not vào đầu chuỗi as
+Route::get('/', ['as' => 'Not.HomeController.dashboard', 'uses' => 'HomeController@index']);
 
 //Disable register
-Route::get('login', ['as' => 'AuthController.show', 'uses' => 'Auth\AuthController@showLoginForm']);
-Route::post('login', ['as' => 'AuthController.login', 'uses' => 'Auth\AuthController@login']);
-Route::get('logout', ['as' => 'AuthController.logout', 'uses' => 'Auth\AuthController@logout']);
+Route::get('login', ['as' => 'Not.AuthController.show', 'uses' => 'Auth\AuthController@showLoginForm']);
+Route::post('login', ['as' => 'Not.AuthController.login', 'uses' => 'Auth\AuthController@login']);
+Route::get('logout', ['as' => 'Not.AuthController.logout', 'uses' => 'Auth\AuthController@logout']);
 
 Route::group(['middleware' => 'auth'], function(){
 	//Role management
@@ -21,6 +23,9 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::patch('user/{id}', ['as' => 'UserController.update', 'uses' => 'UserController@update']);
 	Route::delete('user/destroy', ['as' => 'UserController.destroy', 'uses' => 'UserController@destroy']);
 
+    Route::get('profile', ['as' => 'Not.UserController.profile.show', 'uses' => 'UserController@showProfile']);
+    Route::post('profile', ['as' => 'Not.UserController.profile.update', 'uses' => 'UserController@updateProfile']);
+    
 	//Article management
     Route::get('article', ['as' => 'ArticleController.index', 'uses' => 'ArticleController@index']);
 	Route::get('article/edit/{id}', ['as' => 'ArticleController.edit', 'uses' => 'ArticleController@edit']);
@@ -29,14 +34,14 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::patch('article/{id}', ['as' => 'ArticleController.update', 'uses' => 'ArticleController@update']);
 	Route::delete('article/destroy', ['as' => 'ArticleController.destroy', 'uses' => 'ArticleController@destroy']);
 
-	//Get list by Ajax
-    Route::get('listArticle', ['as' => 'AjaxController.article.list', 'uses' => 'AjaxController@listArticle']);
-    Route::get('listUser', ['as' => 'AjaxController.user.list', 'uses' => 'AjaxController@listUser']);
-    Route::get('updatePermission', ['as' => 'AjaxController.update.permission', 'uses' => 'AjaxController@updatePermission']);
 
-    Route::get('profile', ['as' => 'UserController.profile.show', 'uses' => 'UserController@showProfile']);
-    Route::post('profile', ['as' => 'UserController.profile.update', 'uses' => 'UserController@updateProfile']);
+    	// Setting 
+    Route::get('setting-general', ['as' => 'SettingController.showGeneral', 'uses' => 'SettingController@showGeneral']);
+    Route::post('setting-general', ['as' => 'SettingController.updateGeneral', 'uses' => 'SettingController@updateGeneral']);
 
-    Route::get('setting-general', ['as' => 'HomeController.setting.general.show', 'uses' => 'HomeController@showSettingGeneral']);
-    Route::post('setting-general', ['as' => 'HomeController.setting.general.update', 'uses' => 'HomeController@updateSettingGeneral']);
+    	//Get list by Ajax
+    Route::get('listArticle', ['as' => 'Not.AjaxController.article.list', 'uses' => 'AjaxController@listArticle']);
+    Route::get('listUser', ['as' => 'Not.AjaxController.user.list', 'uses' => 'AjaxController@listUser']);
+    Route::get('updatePermission', ['as' => 'Not.AjaxController.update.permission', 'uses' => 'AjaxController@updatePermission']);
+    	//end ajax
 });

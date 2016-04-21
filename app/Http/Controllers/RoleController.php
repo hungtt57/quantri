@@ -31,6 +31,7 @@ class RoleController extends Controller
     public function synchronous(){
       $update = Permission::updateAll(); // update lai active permission về 0
       $routes= Route::getRoutes();
+   
       foreach ($routes as $value) {
           $array = array();
           $array = explode('.',$value->getName());
@@ -39,7 +40,7 @@ class RoleController extends Controller
           $method = $array[1];
 
           $permission= Permission::where('name','=',$permissionName)->first();
-            if($permissionName == 'HomeController.dashboard' || $controller=='AuthController' || $controller == 'AjaxController'){
+            if($controller=='Not'){
                 continue;
             } //ko tao permission vs dashboard va auth
 

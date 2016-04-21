@@ -11,7 +11,9 @@ return [
     'synchronous' => 'Đồng bộ quyền',
     'ArticleController' => 'Quản lý bài viết',
     'RoleController' => 'Quản lý quyền',
-    ''
+    'SettingController' => 'Quản lý cài đặt',
+    'showGeneral' => 'Xem cài đặt cơ bản',
+    'updateGeneral' =>'Sửa cài đặt cơ bản'
     
 ];
 

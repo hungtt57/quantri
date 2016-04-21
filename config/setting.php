@@ -6,4 +6,5 @@
   'lang' => 'vi',
   'time_format' => 'g:i a',
   'timezone' => 'Asia/Ho_Chi_Minh',
+  'logo' => 'public/logo.jpg',
 ) ;
