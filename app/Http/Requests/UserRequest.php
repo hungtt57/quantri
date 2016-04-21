@@ -26,9 +26,10 @@ class UserRequest extends Request
         case 'POST':
         {
             return [
-                'name' => 'required',
+                'first_name' => 'required',
+                'last_name' => 'required',
                 'email' => 'required|email|unique:users,email',
-                'password' => 'required',
+                'password' => 'required|confirmed',
                 'role' => 'required'
             ];
         }
@@ -36,8 +37,10 @@ class UserRequest extends Request
         case 'PATCH':
         {
             return [
-                'name' => 'required',
-                'email' => 'required|email|unique:users,email, ' . $id
+                'first_name' => 'required',
+                'last_name' => 'required',
+                'email' => 'required|email|unique:users,email, ' . $id,
+                'password' => 'confirmed',
             ];
         }
         default:break;
@@ -47,11 +50,13 @@ class UserRequest extends Request
     public function messages()
     {
         return [
-            'name.required' => 'Vui lòng điền tên người dùng.',
+            'first_name.required' => 'Vui lòng điền họ.',
+            'last_name.required' => 'Vui lòng điền đệm và tên.',
             'email.unique' => 'Email này đã được sử dụng.',
             'email.email' => 'Email này không đúng định dạng.',
             'email.required' => 'Vui lòng điền email người dùng.',
             'password.required' => 'Vui lòng điền mật khẩu người dùng.',
+            'password.confirmed' => 'Mật khẩu xác nhận không khớp.',
             'role.required' => 'Vui lòng chọn role cho người dùng.'
         ];
     }

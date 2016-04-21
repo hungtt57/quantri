@@ -12,9 +12,11 @@ class ArticlesTableSeeder extends Seeder
     public function run()
     {
         $faker = Faker\Factory::create();
-		DB::table('articles')->insert([ //,
-	        'title' => $faker->sentence(mt_rand(3, 10)),
-		    'content' => join("\n\n", $faker->paragraphs(mt_rand(3, 6)))
-	    ]);
+        for($i = 0; $i < 20; $i++) {
+    		DB::table('articles')->insert([ //,
+    	        'title' => $faker->sentence(mt_rand(3, 10)),
+    		    'content' => join("\n\n", $faker->paragraphs(mt_rand(3, 6)))
+    	    ]);
+        }
     }
 }

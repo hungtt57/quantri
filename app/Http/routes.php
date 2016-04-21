@@ -33,4 +33,10 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('listArticle', ['as' => 'AjaxController.article.list', 'uses' => 'AjaxController@listArticle']);
     Route::get('listUser', ['as' => 'AjaxController.user.list', 'uses' => 'AjaxController@listUser']);
     Route::get('updatePermission', ['as' => 'AjaxController.update.permission', 'uses' => 'AjaxController@updatePermission']);
+
+    Route::get('profile', ['as' => 'UserController.profile.show', 'uses' => 'UserController@showProfile']);
+    Route::post('profile', ['as' => 'UserController.profile.update', 'uses' => 'UserController@updateProfile']);
+
+    Route::get('setting-general', ['as' => 'HomeController.setting.general.show', 'uses' => 'HomeController@showSettingGeneral']);
+    Route::post('setting-general', ['as' => 'HomeController.setting.general.update', 'uses' => 'HomeController@updateSettingGeneral']);
 });

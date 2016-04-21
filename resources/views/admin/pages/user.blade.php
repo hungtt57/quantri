@@ -63,7 +63,7 @@ Quản lý người dùng
           <th></th>
           @endcan
           <th></th>
-          <th>Tên</th>
+          <th>Họ tên</th>
           <th>Địa chỉ email</th>
           <th>Role</th>
           @if ( Gate::allows('UserController.show') | Gate::allows('UserController.edit') | Gate::allows('UserController.destroy') )
@@ -86,7 +86,7 @@ Quản lý người dùng
         <div class="modal-body">
           <div class="text-center">
              <div class='row'>
-                <div class="col-lg-4" align="right"><strong>Tên</strong>   :</div>
+                <div class="col-lg-4" align="right"><strong>Họ tên</strong>   :</div>
                 <div id="user_name" class="col-lg-8" align="left"></div>
             </div>
             <div class='row'>
@@ -143,9 +143,15 @@ Quản lý người dùng
       <form id="userCreateEditForm">
       <div class="modal-body">
           <div class="form-group">
-            <label for="name">Tên</label>:
-            <input type="text" value="{{ old('name') }}" name="name" class="form-control" placeholder="" id="name">
-            <div id="errorUserName">
+            <label for="first_name">Họ</label>:
+            <input type="text" value="{{ old('first_name') }}" name="first_name" class="form-control" placeholder="" id="first_name">
+            <div id="errorUserFirstName">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="last_name">Đệm và tên</label>:
+            <input type="text" value="{{ old('last_name') }}" name="last_name" class="form-control" placeholder="" id="last_name">
+            <div id="errorUserLastName">
             </div>
           </div>
           <div class="form-group">
@@ -158,6 +164,12 @@ Quản lý người dùng
             <label for="password">Mật khẩu</label>:
             <input type="password" value="" name="password" class="form-control" placeholder="" id="password">
             <div id="errorUserPassword">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="password_confirmation">Xác nhận mật khẩu</label>:
+            <input type="password" value="" name="password_confirmation" class="form-control" placeholder="" id="password_confirmation">
+            <div id="errorUserPasswordConfirmation">
             </div>
           </div>
           <div class="form-group">
@@ -228,7 +240,10 @@ Quản lý người dùng
                     "visible": true, 
                     "searchable": true, 
                     "orderable": true,
-                    "data": "name",
+                    "data": function (source, type, val) {
+                        var full_name = source.first_name + ' ' + source.last_name;
+                        return full_name;
+                    },
                     "name": "userName"
                 },
                 { 
@@ -312,11 +327,14 @@ Quản lý người dùng
                         $('#userCreateEditModalTitle').text("Thêm người dùng");
                         $('#btn-reset-user').text("Xóa trắng");
                         $('#btn-save-user').text("Thêm");
+                        $('#email').removeAttr('disabled');
                         $('#btn-reset-user').click(function(){
                             $('#userCreateEditModal').find('form')[0].reset();
-                            $('#closeErrorUserName').click();
+                            $('#closeErrorUserFirstName').click();
+                            $('#closeErrorUserLastName').click();
                             $('#closeErrorUserEmail').click();
                             $('#closeErrorUserPassword').click();
+                            $('#closeErrorUserPasswordConfirmation').click();
                             $('#closeErrorUserRole').click();
                         });
                         $('#userCreateEditModal').modal('show');
@@ -458,9 +476,11 @@ Quản lý người dùng
 
         $('#userCreateEditModal').on('hidden.bs.modal', function(){
             $(this).find('form')[0].reset();
-            $('#closeErrorUserName').click();
+            $('#closeErrorUserLastName').click();
+            $('#closeErrorUserFirstName').click();
             $('#closeErrorUserEmail').click();
             $('#closeErrorUserPassword').click();
+            $('#closeErrorUserPasswordConfirmation').click();
             $('#closeErrorUserRole').click();
         });
 
@@ -473,7 +493,7 @@ Quản lý người dùng
             var user = userList.row(row).data();
             var user_id = user.id;
             $.get(userUrl + '/show/' + user_id, function (data) {
-                $('#user_name').html(data.name);
+                $('#user_name').html(data.first_name + ' ' + data.last_name);
                 $('#user_email').html(data.email);
 
                 var role_str = '<ul>';
@@ -496,8 +516,10 @@ Quản lý người dùng
             var user_id = user.id;
             $.get(userUrl + '/edit/' + user_id, function (data) {
                 $('#user_id').val(data.id);
-                $('#name').val(data.name);
+                $('#first_name').val(data.first_name);
+                $('#last_name').val(data.last_name);
                 $('#email').val(data.email);
+                $('#email').prop('disabled', true);
 
                 var roles = data.roles;
                 $.each( roles, function( key, role ) {
@@ -510,12 +532,19 @@ Quản lý người dùng
                 $('#btn-reset-user').text("Hoàn tác");
                 $('#btn-save-user').text("Lưu");
                 $('#btn-reset-user').click(function(){
-                    $('#name').val(data.name);
+                    $('#first_name').val(data.first_name);
+                    $('#last_name').val(data.last_name);
                     $('#email').val(data.email);
                     $('#password').val('');
-                    $('#closeErrorUserName').click();
+                    $('#password_confirmation').val('');
+                    $.each( roles, function( key, role ) {
+                        $('#'+role.name).prop('checked', true);
+                    });
+                    $('#closeErrorUserFirstName').click();
+                    $('#closeErrorUserLastName').click();
                     $('#closeErrorUserEmail').click();
                     $('#closeErrorUserPassword').click();
+                    $('#closeErrorUserPasswordConfirmation').click();
                     $('#closeErrorUserRole').click();
                 });
                 $('#userCreateEditModal').modal('show');
@@ -524,9 +553,11 @@ Quản lý người dùng
 
         //Create new user/update existing user
         $("#btn-save-user").click(function (e) {
-            $('#closeErrorUserName').click();
+            $('#closeErrorUserFirstName').click();
+            $('#closeErrorUserLastName').click();
             $('#closeErrorUserEmail').click();
             $('#closeErrorUserPassword').click();
+            $('#closeErrorUserPasswordConfirmation').click();
             $('#closeErrorUserRole').click();
 
             formmodified = 0;
@@ -539,7 +570,8 @@ Quản lý người dùng
             e.preventDefault(); 
 
             var formData = {
-                name: $('#name').val(),
+                first_name: $('#first_name').val(),
+                last_name: $('#last_name').val(),
                 email: $('#email').val(),
                 role: $('input:checkbox:checked').map(function () {
                     return this.value;
@@ -548,6 +580,7 @@ Quản lý người dùng
 
             if($('#password').val()){
             	formData.password = $('#password').val();
+              formData.password_confirmation = $('#password_confirmation').val();
             }
 
             //Used to determine the http verb to use [add=POST], [update=PATCH]
@@ -575,14 +608,20 @@ Quản lý người dùng
             },
             error: function (data) {
                 var errors = data.responseJSON;
-                if (errors.name){
-                    $('#errorUserName').append('<div class="alert alert-warning alert-dismissable"><button id="closeErrorUserName" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+errors.name+'</div>');
+                if (errors.first_name){
+                    $('#errorUserFirstName').append('<div class="alert alert-warning alert-dismissable"><button id="closeErrorUserFirstName" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+errors.first_name+'</div>');
+                }
+                if (errors.last_name){
+                    $('#errorUserLastName').append('<div class="alert alert-warning alert-dismissable"><button id="closeErrorUserLastName" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+errors.last_name+'</div>');
                 }
                 if (errors.email){
                     $('#errorUserEmail').append('<div class="alert alert-warning alert-dismissable"><button id="closeErrorUserEmail" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+errors.email+'</div>');
                 }
                 if (errors.password){
                     $('#errorUserPassword').append('<div class="alert alert-warning alert-dismissable"><button id="closeErrorUserPassword" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+errors.password+'</div>');
+                }
+                if (errors.password_confirmation){
+                    $('#errorUserPasswordConfirmation').append('<div class="alert alert-warning alert-dismissable"><button id="closeErrorUserPasswordConfirmation" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+errors.password_confirmation+'</div>');
                 }
                 if (errors.role){
                     $('#errorUserRole').append('<div class="alert alert-warning alert-dismissable"><button id="closeErrorUserRole" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+errors.role+'</div>');

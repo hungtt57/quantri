@@ -11,6 +11,8 @@ use Auth;
 use App\Role;
 use App\Role_User;
 use Gate;
+use Validator;
+use File;
 
 class UserController extends Controller
 {   
@@ -18,9 +20,9 @@ class UserController extends Controller
         if (Gate::denies('UserController.index')){
            abort(403);
         }
-        $roles = Role::where('name', '<>', 'Default')->get();
-
-        $default_role = Role::where('name', '=', 'Default')->firstOrFail();
+        $default_role_name = config('setting.default_role');
+        $roles = Role::where('name', '<>', $default_role_name)->get();
+        $default_role = Role::where('name', '=', $default_role_name)->firstOrFail();
 
         return view('admin.pages.user', array('roles' => $roles, 'default_role' => $default_role, 'menuActive' => 'User'));
     }
@@ -30,7 +32,8 @@ class UserController extends Controller
            abort(403);
         }
         $user = new User();
-        $user->name = $request->name;
+        $user->first_name = $request->first_name;
+        $user->last_name = $request->last_name;
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
         $user->save();
@@ -66,7 +69,8 @@ class UserController extends Controller
            abort(403);
         }
         $user = User::findOrFail($id);
-        $user->name = $request->name;
+        $user->first_name = $request->first_name;
+        $user->last_name = $request->last_name;
         $user->email = $request->email;
         if(isset($request->password)){
             $user->password = bcrypt($request->password);
@@ -109,6 +113,61 @@ class UserController extends Controller
             return Response::json(['flash_message' => 'Đã xóa người dùng!', 'message_level' => 'success', 'message_icon' => 'check']);
         } else {
             return Response::json(['flash_message' => 'Bạn không thể xóa!', 'message_level' => 'danger', 'message_icon' => 'ban']);
+        }
+    }
+
+    public function showProfile(){
+        return view('admin.pages.profile', array('menuActive' => 'Profile'));
+    }
+
+    public function updateProfile(Request $request){
+        $rules = array(
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'password' => 'confirmed',
+            'avatar' => 'image'
+        );
+
+        $messages = array(
+            'first_name.required' => 'Vui lòng điền họ.',
+            'last_name.required' => 'Vui lòng điền đệm và tên.',
+            'password.confirmed' => 'Mật khẩu xác nhận không khớp.',
+            'avatar.image' => 'Tệp đã chọn không phải hình ảnh.'
+        );
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if($validator->fails()) {
+            $messages = $validator->messages();
+            return redirect('profile')->withErrors($validator);
+        } else {
+            $user = Auth::user();
+            $user->first_name = $request->first_name;
+            $user->last_name = $request->last_name;
+            $user->phone = $request->phone;
+            $user->address = $request->address;
+            $user->bio = $request->bio;
+
+            if(!empty($request->file('avatar'))){
+                $filename = $request->file('avatar')->getClientOriginalName();
+                $user->avatar = $filename;
+                $request->file('avatar')->move('public/upload/avatar/', $filename);
+
+                if(isset($request->current_avatar)){
+                    $current_avatar = 'public/upload/avatar/'.$request->current_avatar;
+                    if(File::exists($current_avatar)) {
+                        File::delete($current_avatar);
+                    }
+                }
+            }
+
+            if(isset($request->password)){
+                $user->password = bcrypt($request->password);
+            }
+
+            $user->save();
+            
+            return redirect('profile')->with(['flash_message' => 'Đã cập nhật hồ sơ!', 'message_level' => 'success', 'message_icon' => 'check']);
         }
     }
 }
