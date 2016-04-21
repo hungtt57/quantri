@@ -21,7 +21,7 @@ Cài đặt chung
 	    </div>
     </div>
 
-    <form class="form-horizontal" role="form" enctype="multipart/form-data" method="POST" action="{{ route('HomeController.setting.general.update') }}">
+    <form class="form-horizontal" role="form" enctype="multipart/form-data" method="POST" action="{{ asset('setting-general') }}">
       {!! csrf_field() !!}
 	  <div class="form-group">
 	    <label class="control-label col-md-3" for="email">Địa chỉ email:</label>
