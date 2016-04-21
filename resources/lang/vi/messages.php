@@ -11,7 +11,7 @@ return [
     'synchronous' => 'Đồng bộ quyền',
     'ArticleController' => 'Quản lý bài viết',
     'RoleController' => 'Quản lý quyền',
-
+    ''
     
 ];
 

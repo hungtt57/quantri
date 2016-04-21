@@ -25,17 +25,32 @@ class HomeController extends Controller
     }
 
     public function updateSettingGeneral(Request $request){
-        $arraySetting=array();
-        $default_role = $request->default_role;
-        dd(config(['setting.default_role' => $default_role]));
-          config(['setting.email' => 'hunghoang']);
-        // $arraySetting = config('setting');
-        // $arraySetting['default_role'] = $default_role;
-  
-        // $data = var_export($arraySetting, 1);
+         $arraySetting = config('setting');
+      
+        $default_role_name = $request->default_role;
+        $date_format = $request->date_format;
+        $time_format = $request->time_format;
+         $timezone = $request->timezone;
+        $arraySetting['default_role'] = $default_role_name;
+        $arraySetting['date_format'] = $date_format;
+        $arraySetting['time_format'] = $time_format;
+        $arraySetting['timezone'] = $timezone;
 
-        // if(File::put(base_path() . '/config/setting.php', "<?php\n return $data ;")) {
-        //     return redirect('setting-general')->with(['flash_message' => 'Đã lưu cài đặt!', 'message_level' => 'success', 'message_icon' => 'check']);
-        // }
+        $email = $request->email;
+        if($email){
+             $arraySetting['email'] = $email;
+        }
+        
+        $lang = $request->lang;
+        if($lang){
+             $arraySetting['lang'] = $lang;
+        }
+       
+        
+        $data = var_export($arraySetting, 1);
+
+        if(File::put(base_path() . '/config/setting.php', "<?php\n return $data ;")) {
+            return redirect('setting-general')->with(['flash_message' => 'Đã lưu cài đặt!', 'message_level' => 'success', 'message_icon' => 'check']);
+        }
     }
 }

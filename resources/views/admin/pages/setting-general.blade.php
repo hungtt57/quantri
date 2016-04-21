@@ -26,7 +26,7 @@ Cài đặt chung
 	  <div class="form-group">
 	    <label class="control-label col-md-3" for="email">Địa chỉ email:</label>
 	    <div class="col-md-6">
-	      <input type="email" class="form-control" id="email" placeholder="" value="">
+	      <input type="email" class="form-control" name="email" id="email" placeholder="" value="{{config('setting.email')}}">
 	      <p><i>Địa chỉ này chỉ sử dụng cho mục đích quản trị, chẳng hạn để gửi mail kích hoạt đăng ký, gửi thông báo đến thành viên...</i></p>
 	    </div>
 	  </div>
@@ -37,10 +37,11 @@ Cài đặt chung
 	    </div>
 	  </div>
 	  <div class="form-group">
-	    <label class="control-label col-md-3" for="default_role">Vai trò khi mới đăng ký:</label>
+	    <label class="control-label col-md-3" for="default_role">Role khi mới đăng ký:</label>
 	    <div class="col-md-6">
+
 	      <select class="form-control" id="default_role" name="default_role">
-		    <?php role_select($roles, old('default_role')); ?>
+		    <?php role_select($roles, config('setting.default_role')); ?>
 		  </select>
 	    </div>
 	  </div>
@@ -54,7 +55,7 @@ Cài đặt chung
 	    <label class="control-label col-md-3" for="timezone">Múi giờ:</label>
 	    <div class="col-md-6">
 	      <select class="form-control" id="timezone" name="timezone">
-		    
+		    <?php get_timezone_list(); ?>
 		  </select>
 		  <p><i>Hãy chọn thành phố có cùng múi giờ với bạn.</i></p>
 	    </div>
@@ -63,13 +64,13 @@ Cài đặt chung
 	    <label class="control-label col-md-3" for="date_format">Định dạng ngày:</label>
 	    <div class="col-md-6">
 	        <div class="date_format">
-			  <input type="radio" name="date_format" checked="true"> Y-m-d
+			  <input type="radio" name="date_format" <?php echo check_format('date_format','Y-m-d') ?> value="Y-m-d"> Y-m-d
 			</div>
 			<div class="date_format">
-			  <input type="radio" name="date_format"> m/d/Y
+			  <input type="radio" name="date_format" <?php echo check_format('date_format','m/d/Y') ?> value="m/d/Y"> m/d/Y
 			</div>
 			<div class="date_format">
-			  <input type="radio" name="date_format"> d/m/Y
+			  <input type="radio" name="date_format" <?php echo  check_format('date_format','d/m/Y') ?>value="d/m/Y"> d/m/Y
 			</div>
 	    </div>
 	  </div>
@@ -77,28 +78,28 @@ Cài đặt chung
 	    <label class="control-label col-md-3" for="time_format">Định dạng thời gian:</label>
 	    <div class="col-md-6">
 	        <div class="time_format">
-			  <input type="radio" name="time_format" checked="true"> g:i a
+			  <input type="radio" name="time_format" <?php echo check_format('time_format','g:i a') ?> value="g:i a"> g:i a
 			</div>
 			<div class="time_format">
-			  <input type="radio" name="time_format"> g:i A
+			  <input type="radio" name="time_format" <?php echo check_format('time_format','g:i A') ?> value="g:i A"> g:i A
 			</div>
 			<div class="time_format">
-			  <input type="radio" name="time_format"> H:i
+			  <input type="radio" name="time_format"<?php echo check_format('time_format','H:i') ?> value="H:i" > H:i
 			</div>
 	    </div>
 	  </div>
-	  <div class="form-group">
+	  <!-- <div class="form-group">
 	    <label class="control-label col-md-3" for="start_of_week">Ngày đầu tuần:</label>
 	    <div class="col-md-6">
 	      <select class="form-control" id="start_of_week" name="start_of_week">
 		    
 		  </select>
 	    </div>
-	  </div>
+	  </div> -->
 	  <div class="form-group">
 	    <label class="control-label col-md-3" for="language">Ngôn ngữ của trang:</label>
 	    <div class="col-md-6">
-	      <select class="form-control" id="language" name="language">
+	      <select class="form-control" id="lang" name="lang">
 		    <option value="vi">Tiếng Việt</option>
 		    <option value="en">Tiếng Anh</option>
 		  </select>

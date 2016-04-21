@@ -88,9 +88,20 @@ Quản lý phân quyền
     list-style: none;
   }
 
-  .acidjs-css3-treeview label[for]::before,
-  .acidjs-css3-treeview label span::before
+  .acidjs-css3-treeview label[for]::before
   {
+    content: "\25b6";
+    display: inline-block;
+    margin:0;
+    width: 13px;
+    height: 13px;
+    vertical-align: top;
+    text-align: center;
+    color: red;
+    font-size: 15px;
+    line-height: 13px;
+  }
+  .acidjs-css3-treeview label span::before{
     content: "\25b6";
     display: inline-block;
     margin: 2px 0 0;
@@ -102,7 +113,6 @@ Quản lý phân quyền
     font-size: 8px;
     line-height: 13px;
   }
-
   .acidjs-css3-treeview li ul
   {
     margin: 0 0 0 22px;
@@ -172,7 +182,7 @@ Quản lý phân quyền
 
   .acidjs-css3-treeview label:not([for])
   {
-    margin: 0 8px 0 0;
+    margin: 0 8px 0 10px;
   }
 
   .acidjs-css3-treeview label span::before
@@ -274,7 +284,7 @@ Quản lý phân quyền
             
                @if ($permission_childs = DB::table('permissions')->where('parent_id','=',$permission->id)->get())
                <li>
-                  <input type="checkbox" id="node-<?php echo $temp;?>-<?php echo $temp1;?>"  /><label><input type="checkbox" id = '{{$permission->name}}'/><span lass="role_cb"></span></label>
+                  <input type="checkbox" id="node-<?php echo $temp;?>-<?php echo $temp1;?>"  checked="checked"/><label><input type="checkbox" id = '{{$permission->name}}'/><span class="role_cb"></span></label>
                   <label for="node-<?php echo $temp;?>-<?php echo $temp1;?>">{{$permission->label}}</label>
                     <?php $temp1++; ?>
                  <ul>
@@ -291,7 +301,7 @@ Quản lý phân quyền
 
                      <label><input type = "checkbox" class="check_permission" <?php echo $check; ?> value='{{$permission_child->id}}' id ='{{$permission_child->name}}'/><span></span></label>
 
-                    <label for="node-0-0-0">{{$permission_child->label}}</label>
+                    <label >{{$permission_child->label}}</label>
                   </li>
                   @endforeach
                 </ul>
@@ -305,9 +315,9 @@ Quản lý phân quyền
       </div>
     </div>
     <div class="col-sm-4"> 
-     <!--  <div class="sidebar-search">
+      <div class="sidebar-search">
         <div class="input-group custom-search-form">
-          <input type="text" class="form-control" placeholder="Search...">
+          <input type="text" class="form-control search_role" role="{{$role->id}}" placeholder="Search...">
           <span class="input-group-btn">
             <button class="btn btn-default" type="button">
               <i class="fa fa-search"></i>
@@ -315,7 +325,7 @@ Quản lý phân quyền
           </span>
         </div>
       
-      </div> -->
+      </div>
       <br>
       <button  value='{{$role->id}}' class="btn btn-primary updater-permission">Cập nhật quyền</button>
       <a href="{{asset('/role/destroy/'.$role->id)}}" onclick="return confirm('Bạn có chắn chắn xóa?')" style="margin-top: 10px;display: block;"><button  class="btn btn-primary updater-permission">Xóa quyền {{$role->name}}</button></a>
