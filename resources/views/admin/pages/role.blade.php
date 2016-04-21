@@ -258,29 +258,31 @@ Quản lý phân quyền
     </div>
   </div>
   <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 bhoechie-tab">
+  <?php $temp = 0;?>
     @foreach ($roles as $role)
     <div id='{{$role->id}}' class="bhoechie-tab-content">
       <div class="col-sm-8">
         <div class="acidjs-css3-treeview">
           <ul>
             <li>
-               <input type="checkbox" id="node-0" checked="checked" /><label><input type="checkbox" /><span></span></label><label for="node-0">Tất cả</label>
+               <input type="checkbox" id="node-<?php echo $temp;?>" checked="checked" /><label><input type="checkbox" /><span></span></label><label for="node-<?php echo $temp;?>">Tất cả</label>
               <ul>
-              <?php $temp1 = 0; 
-              $temp2 = 0?>
+              <?php $temp++;
+              $temp1 = 0; 
+             ?>
                @foreach($permissions as $permission)
             
                @if ($permission_childs = DB::table('permissions')->where('parent_id','=',$permission->id)->get())
                <li>
-                 <label><input type="checkbox" id = '{{$permission->name}}'/><span></span></label>
-                 <input type="checkbox" id="node-0-<?php echo $temp1;?>"  /><label for="node-0-<?php echo $temp1;?>">{{$permission->label}}</label>
+                  <input type="checkbox" id="node-<?php echo $temp;?>-<?php echo $temp1;?>"  /><label><input type="checkbox" id = '{{$permission->name}}'/><span></span></label>
+                  <label for="node-<?php echo $temp;?>-<?php echo $temp1;?>">{{$permission->label}}</label>
                     <?php $temp1++; ?>
                  <ul>
                    @foreach($permission_childs as $permission_child)
                    
                    <li>
                     <?php 
-                     $temp2++;
+                     
                     $check=DB::table('permission_role')->where('role_id','=',$role->id)->where('permission_id','=',$permission_child->id)->first();
                     if($check){
                       $check = 'checked';
