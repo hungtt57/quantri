@@ -2,7 +2,7 @@
 
 @section('title')
 Cài đặt chung
-@stop
+@endsection
 
 @section('content')
 <div class="row">

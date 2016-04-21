@@ -1,4 +1,5 @@
 <?php
  return array (
-  'default_role' => 'Default',
+  'default_role' => 'Admin',
+  'email' => 'hinkeu',
 ) ;
