@@ -17,6 +17,15 @@ class CreateSettingsTable extends Migration
             $table->string('key')->unique();
             $table->string('value');
             $table->text('description')->nullable();
+<<<<<<< HEAD
+=======
+            $table->integer('type_id')->unsigned();
+            $table->foreign('type_id')
+                    ->references('id')
+                    ->on('setting_groups')
+                    ->onDelete('cascade');
+            //$table->integer('autoload')->default(1);
+>>>>>>> 7eaab6a5459193667aec5fcc4b8f2a69cba68f29
             $table->timestamps();
         });
     }
