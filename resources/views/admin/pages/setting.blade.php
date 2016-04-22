@@ -4,7 +4,7 @@
 Cài đặt
 @endsection
 @section('css')
-<link rel="stylesheet" href="{{  url('public/admin/plugins/datatables/css/dataTables.bootstrap.css') }}">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css">
 
 @endsection
 @section('content')
@@ -34,38 +34,34 @@ Cài đặt
 				<div class="tab-content">
 					<div class="tab-pane active" id="tab_a">
 						<form style="margin-top: 15px;">
-							<div class="table-responsive">
+							<div >
 								<table id="example" class="display" cellspacing="0" width="100%">
 									<thead>
 										<tr>
-											<th></th>
-											<th>#</th>
-											<th>Key</th>
-											<th>Value</th>
+											<th   style=" width:30px; "></th>
+											<th   style=" width:14px; ">#</th>
+											<th  >Key</th>
+											<th  >Value</th>
 										</tr>
 									</thead>
 									<tfoot>
 										<tr><td colspan="4" style="border-left:0px;border-right:0px" rowspan="1">
 											<div class="clearfix">
 												<button type="submit" id="" class="btn btn-sm btn-info"><i class="icon-ok bigger-110"></i> Save</button>                    </div>
-											</td></tr>
-										</tfoot>
+											</td>
+										</tr>
+									</tfoot>
 										<tbody>
 											<tr>
-												<td>A</td>
-												<td>B</td>
+												<td style=" width:30px; "><button class="btn btn-warning open-edit-user-modal"><span class="glyphicon glyphicon-pencil"></span></button></td>
+												<td style=" width:14px; ">1</td>
 												<td>C</td>
-												<td>D</td>
+												<td style="border-right:0px, line-height: 25px;">
+													<textarea name="" class="autosize-transition form-control" isbridge="1" placeholder="Value" style="margin: 0px; overflow: hidden; word-wrap: break-word; resize: horizontal; height: 50px;width: 100%;" rows="1" cols="30" id="Setting0Value">false</textarea>
+												</td>
 
 											</tr>
-											<tr>
-												<td>A</td>
-												<td>B</td>
-												<td>C</td>
-												<td>D</td>
-
-											</tr>
-
+											
 										</tbody>
 									</table>
 								</div>
@@ -96,7 +92,31 @@ Cài đặt
 			<script src="{{  url('public/admin/plugins/datatables/js/dataTables.bootstrap.min.js') }}"></script>
 			<script type="text/javascript">
 				$(document).ready(function() {
-					var table = $('#example').DataTable();
+					var table = $('#example').dataTable({
+						 columns: [
+                {
+                    "visible": true, 
+                    "searchable": false, 
+                    "orderable": false
+                },
+                {
+                    "visible": true, 
+                    "searchable": false, 
+                    "orderable": false
+                },
+                {
+                    "visible": true, 
+                    "searchable": false, 
+                    "orderable": false
+                },
+                {
+                    "visible": true, 
+                    "searchable": false, 
+                    "orderable": false
+                }
+                ],
+                sorting: []
+					});
 				} );
 
 			</script>
