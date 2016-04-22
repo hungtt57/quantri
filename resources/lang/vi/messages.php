@@ -12,8 +12,8 @@ return [
     'ArticleController' => 'Quản lý bài viết',
     'RoleController' => 'Quản lý quyền',
     'SettingController' => 'Quản lý cài đặt',
-    'showGeneral' => 'Xem cài đặt cơ bản',
-    'updateGeneral' =>'Sửa cài đặt cơ bản'
+    'showGeneral' => 'Xem cài đặt chung',
+    'updateGeneral' =>'Sửa cài đặt chung'
     
 ];
 
