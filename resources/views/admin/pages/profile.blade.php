@@ -19,7 +19,7 @@ Hồ sơ của bạn
     @endif
     </div>
 
-    <form class="form-horizontal" role="form" enctype="multipart/form-data" method="POST" action="{{ route('UserController.profile.update') }}">
+    <form class="form-horizontal" role="form" enctype="multipart/form-data" method="POST" action="{{ route('Not.UserController.profile.update') }}">
       {!! csrf_field() !!}
       <div class="form-group">
 	    <h3 class="col-md-offset-3 col-md-6">Tên</h3>
