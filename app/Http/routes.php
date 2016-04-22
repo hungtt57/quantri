@@ -35,13 +35,13 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::delete('article/destroy', ['as' => 'ArticleController.destroy', 'uses' => 'ArticleController@destroy']);
 
 
-    	// Setting 
+    // Setting 
     Route::get('setting-general', ['as' => 'SettingController.showGeneral', 'uses' => 'SettingController@showGeneral']);
     Route::post('setting-general', ['as' => 'SettingController.updateGeneral', 'uses' => 'SettingController@updateGeneral']);
+    Route::get('setting', ['as' => 'SettingController.index', 'uses' => 'SettingController@index']);
 
-    	//Get list by Ajax
+    //Get list by Ajax
     Route::get('listArticle', ['as' => 'Not.AjaxController.article.list', 'uses' => 'AjaxController@listArticle']);
     Route::get('listUser', ['as' => 'Not.AjaxController.user.list', 'uses' => 'AjaxController@listUser']);
     Route::get('updatePermission', ['as' => 'Not.AjaxController.update.permission', 'uses' => 'AjaxController@updatePermission']);
-    	//end ajax
 });
