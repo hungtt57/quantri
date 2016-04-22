@@ -18,7 +18,7 @@ class CreateSettingGroupsTable extends Migration
             $table->string('key')->unique();
             $table->string('name');
             $table->text('description');
-            //$table->integer('order');
+            $table->integer('order');
             $table->timestamps();
         });
     }

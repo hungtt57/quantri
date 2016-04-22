@@ -14,3 +14,4 @@ class SettingGroup extends Model
     	return $this->hasMany('App\Setting');
     }
 }
+

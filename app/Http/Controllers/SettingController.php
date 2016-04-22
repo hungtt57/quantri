@@ -8,6 +8,7 @@ use App\Role;
 use File;
 use Image;
 use App\Setting;
+use App\SettingGroup;
 class SettingController extends Controller
 {
   public function index(){
@@ -60,9 +61,18 @@ class SettingController extends Controller
     }
   }
 
+  public function groupIndex(){
+    return view('admin/setting/group');
+  }
 
+  public function groupAdd(){
+    return view('admin/setting/groupAdd');
+  }
 
-
+  public function groupStore(Request $request){
+           $group = SettingGroup::create($request->all());
+           return redirect('setting/group');
+  }
 
   
 }
