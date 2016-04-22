@@ -35,6 +35,25 @@
     <!-- jQuery -->
     <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
 
+    <!-- Bo dau tren URL sau khi dang nhap bang Facebook -->
+    <script>
+        if (window.location.hash && window.location.hash == '#_=_') {
+            if (window.history && history.pushState) {
+                window.history.pushState("", document.title, window.location.pathname);
+            } else {
+                // Prevent scrolling by storing the page's current scroll offset
+                var scroll = {
+                    top: document.body.scrollTop,
+                    left: document.body.scrollLeft
+                };
+                window.location.hash = '';
+                // Restore the scroll offset, should be flicker free
+                document.body.scrollTop = scroll.top;
+                document.body.scrollLeft = scroll.left;
+            }
+        }
+    </script>
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>

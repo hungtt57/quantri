@@ -113,8 +113,12 @@ Hồ sơ của bạn
 		      	<input type="file" class="form-control file-loading" name="avatar" id="avatar">
 
 		      	@if(!empty(Auth::user()->avatar))
-				<img style="width: 170px; height: 250px;" src="{{ asset('public/upload/avatar/'.Auth::user()->avatar) }}">
-				<input type="hidden" name="current_avatar" value="{{ Auth::user()->avatar }}">
+			      	@if(strpos(Auth::user()->avatar, 'https') == 0)
+					<img style="width: 170px; height: 170px;" src="{{ asset(Auth::user()->avatar) }}">
+					@else
+					<img style="width: 170px; height: 170px;" src="{{ asset('public/upload/avatar/'.Auth::user()->avatar) }}">
+					@endif
+					<input type="hidden" name="current_avatar" value="{{ Auth::user()->avatar }}">
 				@endif
 		    </div>
 

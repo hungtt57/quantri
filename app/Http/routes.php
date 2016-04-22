@@ -8,6 +8,9 @@ Route::get('login', ['as' => 'Not.AuthController.show', 'uses' => 'Auth\AuthCont
 Route::post('login', ['as' => 'Not.AuthController.login', 'uses' => 'Auth\AuthController@login']);
 Route::get('logout', ['as' => 'Not.AuthController.logout', 'uses' => 'Auth\AuthController@logout']);
 
+Route::get('auth/facebook', ['as' => 'Not.AuthController.redirectFacebook', 'uses' => 'Auth\AuthController@redirectToProvider']);
+Route::get('auth/facebook/callback', ['as' => 'Not.AuthController.handleFacebook', 'uses' => 'Auth\AuthController@handleProviderCallback']);
+
 Route::group(['middleware' => 'auth'], function(){
 	//Role management
 	Route::get('role', ['as' => 'RoleController.index', 'uses' => 'RoleController@index']);

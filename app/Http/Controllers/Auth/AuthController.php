@@ -9,6 +9,8 @@ use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Http\Request;
 use Auth;
+use Socialite;
+use App\Role;
 
 class AuthController extends Controller
 {
@@ -56,5 +58,62 @@ class AuthController extends Controller
     protected function getFailedLoginMessage()
     {
         return "Tài khoản không có trong hệ thống hoặc bạn đã điền sai thông tin.";
+    }
+
+    /**
+     * Redirect the user to the Facebook authentication page.
+     *
+     * @return Response
+     */
+    public function redirectToProvider()
+    {
+        return Socialite::driver('facebook')->redirect();
+    }
+ 
+    /**
+     * Obtain the user information from Facebook.
+     *
+     * @return Response
+     */
+    public function handleProviderCallback()
+    {
+        try {
+            $user = Socialite::driver('facebook')->user();
+        } catch (Exception $e) {
+            return redirect('auth/facebook');
+        }
+
+        $authUser = $this->findOrCreateUser($user);
+ 
+        Auth::login($authUser, true);
+ 
+        return redirect()->route('Not.HomeController.dashboard');
+    }
+ 
+    /**
+     * Return user if exists; create and return if doesn't
+     *
+     * @param $facebookUser
+     * @return User
+     */
+    private function findOrCreateUser($facebookUser)
+    {
+        $authUser = User::where('email', $facebookUser->email)->first();
+ 
+        if ($authUser){
+            return $authUser;
+        }
+
+        $newUser = User::create([
+            'first_name' => $facebookUser->name,
+            'email' => $facebookUser->email,
+            'avatar' => $facebookUser->avatar
+        ]);
+
+        $default_role_name = config('setting.default_role');
+        $default_role = Role::where('name', '=', $default_role_name)->firstOrFail();
+        $newUser->assignRole($default_role);
+
+        return $newUser;
     }
 }

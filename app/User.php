@@ -47,4 +47,8 @@ class User extends Authenticatable
     public function removeAllRole(){
         return $this->roles()->detach();
     }
+
+    public function socials(){
+        return $this->hasMany('App\Social');
+    }
 }

@@ -30,6 +30,12 @@
           </div>
           @endif
           <button type="submit">Tiếp tục</button>
+          <br><br>
+          <div class="text-center">
+            <a class='btn btn-danger' href="#"><i class="fa fa-google-plus" style="width:16px; height:16px"></i></a>
+            <a class='btn btn-primary' href="{{ url('auth/facebook') }}"><i class="fa fa-facebook" style="width:16px; height:16px"></i></a>
+            <a class='btn btn-info' href="#"><i class="fa fa-twitter" style="width:16px; height:16px"></i></a>
+          </div>  
         </form>
     </div>
 
