@@ -32,6 +32,9 @@
     <!-- Custom Fonts -->
     <link href="{{asset('public/admin/bower_components/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
 
+    <!-- jQuery -->
+    <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -55,9 +58,6 @@
            
        </div>
        <!-- /#wrapper -->
-
-       <!-- jQuery -->
-       <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
 
        <!-- Bootstrap Core JavaScript -->
        <script src="{{asset('public/admin/bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
