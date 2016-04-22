@@ -1,6 +1,12 @@
 <?php
+
+
+
 // đặt tên route có as theo định dạng Controller.method
 // KO muốn add vào permission thêm Not vào đầu chuỗi as
+
+
+
 Route::get('/', ['as' => 'Not.HomeController.dashboard', 'uses' => 'HomeController@index']);
 
 //Disable register
@@ -9,6 +15,12 @@ Route::post('login', ['as' => 'Not.AuthController.login', 'uses' => 'Auth\AuthCo
 Route::get('logout', ['as' => 'Not.AuthController.logout', 'uses' => 'Auth\AuthController@logout']);
 
 Route::group(['middleware' => 'auth'], function(){
+	 //Get list by Ajax
+    Route::get('listArticle', ['as' => 'Not.AjaxController.article.list', 'uses' => 'AjaxController@listArticle']);
+    Route::get('listUser', ['as' => 'Not.AjaxController.user.list', 'uses' => 'AjaxController@listUser']);
+    Route::get('updatePermission', ['as' => 'Not.AjaxController.update.permission', 'uses' => 'AjaxController@updatePermission']);
+
+
 	//Role management
 	Route::get('role', ['as' => 'RoleController.index', 'uses' => 'RoleController@index']);
 	Route::get('role/destroy/{id}', ['as' => 'RoleController.destroy', 'uses' => 'RoleController@destroy']);
@@ -38,10 +50,11 @@ Route::group(['middleware' => 'auth'], function(){
     // Setting 
     Route::get('setting-general', ['as' => 'SettingController.showGeneral', 'uses' => 'SettingController@showGeneral']);
     Route::post('setting-general', ['as' => 'SettingController.updateGeneral', 'uses' => 'SettingController@updateGeneral']);
-    Route::get('setting', ['as' => 'SettingController.index', 'uses' => 'SettingController@index']);
 
-    //Get list by Ajax
-    Route::get('listArticle', ['as' => 'Not.AjaxController.article.list', 'uses' => 'AjaxController@listArticle']);
-    Route::get('listUser', ['as' => 'Not.AjaxController.user.list', 'uses' => 'AjaxController@listUser']);
-    Route::get('updatePermission', ['as' => 'Not.AjaxController.update.permission', 'uses' => 'AjaxController@updatePermission']);
+
+    Route::get('setting', ['as' => 'SettingController.index', 'uses' => 'SettingController@index']);
+    Route::get('setting/group/add', ['as' => 'SettingController.groupAdd', 'uses' => 'SettingController@groupAdd']);
+     Route::post('setting/group/add', ['as' => 'SettingController.groupStore', 'uses' => 'SettingController@groupStore']);
+
+   
 });
