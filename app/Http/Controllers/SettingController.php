@@ -61,7 +61,9 @@ class SettingController extends Controller
     }
   }
 
-
+  public function groupIndex(){
+    return view('admin/setting/group');
+  }
 
   public function groupAdd(){
     return view('admin/setting/groupAdd');
@@ -69,7 +71,7 @@ class SettingController extends Controller
 
   public function groupStore(Request $request){
            $group = SettingGroup::create($request->all());
-           return view('admin/setting/group');
+           return redirect('setting/group');
   }
 
   

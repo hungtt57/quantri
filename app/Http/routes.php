@@ -53,8 +53,10 @@ Route::group(['middleware' => 'auth'], function(){
 
 
     Route::get('setting', ['as' => 'SettingController.index', 'uses' => 'SettingController@index']);
+    Route::get('setting/group', ['as' => 'SettingController.groupIndex', 'uses' => 'SettingController@groupIndex']);
     Route::get('setting/group/add', ['as' => 'SettingController.groupAdd', 'uses' => 'SettingController@groupAdd']);
      Route::post('setting/group/add', ['as' => 'SettingController.groupStore', 'uses' => 'SettingController@groupStore']);
+
 
    
 });

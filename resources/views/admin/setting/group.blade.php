@@ -4,67 +4,105 @@
 Cài đặt
 @endsection
 @section('css')
-<link rel="stylesheet" href="{{  url('public/admin/plugins/datatables/css/dataTables.bootstrap.css') }}">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="{{asset('public/admin/css/setting.css')}}">
 <style type="text/css">
-	.btn-cancel{
-	background-color: #abbac3!important;
-    border-color: #abbac3;
-    color: #fff;
-	}
-	.center{
-		    text-align: center!important;
-	}
+	
 </style>
 @endsection
 @section('content')
 <div class="row">
 	<div class="col-lg-12">
-		<h1 class="page-header">Thêm mới nhóm thiết lập</h1>
+		<h1 class="page-header">Cài đặt</h1>
 	</div>
-	<div class="col-xs-12 col-sm-9 col-md-8 col-lg-7 ">
-		<form class="form-horizontal" method="post" action="{{asset('/setting/group/add')}}" enctype="multipart/form-data">
-			<input type="hidden" name="_token" value="{{ csrf_token() }}">
-
-			<div class="form-group required">
-				<label for="SettingGroupKey" class="col-xs-12 col-sm-3 control-label no-padding-right">Key</label>
-				<div class="col-xs-12 col-sm-9">
-					<input name="key" isbridge="1" class="form-control" maxlength="50" type="text" id="SettingGroupKey" required="required">
-				</div>
+	<div class="col-xs-12 no-padding-left no-padding-right">
+		<div class="row">
+			<div class="col-xs-12 col-sm-9 col-lg-10">
+				<a class="btn btn-sm btn-primary" style="margin-top:5px" href="{{asset('setting/group/add')}}"><i class="fa fa-plus" aria-hidden="true"></i> New Group</a>
+				<a class="btn btn-sm btn-primary" style="margin-top:5px"><i class="fa fa-plus" aria-hidden="true"></i> Manager Type</a>
+				<a class="btn btn-sm btn-primary" style="margin-top:5px"><i class="fa fa-plus" aria-hidden="true"></i> Manager Setting</a>
 			</div>
-			<div class="form-group required">
-				<label for="SettingGroupKey" class="col-xs-12 col-sm-3 control-label no-padding-right">Name</label>
-				<div class="col-xs-12 col-sm-9">
-					<input name="name" isbridge="1" class="form-control" maxlength="50" type="text" id="SettingGroupKey" required="required">
-				</div>
+			<div class="col-xs-12 col-sm-3 col-lg-2 form-group" style="padding-top:5px">
+				<select class="form-control chosen-select">
+					<option>TEST 1</option>
+					<option>TEST 2</option>
+				</select>
+			</div>
+			<div class="col-xs-12 col-sm-12 col-lg-12" >
+				
+				
+				<form style="margin-top: 15px;">
+					<div >
+						<table id="example" class="display table table-responsive table-striped table-bordered" cellspacing="0" width="100%">
+							<thead>
+								<tr>
+									<th   style=" width:30px; "></th>
+									<th   style=" width:14px; ">#</th>
+									<th  >Key</th>
+									<th  >Value</th>
+								</tr>
+							</thead>
+							<tfoot>
+								<tr>
+									<td colspan="4" style="border-left:0px;border-right:0px" rowspan="1">
+									<div class="clearfix">
+										<button type="submit" id="" class="btn btn-sm btn-info"><i class="icon-ok bigger-110"></i> Save</button>                    </div>
+									</td>
+								</tr>
+							</tfoot>
+							<tbody>
+								<tr>
+									<td style=" width:30px; "><button class="btn btn-warning open-edit-user-modal"><span class="glyphicon glyphicon-pencil"></span></button></td>
+									<td style=" width:14px; ">1</td>
+									<td>C</td>
+									<td style="border-right:0px, line-height: 25px;">
+										<textarea name="" class="autosize-transition form-control" isbridge="1" placeholder="Value" style="margin: 0px; overflow: hidden; word-wrap: break-word; resize: horizontal; height: 50px;width: 100%;" rows="1" cols="30" id="Setting0Value">false</textarea>
+									</td>
+
+								</tr>
+
+							</tbody>
+						</table>
+					</div>
+				</form>
 			</div>
 
-			<div class="form-group">
-				<label for="SettingGroupDescription" class="col-xs-12 col-sm-3 control-label no-padding-right">Description</label>
-				<div class="col-xs-12 col-sm-9">
-					<textarea name="description" class="form-control" isbridge="1" cols="30" rows="6" id="SettingGroupDescription"></textarea>
-				</div>
-			</div>
+		</div>
+		<!-- /.row -->
+		@endsection
 
-			<!-- <div class="form-group required">
-				<label for="SettingGroupKey" class="col-xs-12 col-sm-3 control-label no-padding-right">System</label>
-				<div class="col-xs-12 col-sm-9">
-					<input name="data[SettingGroup][key]" isbridge="1" class="form-control" maxlength="50" type="text" id="SettingGroupKey" required="required">
-				</div>
-			</div> -->
-			<div class="form-group">
-				<label for="SettingGroupOrdernum" class="col-xs-12 col-sm-3 control-label no-padding-right">Ordernum</label>
-				<div class="col-xs-12 col-sm-9">
-					<input name="order" isbridge="1" class="form-control" type="number" id="SettingGroupOrdernum">
-				</div>
-			</div>
-			<div class="center">
-		    <a href="{{asset('setting/group')}}" class="btn btn-sm btn-cancel">Cancel</a>&nbsp;&nbsp;
-		    <button type="submit" id="frm_SettingGroup_save" class="btn btn-sm btn-info"><i class="icon-ok bigger-110"></i> Save &amp; Close</button>  
-		    </div>
-		</form>
+		@section('js')
 
-	</div>
-</div>
-<!-- /.row -->
-@endsection
+		<script src="{{  url('public/admin/plugins/datatables/js/jquery.dataTables.min.js') }}"></script>
+		<script src="{{  url('public/admin/plugins/datatables/js/dataTables.bootstrap.min.js') }}"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				var table = $('#example').dataTable({
+					columns: [
+					{
+						"visible": true, 
+						"searchable": false, 
+						"orderable": false
+					},
+					{
+						"visible": true, 
+						"searchable": false, 
+						"orderable": false
+					},
+					{
+						"visible": true, 
+						"searchable": false, 
+						"orderable": false
+					},
+					{
+						"visible": true, 
+						"searchable": false, 
+						"orderable": false
+					}
+					],
+					sorting: []
+				});
+			} );
 
+		</script>
+		@endsection
