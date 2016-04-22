@@ -57,7 +57,7 @@
        <!-- /#wrapper -->
 
        <!-- jQuery -->
-       <script src="{{asset('public/admin/bower_components/jquery/dist/jquery.min.js')}}"></script>
+       <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
 
        <!-- Bootstrap Core JavaScript -->
        <script src="{{asset('public/admin/bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
