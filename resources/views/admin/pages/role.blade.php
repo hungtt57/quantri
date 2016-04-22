@@ -275,7 +275,7 @@ Quản lý phân quyền
         <div class="acidjs-css3-treeview">
           <ul>
             <li>
-               <input type="checkbox" id="node-<?php echo $temp;?>" checked="checked" /><label><input type="checkbox" /><span class="all_cb"></span></label><label for="node-<?php echo $temp;?>">Tất cả</label>
+               <input type="checkbox" id="node-<?php echo $temp;?>" checked="checked" /><label><input type="checkbox" /><span class="all_cb"></span></label><label style="margin-left: 5px;" for="node-<?php echo $temp;?>">Tất cả</label>
               <ul>
               <?php $temp++;
               $temp1 = 0; 
