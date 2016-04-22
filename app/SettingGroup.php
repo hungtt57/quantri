@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Setting_Group extends Model
+class SettingGroup extends Model
 {
     protected $table = 'setting_groups';
     
