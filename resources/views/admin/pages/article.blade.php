@@ -12,6 +12,13 @@ Quản lý bài viết
 <link rel="stylesheet" href="{{  url('public/admin/plugins/datatables/extensions/ColReorder/css/colReorder.dataTables.min.css') }}">
 <link rel="stylesheet" href="{{  url('public/admin/plugins/datatables/extensions/FixedColumns/css/fixedColumns.dataTables.min.css') }}">
 <link rel="stylesheet" href="{{  url('public/admin/plugins/datatables/extensions/Select/css/select.dataTables.min.css') }}">
+<!-- CKEditor & CKFinder -->
+<script src={{ url('public/admin/plugins/ckeditor/ckeditor.js') }}></script>
+<script src={{ url('public/admin/plugins/ckfinder/ckfinder.js') }}></script>
+<script type="text/javascript">
+    var baseURL = "{!! url('/') !!}";
+</script>
+<script src={{ url('public/admin/plugins/func_ckfinder.js') }}></script>
 @endsection
 
 @section('content')
@@ -113,7 +120,8 @@ Quản lý bài viết
           </div>
           <div class="form-group">
             <label for="name">Nội dung</label>:
-            <textarea value="{{ old('content') }}" rows="5" name="content" class="form-control" placeholder="" id="content"></textarea>
+            <textarea value="{{ old('content') }}" name="content" class="form-control" placeholder="" id="content"></textarea>
+            <script type="text/javascript">ckeditor("content")</script>
             <div id="errorArticleContent">
             </div>
           </div>
@@ -227,6 +235,7 @@ Quản lý bài viết
                         $('#btn-reset-article').text("Xóa trắng");
                         $('#btn-save-article').text("Thêm");
                         $('#btn-reset-article').click(function(){
+                            CKEDITOR.instances['content'].setData('');
                             $('#articleCreateEditModal').find('form')[0].reset();
                             $('#closeErrorArticleTitle').click();
                             $('#closeErrorArticleContent').click();
@@ -365,6 +374,7 @@ Quản lý bài viết
 
         $('#articleCreateEditModal').on('hidden.bs.modal', function(){
             $(this).find('form')[0].reset();
+            CKEDITOR.instances['content'].setData('');
             $('#closeErrorArticleTitle').click();
             $('#closeErrorArticleContent').click();
         });
@@ -390,10 +400,11 @@ Quản lý bài viết
             var row = $(this).closest("tr");
             var article = articleList.row(row).data();
             var article_id = article.id;
-            $.get(articleUrl + '/' + article_id, function (data) {
+            $.get(articleUrl + '/edit/' + article_id, function (data) {
                 $('#article_id').val(data.id);
                 $('#title').val(data.title);
-                $('#content').val(data.content);
+                //$('#content').val(data.content);
+                CKEDITOR.instances['content'].setData(data.content);
                 $('#btn-save-article').val("update");
                 $('#btn-save-article').addClass('btn-warning');
                 $('#articleCreateEditModalTitle').text("Sửa bài viết");
@@ -401,7 +412,8 @@ Quản lý bài viết
                 $('#btn-save-article').text("Lưu");
                 $('#btn-reset-article').click(function(){
                     $('#title').val(data.title);
-                    $('#content').val(data.content);
+                    //'#content').val(data.content);
+                    CKEDITOR.instances['content'].setData(data.content);
                     $('#closeErrorArticleTitle').click();
                     $('#closeErrorArticleContent').click();
                 });
@@ -425,7 +437,8 @@ Quản lý bài viết
 
             var formData = {
                 title: $('#title').val(),
-                content: $('#content').val(),
+                //content: $('#content').val(),
+                content: CKEDITOR.instances['content'].getData(),
             }
 
             //Used to determine the http verb to use [add=POST], [update=PATCH]
