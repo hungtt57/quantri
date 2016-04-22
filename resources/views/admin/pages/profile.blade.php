@@ -4,6 +4,28 @@
 Hồ sơ của bạn
 @stop
 
+@section('css')
+<link href="{{ url('public/admin/plugins/fileinput/css/fileinput.min.css') }}" media="all" rel="stylesheet" type="text/css" />
+
+<script src="{{ url('public/admin/plugins/fileinput/js/plugins/canvas-to-blob.min.js') }}" type="text/javascript"></script>
+<script src="{{ url('public/admin/plugins/fileinput/js/fileinput.min.js') }}" type="text/javascript"></script>
+<script src="{{ url('public/admin/plugins/fileinput/js/fileinput_locale_LANG.js') }}"></script>
+
+<style type="text/css">
+	.kv-avatar .file-preview-frame,.kv-avatar .file-preview-frame:hover {
+        margin: 0;
+        padding: 0;
+        border: none;
+        box-shadow: none;
+        text-align: center;
+    }
+    .kv-avatar .file-input {
+        display: table-cell;
+        max-width: 220px;
+    }
+</style>
+@endsection
+
 @section('content')
 <div class="row">
     <div class="col-lg-12">
@@ -87,17 +109,34 @@ Hồ sơ của bạn
 	  <div class="form-group">
 	    <label class="control-label col-md-3" for="avatar">Ảnh hồ sơ:</label>
 	    <div class="col-md-6">
-	      <input type="file" class="form-control" name="avatar" id="avatar">
-	        @if ($errors->has('avatar'))
+		    <div class="kv-avatar center-block" style="width:200px">
+		      	<input type="file" class="form-control file-loading" name="avatar" id="avatar">
+
+		      	@if(!empty(Auth::user()->avatar))
+				<img style="width: 170px; height: 250px;" src="{{ asset('public/upload/avatar/'.Auth::user()->avatar) }}">
+				<input type="hidden" name="current_avatar" value="{{ Auth::user()->avatar }}">
+				@endif
+		    </div>
+
+			@if ($errors->has('avatar'))
 	        <div class="alert alert-danger fade in">
 	        <a href="#" class="close" data-dismiss="alert" aria-label="close" title="Tắt">&times;</a>
 	        <strong>{{ $errors->first('avatar') }}</strong>
 	        </div>
 	        @endif
-	       @if(!empty(Auth::user()->avatar))
-	       <img style="width: 170px; height: 250px;" src="{{ asset('public/upload/avatar/'.Auth::user()->avatar) }}">
-	       <input type="hidden" name="current_avatar" value="{{ Auth::user()->avatar }}">
-	       @endif
+
+	      	<!-- The fileinput plugin initialization -->
+	        <script type="text/javascript">
+	            $("#avatar").fileinput({
+	                overwriteInitial: true,
+	                showClose: true,
+	                showCaption: false,
+	                browseLabel: 'Chọn ảnh hồ sơ',
+	                browseIcon: '',
+	                defaultPreviewContent: '<img src="{{ url('public/admin/plugins/fileinput/img/default_avatar_male.jpg') }}" alt="Ảnh hồ sơ" style="width:160px">',
+	                layoutTemplates: {main2: '{preview} <div class="text-center">{browse}</div>'},
+	            });
+	        </script>
 	    </div>
 	  </div>
 	  <div class="form-group">
