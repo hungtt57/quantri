@@ -59,15 +59,12 @@
             </li>
             @endcan
             <li>
-                <a href="#"><i class="fa fa-cog"></i> Cài đặt<span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level">
+                <a href="{{ url('setting') }}"><i class="fa fa-cog"></i> Cài đặt</a>
+                {{-- <ul class="nav nav-second-level">
                     <li>
                         <a href="{{ url('setting-general') }}">Chung</a>
                     </li>
-                    <li>
-                        <a href="{{ url('setting-permalink') }}">Đường dẫn</a>
-                    </li>
-                </ul>  
+                </ul> --}}  
             </li>
         </ul>
     </div>
