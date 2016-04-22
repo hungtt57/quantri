@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Role;
 use File;
 use Image;
+use App\Setting;
 class SettingController extends Controller
 {
   public function index(){
@@ -58,4 +59,10 @@ class SettingController extends Controller
         return redirect('setting-general')->with(['flash_message' => 'Đã lưu cài đặt!', 'message_level' => 'success', 'message_icon' => 'check']);
     }
   }
+
+
+
+
+
+  
 }
