@@ -1,11 +1,10 @@
-<?php
+<?php 
 
-namespace App;
-
+namespace Modules\Article\Entities;
+   
 use Illuminate\Database\Eloquent\Model;
 
-class Article extends Model
-{
+class Article extends Model {
     protected $fillable = [
         'title', 'content', 'slug'
     ];

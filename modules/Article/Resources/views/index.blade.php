@@ -155,7 +155,7 @@ Quản lý bài viết
         //p - pagination control
         //r - processing display element
         var articleList = $('#articleList').DataTable({
-            ajax: baseUrl+"/listArticle",
+            ajax: baseUrl+"/article/listArticle",
             columns: [
                 @can('ArticleController.destroy')
                 {

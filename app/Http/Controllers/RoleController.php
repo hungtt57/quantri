@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Role;
 use App\Http\Requests\RoleRequest;
@@ -11,6 +10,7 @@ use App\Permission_Role;
 use App\Permission;
 use Route;
 use Session;
+use Request;
 
 class RoleController extends Controller
 {
@@ -87,5 +87,23 @@ class RoleController extends Controller
       $name = $role->name;
       $role->delete();
       return redirect('role')->with('messages', 'Xóa quyền '.$name.' thành công!!');
+    }
+
+    public function updatePermission(){
+        if(Request::ajax()){
+            $data = Request::input('data');
+            $id = explode(',',$data);
+            $role_id = $id[0];
+            
+            Permission_Role::where('role_id',$role_id)->delete();
+
+            for($i = 1 ;$i < sizeof($id);$i++){
+                   $permission_role = new Permission_Role();
+                   $permission_role->role_id = $role_id;
+                   $permission_role->permission_id = $id[$i];
+                   $permission_role->save();
+            } 
+            return 'oke';    
+        } 
     }
 }

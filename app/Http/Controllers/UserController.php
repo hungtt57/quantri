@@ -17,6 +17,15 @@ use Cache;
 
 class UserController extends Controller
 {   
+    public function listUser(){
+        //$users = User::orderBy('id', 'DESC')->get();
+        $users = User::where('id', '!=', Auth::id())->orderBy('id', 'DESC')->get();
+        foreach ($users as $user) {
+            $user->roles = Role_User::rolesOfUser($user->id);
+        }
+        return Response::json(['data' => $users]);
+    }
+    
     public function index(){
         if (Gate::denies('UserController.index')){
            abort(403);

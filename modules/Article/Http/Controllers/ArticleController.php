@@ -1,22 +1,23 @@
-<?php
+<?php namespace Modules\Article\Http\Controllers;
 
-namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
-use App\Http\Requests;
-use App\Article;
-use App\Http\Requests\ArticleRequest;
+use Pingpong\Modules\Routing\Controller;
+use Modules\Article\Entities\Article;
+use Modules\Article\Http\Requests\ArticleRequest;
 use Response;
 use Gate;
 
-class ArticleController extends Controller
-{   
-    public function index(){
+class ArticleController extends Controller {
+	public function listArticle(){
+        $articles = Article::orderBy('id', 'DESC')->get();
+        return Response::json(['data' => $articles]);
+    }
+    
+	public function index(){
         if (Gate::denies('ArticleController.index')){
              abort(403);
         }
         $articles = Article::orderBy('id', 'DESC')->get();
-        return view('admin.pages.article', array('articles' => $articles, 'menuActive' => 'article'));
+        return view('article::index', array('articles' => $articles, 'menuActive' => 'article'));
     }
 
     public function store(ArticleRequest $request){
@@ -34,7 +35,8 @@ class ArticleController extends Controller
         $article = Article::findOrFail($id);
         return Response::json($article);
     }
-     public function edit($id){
+
+    public function edit($id){
         if (Gate::denies('ArticleController.edit')){
             abort(403);
         }
@@ -64,4 +66,5 @@ class ArticleController extends Controller
         }
         return Response::json(['flash_message' => 'Đã xóa bài viết!', 'message_level' => 'success', 'message_icon' => 'check']);
     }
+	
 }

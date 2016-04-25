@@ -158,6 +158,7 @@ return [
 
         Intervention\Image\ImageServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
+        Pingpong\Modules\ModulesServiceProvider::class,
     ],
 
     /*
@@ -206,6 +207,7 @@ return [
 
         'Image'     => Intervention\Image\Facades\Image::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+        'Module' => Pingpong\Modules\Facades\Module::class,
     ],
 
 ];

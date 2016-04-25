@@ -1,17 +1,16 @@
-<?php
+<?php 
 
-namespace App\Http\Requests;
+namespace Modules\Article\Http\Requests;
 
-use App\Http\Requests\Request;
+use Illuminate\Foundation\Http\FormRequest;
 
-class ArticleRequest extends Request
-{
-    public function authorize()
-    {
-        return true;
-    }
+class ArticleRequest extends FormRequest {
+	public function authorize()
+	{
+		return true;
+	}
 
-    public function rules()
+	public function rules()
     {
         $segments = $this->segments();
         $id = intval(end($segments));
