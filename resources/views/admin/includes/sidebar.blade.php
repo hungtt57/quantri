@@ -22,16 +22,16 @@
 <div class="navbar-default sidebar" role="navigation">
     <div class="sidebar-nav navbar-collapse">
         <ul class="nav" id="side-menu">
-            <li class="sidebar-search">
-               <!--  <div class="input-group custom-search-form">
+            <!--<li class="sidebar-search">
+                <div class="input-group custom-search-form">
                     <input type="text" class="form-control" placeholder="Tìm kiếm...">
                     <span class="input-group-btn">
                         <button class="btn btn-default" type="button">
                             <i class="fa fa-search"></i>
                         </button>
                     </span>
-                </div>   -->
-            </li>
+                </div>  
+            </li>-->
             {{-- <li>
                 <a href="{{ url('/') }}"><i class="fa fa-home"></i> Dashboard</a>
             </li> --}}
@@ -49,6 +49,9 @@
                     </li>
                     <li>
                         <a href="{{ url('profile') }}">Hồ sơ của bạn</a>
+                    </li>
+                    <li>
+                        <a href="{{ url('password') }}">Đổi mật khẩu</a>
                     </li>
                 </ul>
             </li>

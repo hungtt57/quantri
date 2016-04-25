@@ -13,6 +13,7 @@ use App\Role_User;
 use Gate;
 use Validator;
 use File;
+use Cache;
 
 class UserController extends Controller
 {   
@@ -124,14 +125,12 @@ class UserController extends Controller
         $rules = array(
             'first_name' => 'required',
             'last_name' => 'required',
-            'password' => 'confirmed',
             'avatar' => 'image'
         );
 
         $messages = array(
             'first_name.required' => 'Vui lòng điền họ.',
             'last_name.required' => 'Vui lòng điền đệm và tên.',
-            'password.confirmed' => 'Mật khẩu xác nhận không khớp.',
             'avatar.image' => 'Tệp đã chọn không phải hình ảnh.'
         );
 
@@ -161,13 +160,41 @@ class UserController extends Controller
                 }
             }
 
-            if(isset($request->password)){
-                $user->password = bcrypt($request->password);
-            }
-
             $user->save();
             
             return redirect('profile')->with(['flash_message' => 'Đã cập nhật hồ sơ!', 'message_level' => 'success', 'message_icon' => 'check']);
+        }
+    }
+
+    public function showPassword(){
+        return view('admin.pages.password', array('menuActive' => 'Password'));
+    }
+
+    public function updatePassword(Request $request){
+        $rules = array(
+            'password' => 'required|confirmed'
+        );
+
+        $messages = array(
+            'password.required' => 'Vui lòng điền mật khẩu mới.',
+            'password.confirmed' => 'Mật khẩu xác nhận không khớp.'
+        );
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if($validator->fails()) {
+            $messages = $validator->messages();
+            return redirect('password')->withErrors($validator);
+        } else {
+            $user = Auth::user();
+            $user->password = bcrypt($request->password);
+            $user->save();
+            
+            if(Cache::has('changePasswordMessage')){
+                Cache::forget('changePasswordMessage');
+            }
+
+            return redirect('password')->with(['flash_message' => 'Đã cập nhật mật khẩu!', 'message_level' => 'success', 'message_icon' => 'check']);
         }
     }
 }

@@ -113,7 +113,7 @@ Hồ sơ của bạn
 		      	<input type="file" class="form-control file-loading" name="avatar" id="avatar">
 
 		      	@if(!empty(Auth::user()->avatar))
-			      	@if(strpos(Auth::user()->avatar, 'https') == 0)
+			      	@if(strpos(Auth::user()->avatar, 'https') !== false)
 					<img style="width: 170px; height: 170px;" src="{{ asset(Auth::user()->avatar) }}">
 					@else
 					<img style="width: 170px; height: 170px;" src="{{ asset('public/upload/avatar/'.Auth::user()->avatar) }}">
@@ -141,27 +141,6 @@ Hồ sơ của bạn
 	                layoutTemplates: {main2: '{preview} <div class="text-center">{browse}</div>'},
 	            });
 	        </script>
-	    </div>
-	  </div>
-	  <div class="form-group">
-	    <h3 class="col-md-offset-3 col-md-6">Quản lý tài khoản</h3>
-	  </div>
-	  <div class="form-group">
-	    <label class="control-label col-md-3" for="password">Mật khẩu mới:</label>
-	    <div class="col-md-6">
-	      <input type="password" class="form-control" name="password" id="password" placeholder="">
-	        @if ($errors->has('password'))
-	        <div class="alert alert-danger fade in">
-	        <a href="#" class="close" data-dismiss="alert" aria-label="close" title="Tắt">&times;</a>
-	        <strong>{{ $errors->first('password') }}</strong>
-	        </div>
-	        @endif
-	    </div>
-	  </div>
-	  <div class="form-group">
-	    <label class="control-label col-md-3" for="password_confirmation">Xác nhận mật khẩu:</label>
-	    <div class="col-md-6">
-	      <input type="password" name="password_confirmation" class="form-control" id="email" placeholder="">
 	    </div>
 	  </div>
 	  <div class="form-group">

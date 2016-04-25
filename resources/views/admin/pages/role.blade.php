@@ -317,7 +317,7 @@ Quản lý phân quyền
     <div class="col-sm-4"> 
       <div class="sidebar-search">
         <div class="input-group custom-search-form">
-          <input type="text" class="form-control search_role" role="{{$role->id}}" placeholder="Search...">
+          <input type="text" class="form-control search_role" role="{{$role->id}}" placeholder="Tìm kiếm...">
           <span class="input-group-btn">
             <button class="btn btn-default" type="button">
               <i class="fa fa-search"></i>

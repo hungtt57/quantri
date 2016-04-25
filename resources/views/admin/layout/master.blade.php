@@ -64,7 +64,6 @@
     </head>
 
     <body>
-
         <div id="wrapper">
             <!-- Navigation -->
             <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
@@ -72,6 +71,13 @@
                 @include('admin.includes.sidebar')
             </nav>
             <div id="page-wrapper" style="height: 100%;">
+                <div>
+                    @if (Cache::has('changePasswordMessage'))
+                        <div class="text-center alert alert-danger">
+                        {!! Cache::get('changePasswordMessage') !!}
+                        </div>
+                    @endif
+                </div>
                @yield('content')
            </div>
            

@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Auth;
 use Socialite;
 use App\Role;
+use Cache;
 
 class AuthController extends Controller
 {
@@ -60,42 +61,26 @@ class AuthController extends Controller
         return "Tài khoản không có trong hệ thống hoặc bạn đã điền sai thông tin.";
     }
 
-    /**
-     * Redirect the user to the Facebook authentication page.
-     *
-     * @return Response
-     */
     public function redirectToProvider()
     {
         return Socialite::driver('facebook')->redirect();
     }
  
-    /**
-     * Obtain the user information from Facebook.
-     *
-     * @return Response
-     */
     public function handleProviderCallback()
     {
         try {
-            $user = Socialite::driver('facebook')->user();
+            $facebookUser = Socialite::driver('facebook')->user();
         } catch (Exception $e) {
             return redirect('auth/facebook');
         }
 
-        $authUser = $this->findOrCreateUser($user);
+        $authUser = $this->findOrCreateUser($facebookUser);
  
         Auth::login($authUser, true);
- 
+
         return redirect()->route('Not.HomeController.dashboard');
     }
- 
-    /**
-     * Return user if exists; create and return if doesn't
-     *
-     * @param $facebookUser
-     * @return User
-     */
+
     private function findOrCreateUser($facebookUser)
     {
         $authUser = User::where('email', $facebookUser->email)->first();
@@ -103,9 +88,10 @@ class AuthController extends Controller
         if ($authUser){
             return $authUser;
         }
-
+ 
         $newUser = User::create([
             'first_name' => $facebookUser->name,
+            'password' => bcrypt('123456'),
             'email' => $facebookUser->email,
             'avatar' => $facebookUser->avatar
         ]);
@@ -113,6 +99,8 @@ class AuthController extends Controller
         $default_role_name = config('setting.default_role');
         $default_role = Role::where('name', '=', $default_role_name)->firstOrFail();
         $newUser->assignRole($default_role);
+
+        Cache::forever('changePasswordMessage', 'Mật khẩu mặc định khi đăng nhập bằng tài khoản mạng xã hội là <b>123456</b>. Vui lòng <a href="password">đổi mật khẩu</a> để bảo mật!');
 
         return $newUser;
     }

@@ -12,6 +12,9 @@ Quản lý bài viết
 <link rel="stylesheet" href="{{  url('public/admin/plugins/datatables/extensions/ColReorder/css/colReorder.dataTables.min.css') }}">
 <link rel="stylesheet" href="{{  url('public/admin/plugins/datatables/extensions/FixedColumns/css/fixedColumns.dataTables.min.css') }}">
 <link rel="stylesheet" href="{{  url('public/admin/plugins/datatables/extensions/Select/css/select.dataTables.min.css') }}">
+<style type="text/css">
+
+</style>
 <!-- CKEditor & CKFinder -->
 <script src={{ url('public/admin/plugins/ckeditor/ckeditor.js') }}></script>
 <script src={{ url('public/admin/plugins/ckfinder/ckfinder.js') }}></script>
@@ -160,7 +163,8 @@ Quản lý bài viết
                     "searchable": false, 
                     "orderable": false,
                     "className": "select-checkbox center",
-                    "defaultContent": " "
+                    "defaultContent": " ",
+                    "title": "<input type='checkbox' id='selectAll'>"
                 },
                 @endcan
                 { 
@@ -218,7 +222,7 @@ Quản lý bài viết
                 },
                 "infoFiltered":   "(Tìm kiếm từ _MAX_ bài viết)",
                 select: {
-                    rows: "Đã chọn: %d danh mục."
+                    rows: "Đã chọn: %d bài viết."
                 }
             },
             buttons: [
@@ -291,38 +295,38 @@ Quản lý bài viết
                 //         articleList.colReorder.reset();
                 //     }
                 // },
-                {
-                    text: 'Tải lại danh sách',
-                    titleAttr: 'Tải lại danh sách',
-                    action: function (e) {
-                        articleList.ajax.reload(null, false);
-                    }  
-                },
+                // {
+                //     text: 'Tải lại danh sách',
+                //     titleAttr: 'Tải lại danh sách',
+                //     action: function (e) {
+                //         articleList.ajax.reload(null, false);
+                //     }  
+                // },
                 @can('ArticleController.destroy')
-                {
-                    text: 'Chọn tất cả',
-                    titleAttr: 'Chọn tất cả',
-                    action: function (e) {
-                        articleList.rows().select();
-                    }
-                },
-                {
-                    text: 'Chọn trang hiện tại',
-                    titleAttr: 'Chọn trang hiện tại',
-                    action: function (e) {
-                        articleList.rows().deselect();
-                        articleList.rows({page: 'current'}).select();
-                    }
-                },
-                {
-                    text: 'Bỏ chọn tất cả',
-                    titleAttr: 'Bỏ chọn tất cả',
-                    action: function (e) {
-                        articleList.rows().deselect();
-                    },
-                    enabled: false,
-                    name: 'deselectAll'
-                },
+                // {
+                //     text: 'Chọn tất cả',
+                //     titleAttr: 'Chọn tất cả',
+                //     action: function (e) {
+                //         articleList.rows().select();
+                //     }
+                // },
+                // {
+                //     text: 'Chọn trang hiện tại',
+                //     titleAttr: 'Chọn trang hiện tại',
+                //     action: function (e) {
+                //         articleList.rows().deselect();
+                //         articleList.rows({page: 'current'}).select();
+                //     }
+                // },
+                // {
+                //     text: 'Bỏ chọn tất cả',
+                //     titleAttr: 'Bỏ chọn tất cả',
+                //     action: function (e) {
+                //         articleList.rows().deselect();
+                //     },
+                //     enabled: false,
+                //     name: 'deselectAll'
+                // },
                 {
                     text: 'Xóa (các) bản ghi đã chọn',
                     titleAttr: 'Xóa (các) bản ghi đã chọn',
@@ -345,14 +349,22 @@ Quản lý bài viết
             // }
         });
 
+        $("#selectAll").change(function() {
+            if(this.checked) {
+                articleList.rows().select();
+            } else {
+                articleList.rows().deselect();
+            }
+        });
+
         //Nếu không có bản ghi nào được chọn thì disable các nút không cần thiết
         function en_dis_button() {
             var selectedRows = articleList.rows({selected: true}).count();
             if (selectedRows > 0) {
-                articleList.button('deselectAll:name').enable();
+                //articleList.button('deselectAll:name').enable();
                 articleList.button('destroyRecords:name').enable();
             } else {
-                articleList.button('deselectAll:name').disable();
+                //articleList.button('deselectAll:name').disable();
                 articleList.button('destroyRecords:name').disable();
             }
         }
