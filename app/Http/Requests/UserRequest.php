@@ -26,8 +26,7 @@ class UserRequest extends Request
         case 'POST':
         {
             return [
-                'first_name' => 'required',
-                'last_name' => 'required',
+                'fullname' => 'required',
                 'email' => 'required|email|unique:users,email',
                 'password' => 'required|confirmed',
                 'role' => 'required'
@@ -37,8 +36,7 @@ class UserRequest extends Request
         case 'PATCH':
         {
             return [
-                'first_name' => 'required',
-                'last_name' => 'required',
+                'fullname' => 'required',
                 'email' => 'required|email|unique:users,email, ' . $id,
                 'password' => 'confirmed',
             ];
@@ -50,8 +48,7 @@ class UserRequest extends Request
     public function messages()
     {
         return [
-            'first_name.required' => 'Vui lòng điền họ.',
-            'last_name.required' => 'Vui lòng điền đệm và tên.',
+            'fullname.required' => 'Vui lòng điền họ tên.',
             'email.unique' => 'Email này đã được sử dụng.',
             'email.email' => 'Email này không đúng định dạng.',
             'email.required' => 'Vui lòng điền email người dùng.',

@@ -6,13 +6,9 @@ use App\Permission_Role;
 use App\Permission;
 use App\Role_User;
 use App\User;
+
 class RolesTableSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
         DB::table('roles')->insert([

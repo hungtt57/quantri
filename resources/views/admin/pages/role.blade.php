@@ -219,7 +219,7 @@ Quản lý phân quyền
   <button class="btn btn-primary open-add-role-modal">Thêm role mới</button>
   @endcan
   @can('RoleController.synchronous')
-  <a href="{{asset('synchronous')}}" onclick='return confirm("Bạn có chắc chắn thực hiện ??")'><button class="btn btn-primary ">Đồng bộ quyền</button></a>
+  <a href="{{asset('synchronous')}}" onclick='return confirm("Bạn có chắc chắn thực hiện?")'><button class="btn btn-primary ">Đồng bộ quyền</button></a>
   @endcan
 </div>
 @if (Session::has('messages'))
@@ -328,7 +328,7 @@ Quản lý phân quyền
       </div>
       <br>
       <button  value='{{$role->id}}' class="btn btn-primary updater-permission">Cập nhật quyền</button>
-      <a href="{{asset('/role/destroy/'.$role->id)}}" onclick="return confirm('Bạn có chắn chắn xóa?')" style="margin-top: 10px;display: block;"><button  class="btn btn-primary updater-permission">Xóa quyền {{$role->name}}</button></a>
+      <a href="{{asset('/role/destroy/'.$role->id)}}" onclick="return confirm('Bạn có chắn chắn muốn xóa?')" style="margin-top: 10px;display: block;"><button  class="btn btn-primary updater-permission">Xóa quyền {{$role->name}}</button></a>
     </div>
   </div>
   @endforeach              

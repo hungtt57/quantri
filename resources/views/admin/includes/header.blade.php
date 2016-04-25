@@ -16,10 +16,11 @@
             <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
         </a>
         <ul class="dropdown-menu dropdown-user">
-            <li><a href="{{ url('profile') }}"><i class="fa fa-user fa-fw"></i> {{ Auth::user()->first_name.' '.Auth::user()->last_name }}</a>
+            <li><a href="{{ url('profile') }}"><i class="fa fa-user fa-fw"></i> {{ Auth::user()->fullname }}</a>
             </li>
             <li><a href="{{ url('password') }}"><i class="fa fa-key fa-fw"></i> Đổi mật khẩu</a>
             </li>
+            <li class="divider"></li>
             <li><a href="{{ url('logout') }}"><i class="fa fa-sign-out fa-fw"></i> Đăng xuất</a>
             </li>
         </ul>

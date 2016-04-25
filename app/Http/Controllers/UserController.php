@@ -42,8 +42,7 @@ class UserController extends Controller
            abort(403);
         }
         $user = new User();
-        $user->first_name = $request->first_name;
-        $user->last_name = $request->last_name;
+        $user->fullname = $request->fullname;
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
         $user->save();
@@ -79,8 +78,7 @@ class UserController extends Controller
            abort(403);
         }
         $user = User::findOrFail($id);
-        $user->first_name = $request->first_name;
-        $user->last_name = $request->last_name;
+        $user->fullname = $request->fullname;
         $user->email = $request->email;
         if(isset($request->password)){
             $user->password = bcrypt($request->password);
@@ -127,19 +125,18 @@ class UserController extends Controller
     }
 
     public function showProfile(){
-        return view('admin.pages.profile', array('menuActive' => 'Profile'));
+        $roles = Role_User::rolesOfUser(Auth::id());
+        return view('admin.pages.profile', array('roles' => $roles, 'menuActive' => 'Profile'));
     }
 
     public function updateProfile(Request $request){
         $rules = array(
-            'first_name' => 'required',
-            'last_name' => 'required',
+            'fullname' => 'required',
             'avatar' => 'image'
         );
 
         $messages = array(
-            'first_name.required' => 'Vui lòng điền họ.',
-            'last_name.required' => 'Vui lòng điền đệm và tên.',
+            'fullname.required' => 'Vui lòng điền họ tên.',
             'avatar.image' => 'Tệp đã chọn không phải hình ảnh.'
         );
 
@@ -150,8 +147,7 @@ class UserController extends Controller
             return redirect('profile')->withErrors($validator);
         } else {
             $user = Auth::user();
-            $user->first_name = $request->first_name;
-            $user->last_name = $request->last_name;
+            $user->fullname = $request->fullname;
             $user->phone = $request->phone;
             $user->address = $request->address;
             $user->bio = $request->bio;
@@ -181,10 +177,12 @@ class UserController extends Controller
 
     public function updatePassword(Request $request){
         $rules = array(
-            'password' => 'required|confirmed'
+            'password' => 'required|confirmed',
+            'old_password' => 'required'
         );
 
         $messages = array(
+            'old_password.required' => 'Vui lòng điền mật khẩu cũ.',
             'password.required' => 'Vui lòng điền mật khẩu mới.',
             'password.confirmed' => 'Mật khẩu xác nhận không khớp.'
         );

@@ -25,6 +25,18 @@
 
     <form class="form-horizontal" role="form" method="POST" action="{{ route('Not.UserController.password.update') }}">
       {!! csrf_field() !!}
+      <div class="form-group">
+	    <label class="control-label col-md-3" for="old_password">Mật khẩu cũ:</label>
+	    <div class="col-md-6">
+	      <input type="password" class="form-control" name="old_password" id="old_password" placeholder="">
+	        @if ($errors->has('old_password'))
+	        <div class="alert alert-danger fade in">
+	        <a href="#" class="close" data-dismiss="alert" aria-label="close" title="Tắt">&times;</a>
+	        <strong>{{ $errors->first('old_password') }}</strong>
+	        </div>
+	        @endif
+	    </div>
+	  </div>
 	  <div class="form-group">
 	    <label class="control-label col-md-3" for="password">Mật khẩu mới:</label>
 	    <div class="col-md-6">
@@ -40,7 +52,7 @@
 	  <div class="form-group">
 	    <label class="control-label col-md-3" for="password_confirmation">Xác nhận mật khẩu:</label>
 	    <div class="col-md-6">
-	      <input type="password" name="password_confirmation" class="form-control" id="email" placeholder="">
+	      <input type="password" name="password_confirmation" class="form-control" id="password_confirmation" placeholder="">
 	        @if ($errors->has('password_confirmation'))
 	        <div class="alert alert-danger fade in">
 	        <a href="#" class="close" data-dismiss="alert" aria-label="close" title="Tắt">&times;</a>

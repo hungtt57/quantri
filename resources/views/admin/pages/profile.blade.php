@@ -47,25 +47,13 @@ Hồ sơ của bạn
 	    <h3 class="col-md-offset-3 col-md-6">Tên</h3>
 	  </div>
 	  <div class="form-group">
-	    <label class="control-label col-md-3" for="first_name">Họ (bắt buộc):</label>
+	    <label class="control-label col-md-3" for="first_name">Họ tên (bắt buộc):</label>
 	    <div class="col-md-6">
-	      <input type="text" class="form-control" name="first_name" id="first_name" placeholder="" value="{{ old('first_name') ? old('first_name') : Auth::user()->first_name  }}">
-	      	@if ($errors->has('first_name'))
+	      <input type="text" class="form-control" name="fullname" id="fullname" placeholder="" value="{{ old('fullname') ? old('fullname') : Auth::user()->fullname  }}">
+	      	@if ($errors->has('fullname'))
 	        <div class="alert alert-danger fade in">
 	        <a href="#" class="close" data-dismiss="alert" aria-label="close" title="Tắt">&times;</a>
-	        <strong>{{ $errors->first('first_name') }}</strong>
-	        </div>
-	        @endif
-	    </div>
-	  </div>
-	  <div class="form-group">
-	    <label class="control-label col-md-3" for="last_name">Đệm và tên (bắt buộc):</label>
-	    <div class="col-md-6">
-	      <input type="text" class="form-control" name="last_name" id="last_name" placeholder="" value="{{ old('last_name') ? old('last_name') : Auth::user()->last_name  }}">
-	      	@if ($errors->has('last_name'))
-	        <div class="alert alert-danger fade in">
-	        <a href="#" class="close" data-dismiss="alert" aria-label="close" title="Tắt">&times;</a>
-	        <strong>{{ $errors->first('last_name') }}</strong>
+	        <strong>{{ $errors->first('fullname') }}</strong>
 	        </div>
 	        @endif
 	    </div>
@@ -141,6 +129,31 @@ Hồ sơ của bạn
 	                layoutTemplates: {main2: '{preview} <div class="text-center">{browse}</div>'},
 	            });
 	        </script>
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <h3 class="col-md-offset-3 col-md-6">Thông tin tài khoản</h3>
+	  </div>
+	  <div class="form-group">
+	    <label class="control-label col-md-3" for="role">Role:</label>
+	    <div class="col-md-6">
+	    <ul>
+	      @foreach ($roles as $role)
+			<li>{{ $role->name }}</li>
+	      @endforeach
+	    </ul>
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <label class="control-label col-md-3" for="role">Thời điểm đăng nhập gần nhất:</label>
+	    <div class="col-md-6">
+	    
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <label class="control-label col-md-3" for="role">Thời điểm tài khoản được tạo:</label>
+	    <div class="col-md-6">
+	    	{{ Auth::user()->created_at }}
 	    </div>
 	  </div>
 	  <div class="form-group">
