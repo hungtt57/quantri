@@ -222,13 +222,16 @@ Quản lý bài viết
                 },
                 "infoFiltered":   "(Tìm kiếm từ _MAX_ bài viết)",
                 select: {
+                    rows: "",
+                    @can('ArticleController.destroy')
                     rows: "Đã chọn: %d bài viết."
+                    @endcan
                 }
             },
             buttons: [
                 @can('ArticleController.store')
                 {
-                    text: 'Thêm bài viết',
+                    text: 'Thêm',
                     titleAttr: 'Thêm bài viết',
                     action: function (e) {
                         e.preventDefault();
@@ -250,7 +253,7 @@ Quản lý bài viết
                 @endcan
                 {
                     extend: 'excel',
-                    text: 'Xuất tệp Excel',
+                    text: 'Excel',
                     titleAttr: 'Xuất tệp Excel',
                     title: 'Danh sách bài viết',
                     exportOptions: {
@@ -259,7 +262,7 @@ Quản lý bài viết
                 },
                 {
                     extend: 'pdf',
-                    text: 'Xuất tệp PDF',
+                    text: 'PDF',
                     titleAttr: 'Xuất tệp PDF',
                     title: 'Danh sách bài viết',
                     message: 'Tài liệu chỉ lưu hành nội bộ.',
@@ -269,7 +272,7 @@ Quản lý bài viết
                 },
                 {
                     extend: 'print',
-                    text: 'In danh sách',
+                    text: 'In',
                     titleAttr: 'In danh sách',
                     title: 'Danh sách bài viết',
                     exportOptions: {
@@ -278,7 +281,7 @@ Quản lý bài viết
                 },
                 {
                     extend: 'pageLength',
-                    text: 'Hiện số bài viết trên một trang',
+                    text: 'Trên một trang',
                     titleAttr: 'Hiện số bài viết trên một trang'
                 },
                 // {
@@ -318,17 +321,17 @@ Quản lý bài viết
                 //         articleList.rows({page: 'current'}).select();
                 //     }
                 // },
-                // {
-                //     text: 'Bỏ chọn tất cả',
-                //     titleAttr: 'Bỏ chọn tất cả',
-                //     action: function (e) {
-                //         articleList.rows().deselect();
-                //     },
-                //     enabled: false,
-                //     name: 'deselectAll'
-                // },
                 {
-                    text: 'Xóa (các) bản ghi đã chọn',
+                    text: 'Bỏ chọn',
+                    titleAttr: 'Bỏ chọn các hàng đã chọn',
+                    action: function (e) {
+                        articleList.rows().deselect();
+                    },
+                    enabled: false,
+                    name: 'deselectAll'
+                },
+                {
+                    text: 'Xóa',
                     titleAttr: 'Xóa (các) bản ghi đã chọn',
                     action: function (e) {
                         ids = '';
@@ -361,10 +364,10 @@ Quản lý bài viết
         function en_dis_button() {
             var selectedRows = articleList.rows({selected: true}).count();
             if (selectedRows > 0) {
-                //articleList.button('deselectAll:name').enable();
+                articleList.button('deselectAll:name').enable();
                 articleList.button('destroyRecords:name').enable();
             } else {
-                //articleList.button('deselectAll:name').disable();
+                articleList.button('deselectAll:name').disable();
                 articleList.button('destroyRecords:name').disable();
             }
         }

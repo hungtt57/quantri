@@ -227,7 +227,8 @@ Quản lý người dùng
                     "searchable": false, 
                     "orderable": false,
                     "className": "select-checkbox center",
-                    "defaultContent": " "
+                    "defaultContent": " ",
+                    "title": "<input type='checkbox' id='selectAll'>"
                 },
                 @endcan
                 { 
@@ -311,13 +312,16 @@ Quản lý người dùng
                 },
                 "infoFiltered":   "(Tìm kiếm từ _MAX_ người dùng)",
                 select: {
+                    rows: "",
+                    @can('UserController.destroy')
                     rows: "Đã chọn: %d người dùng."
+                    @endcan
                 }
             },
             buttons: [
                 @can('UserController.store')
                 {
-                    text: 'Thêm người dùng',
+                    text: 'Thêm',
                     titleAttr: 'Thêm người dùng',
                     action: function (e) {
                         e.preventDefault();
@@ -343,7 +347,7 @@ Quản lý người dùng
                 @endcan
                 {
                     extend: 'excel',
-                    text: 'Xuất tệp Excel',
+                    text: 'Excel',
                     titleAttr: 'Xuất tệp Excel',
                     title: 'Danh sách người dùng',
                     exportOptions: {
@@ -352,7 +356,7 @@ Quản lý người dùng
                 },
                 {
                     extend: 'pdf',
-                    text: 'Xuất tệp PDF',
+                    text: 'PDF',
                     titleAttr: 'Xuất tệp PDF',
                     title: 'Danh sách người dùng',
                     message: 'Tài liệu chỉ lưu hành nội bộ.',
@@ -362,7 +366,7 @@ Quản lý người dùng
                 },
                 {
                     extend: 'print',
-                    text: 'In danh sách',
+                    text: 'In',
                     titleAttr: 'In danh sách',
                     title: 'Danh sách người dùng',
                     exportOptions: {
@@ -371,49 +375,49 @@ Quản lý người dùng
                 },
                 {
                     extend: 'pageLength',
-                    text: 'Hiện số người dùng trên một trang',
+                    text: 'Trên một trang',
                     titleAttr: 'Hiện số người dùng trên một trang'
                 },
                 {
                     extend: 'colvis',
-                    text: 'Chọn các cột muốn hiển thị',
+                    text: 'Hiện',
                     titleAttr: 'Chọn các cột muốn hiển thị',
                     columns: ["userName:name", "userEmail:name", "userRole:name"]
                 },
                 {
-                    text: 'Khôi phục thứ tự cột mặc định',
+                    text: 'Khôi phục thứ tự',
                     titleAttr: 'Khôi phục thứ tự cột mặc định',
                     action: function (e) {
                         e.preventDefault();
                         userList.colReorder.reset();
                     }
                 },
-                {
-                    text: 'Tải lại danh sách',
-                    titleAttr: 'Tải lại danh sách',
-                    action: function (e) {
-                        userList.ajax.reload(null, false);
-                    }  
-                },
+                // {
+                //     text: 'Tải lại danh sách',
+                //     titleAttr: 'Tải lại danh sách',
+                //     action: function (e) {
+                //         userList.ajax.reload(null, false);
+                //     }  
+                // },
                 @can('UserController.destroy')
+                // {
+                //     text: 'Chọn tất cả',
+                //     titleAttr: 'Chọn tất cả',
+                //     action: function (e) {
+                //         userList.rows().select();
+                //     }
+                // },
+                // {
+                //     text: 'Chọn trang hiện tại',
+                //     titleAttr: 'Chọn trang hiện tại',
+                //     action: function (e) {
+                //         userList.rows().deselect();
+                //         userList.rows({page: 'current'}).select();
+                //     }
+                // },
                 {
-                    text: 'Chọn tất cả',
-                    titleAttr: 'Chọn tất cả',
-                    action: function (e) {
-                        userList.rows().select();
-                    }
-                },
-                {
-                    text: 'Chọn trang hiện tại',
-                    titleAttr: 'Chọn trang hiện tại',
-                    action: function (e) {
-                        userList.rows().deselect();
-                        userList.rows({page: 'current'}).select();
-                    }
-                },
-                {
-                    text: 'Bỏ chọn tất cả',
-                    titleAttr: 'Bỏ chọn tất cả',
+                    text: 'Bỏ chọn',
+                    titleAttr: 'Bỏ chọn các hàng đã chọn',
                     action: function (e) {
                         userList.rows().deselect();
                     },
@@ -421,8 +425,8 @@ Quản lý người dùng
                     name: 'deselectAll'
                 },
                 {
-                    text: 'Xóa bản ghi đã chọn',
-                    titleAttr: 'Xóa bản ghi đã chọn',
+                    text: 'Xóa',
+                    titleAttr: 'Xóa (các) bản ghi đã chọn',
                     action: function (e) {
                         ids = '';
                         //Gộp id các bản ghi đã chọn thành 1 chuỗi, mỗi id cách nhau bởi dấu cách
@@ -439,6 +443,14 @@ Quản lý người dùng
             colReorder: {
                 //fixedColumnsLeft: 1,
                 fixedColumnsRight: 1
+            }
+        });
+
+        $("#selectAll").change(function() {
+            if(this.checked) {
+                userList.rows().select();
+            } else {
+                userList.rows().deselect();
             }
         });
 
