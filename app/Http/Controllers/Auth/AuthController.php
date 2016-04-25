@@ -12,6 +12,7 @@ use Auth;
 use Socialite;
 use App\Role;
 use Cache;
+use Session;
 
 class AuthController extends Controller
 {

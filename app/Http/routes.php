@@ -1,4 +1,5 @@
 <?php
+//Route::group(['middleware' => 'web'], function(){
 // Đặt tên route theo định dạng Controller.Method
 // Không muốn add vào permission thêm Not vào đầu
 
@@ -51,3 +52,4 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('setting/group/add', ['as' => 'SettingController.groupAdd', 'uses' => 'SettingController@groupAdd']);
     Route::post('setting/group/add', ['as' => 'SettingController.groupStore', 'uses' => 'SettingController@groupStore']);
 });
+//});
