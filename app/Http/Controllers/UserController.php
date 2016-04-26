@@ -178,11 +178,12 @@ class UserController extends Controller
     public function updatePassword(Request $request){
         $rules = array(
             'password' => 'required|confirmed',
-            'old_password' => 'required'
+            'old_password' => 'required|old_password'
         );
 
         $messages = array(
             'old_password.required' => 'Vui lòng điền mật khẩu cũ.',
+            'old_password.old_password' => 'Mật khẩu cũ không đúng.',
             'password.required' => 'Vui lòng điền mật khẩu mới.',
             'password.confirmed' => 'Mật khẩu xác nhận không khớp.'
         );

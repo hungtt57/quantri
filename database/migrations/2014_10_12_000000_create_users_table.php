@@ -21,7 +21,8 @@ class CreateUsersTable extends Migration
             $table->text('address')->nullable();
             $table->string('avatar')->nullable();
             $table->text('bio')->nullable();
-            $table->dateTime('last_login')->nullable();
+            $table->timestamp('last_login')->nullable();
+            $table->string('last_login_ip')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

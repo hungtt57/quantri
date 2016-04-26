@@ -3,20 +3,22 @@
 namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Carbon\Carbon;
 
 class User extends Authenticatable
 {
     protected $fillable = [
-        'full_name', 'email', 'password', 'phone', 'address', 'bio', 'avatar',
+        'full_name', 'email', 'password', 'phone', 'address', 'bio', 'avatar', 'last_login'
     ];
 
     protected $hidden = [
         'password', 'remember_token',
     ];
 
-    /**
-     * The roles that belong to the user.
-     */
+    protected $dates = ['created_at', 'updated_at', 'last_login'];
+
+    //protected $dateFormat = 'Y-m-d H:i:s';
+
     public function roles(){
         return $this->belongsToMany('App\Role', 'role_user', 'user_id', 'role_id');
     }
@@ -27,14 +29,6 @@ class User extends Authenticatable
         }
         return !! $role->intersect($this->roles)->count();
     }
-
-    // Ham nay chay bi loi quan he trong CSDL, thay the bang ham assignRole()
-    // public function assign($role){
-    //     if(is_string($role)){
-    //         return $this->roles()->save(Role::whereName($role)->firstOrFail());
-    //     }
-    //     return $this->roles()->save($role);
-    // }
 
     public function assignRole(Role $role){
         return $this->roles()->attach($role->id);

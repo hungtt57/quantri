@@ -145,15 +145,17 @@ Hồ sơ của bạn
 	    </div>
 	  </div>
 	  <div class="form-group">
-	    <label class="control-label col-md-3" for="role">Thời điểm đăng nhập gần nhất:</label>
+	    <label class="control-label col-md-3" for="role">Đăng nhập gần nhất:</label>
 	    <div class="col-md-6">
-	    
+	    	{{ Auth::user()->last_login->format('H:i d/m/Y') }} ({!!
+                        \Carbon\Carbon::createFromTimeStamp(strtotime(Auth::user()->last_login))->diffForHumans()
+                    !!})
 	    </div>
 	  </div>
 	  <div class="form-group">
 	    <label class="control-label col-md-3" for="role">Thời điểm tài khoản được tạo:</label>
 	    <div class="col-md-6">
-	    	{{ Auth::user()->created_at }}
+	    	{{ Auth::user()->created_at->format('H:i d/m/Y') }}
 	    </div>
 	  </div>
 	  <div class="form-group">
