@@ -39,9 +39,12 @@ Route::group(['middleware' => 'auth'], function(){
     // Setting 
     Route::get('general', ['as' => 'SettingController.general.show', 'uses' => 'SettingController@showGeneral']);
     Route::post('general', ['as' => 'SettingController.general.update', 'uses' => 'SettingController@updateGeneral']);
-    Route::get('setting', ['as' => 'SettingController.index', 'uses' => 'SettingController@index']);
-    Route::get('setting/group', ['as' => 'SettingController.groupIndex', 'uses' => 'SettingController@groupIndex']);
-    Route::get('setting/group/add', ['as' => 'SettingController.groupAdd', 'uses' => 'SettingController@groupAdd']);
-    Route::post('setting/group/add', ['as' => 'SettingController.groupStore', 'uses' => 'SettingController@groupStore']);
+    Route::group(['prefix' => 'setting'], function () {
+	    Route::get('/', ['as' => 'SettingController.index', 'uses' => 'SettingController@index']);
+	    Route::get('group', ['as' => 'SettingController.group.index', 'uses' => 'SettingController@groupIndex']);
+	    Route::get('group/add', ['as' => 'SettingController.group.add', 'uses' => 'SettingController@groupAdd']);
+	    Route::post('group/add', ['as' => 'SettingController.group.store', 'uses' => 'SettingController@groupStore']);
+	});
+
 });
 //});

@@ -20,7 +20,7 @@ class CreateSettingsTable extends Migration
             $table->integer('type_id')->unsigned();
             $table->foreign('type_id')
                     ->references('id')
-                    ->on('setting_groups')
+                    ->on('group_settings')
                     ->onDelete('cascade');
             //$table->integer('autoload')->default(1);
             $table->timestamps();

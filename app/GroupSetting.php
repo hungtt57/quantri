@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class SettingGroup extends Model
+class GroupSetting extends Model
 {
-    protected $table = 'setting_groups';
+    protected $table = 'group_settings';
     
     protected $fillable = array('parent_id', 'key', 'name', 'description');
 
@@ -14,4 +14,3 @@ class SettingGroup extends Model
     	return $this->hasMany('App\Setting');
     }
 }
-

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSettingGroupsTable extends Migration
+class CreateGroupSettingsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class CreateSettingGroupsTable extends Migration
      */
     public function up()
     {
-        Schema::create('setting_groups', function (Blueprint $table) {
+        Schema::create('group_settings', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('parent_id')->unsigned()->default(0);
             $table->string('key')->unique();
@@ -30,6 +30,6 @@ class CreateSettingGroupsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('setting_groups');
+        Schema::drop('group_settings');
     }
 }

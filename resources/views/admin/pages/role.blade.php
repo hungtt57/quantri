@@ -260,7 +260,7 @@ Quản lý phân quyền
   <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 bhoechie-tab-menu">
     <div class="list-group ">
       @foreach ($roles as $role)
-      <a  href="{{$role->id}}"  class="list-group-item text-center">
+      <a href="{{$role->id}}"  class="list-group-item text-center">
         <h4 class="fa fa-user"></h4><br/>
         <span id="rolename{{$role->id}}">{{ $role->name }}</span>
       </a>
@@ -474,7 +474,6 @@ Quản lý phân quyền
           success: function (data) {
             if(data=='oke'){
               var roleName = $('#rolename'+ role).text();
-              // alert('Cập nhật quyền thành công cho role : ' + roleName);
                 // $('#roleAlert').append('<div class="text-center alert alert-success"><button id="closeUserAlert" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><h4>Cập nhật quyền thành công cho role : '+ roleName +'</h4></div>');
                 toastr.success('Cập nhật quyền thành công cho role ' + roleName);
               }

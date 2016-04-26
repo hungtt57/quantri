@@ -10,8 +10,8 @@ class Setting extends Model
         'key', 'value', 'description', 'type_id'
     ];
 
-    public function setting_group()
+    public function groupSetting()
     {
-        return $this->belongsTo('App\Setting_Group');
+        return $this->belongsTo('App\GroupSetting');
     }
 }

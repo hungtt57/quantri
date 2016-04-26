@@ -1,7 +1,7 @@
 @extends('admin.layout.master')
 
 @section('title')
-Cài đặt
+Thêm nhóm cài đặt
 @endsection
 @section('css')
 <link rel="stylesheet" href="{{  url('public/admin/plugins/datatables/css/dataTables.bootstrap.css') }}">
@@ -19,7 +19,7 @@ Cài đặt
 @section('content')
 <div class="row">
 	<div class="col-lg-12">
-		<h1 class="page-header">Thêm mới nhóm thiết lập</h1>
+		<h1 class="page-header">Thêm nhóm cài đặt</h1>
 	</div>
 	<div class="col-xs-12 col-sm-9 col-md-8 col-lg-7 ">
 		<form class="form-horizontal" method="post" action="{{asset('/setting/group/add')}}" enctype="multipart/form-data">
@@ -58,8 +58,8 @@ Cài đặt
 				</div>
 			</div>
 			<div class="center">
-		    <a href="{{asset('setting/group')}}" class="btn btn-sm btn-cancel">Cancel</a>&nbsp;&nbsp;
-		    <button type="submit" id="frm_SettingGroup_save" class="btn btn-sm btn-info"><i class="icon-ok bigger-110"></i> Save &amp; Close</button>  
+		    <a href="{{asset('setting/group')}}" class="btn btn-cancel">Hủy</a>&nbsp;&nbsp;
+		    <button type="submit" id="frm_SettingGroup_save" class="btn btn-info"><i class="icon-ok bigger-110"></i> Thêm &amp; Đóng</button>  
 		    </div>
 		</form>
 
@@ -67,4 +67,3 @@ Cài đặt
 </div>
 <!-- /.row -->
 @endsection
-

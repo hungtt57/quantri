@@ -8,11 +8,14 @@ use App\Role;
 use File;
 use Image;
 use App\Setting;
-use App\SettingGroup;
+use App\GroupSetting;
+
 class SettingController extends Controller
 {
-  public function index(){
-    return view('admin.pages.setting', array('menuActive' => 'setting'));
+  public function index($key = null){
+    $groups = GroupSetting::where('parent_id', 0)->orderBy('order', 'ASC')->get();
+    
+    return view('admin.pages.setting.index', array('groups' => $groups, 'menuActive' => 'setting'));
   }
    
   public function showGeneral(){
@@ -22,7 +25,6 @@ class SettingController extends Controller
 
   public function updateGeneral(Request $request){
      $arraySetting = config('setting');
-
 
      $default_role_name = $request->default_role;
      $date_format = $request->date_format;
@@ -43,8 +45,6 @@ class SettingController extends Controller
          $arraySetting['lang'] = $lang;
      }
      
-
-
      $logo=$request->file('logo');
      if($logo){
         $filename = 'logo'.'.' . $logo->getClientOriginalExtension();
@@ -62,17 +62,16 @@ class SettingController extends Controller
   }
 
   public function groupIndex(){
-    return view('admin/setting/group');
+    return view('admin.pages.setting.group.index');
   }
 
   public function groupAdd(){
-    return view('admin/setting/groupAdd');
+    return view('admin.pages.setting.group.add');
   }
 
   public function groupStore(Request $request){
-           $group = SettingGroup::create($request->all());
-           return redirect('setting/group');
+    $group = SettingGroup::create($request->all());
+    return redirect('setting/group');
   }
-
-  
+ 
 }
