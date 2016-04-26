@@ -62,15 +62,15 @@
             </li>
             @endcan
             <li>
-
-                 <a href="#"><i class="fa fa-user"></i> Cài đặt<span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-user"></i> Cài đặt<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                         <a href="{{ url('setting-general') }}">Chung</a>
+                         <a href="{{ url('general') }}">Chung</a>
                     </li>
-                   
+                    <li>
+                         <a href="{{ url('setting') }}">Quản lý cài đặt</a>
+                    </li>
                 </ul>
-
             </li>
         </ul>
     </div>

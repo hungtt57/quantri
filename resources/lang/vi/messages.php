@@ -14,7 +14,4 @@ return [
     'SettingController' => 'Quản lý cài đặt',
     'showGeneral' => 'Xem cài đặt chung',
     'updateGeneral' =>'Sửa cài đặt chung'
-    
 ];
-
- ?>
