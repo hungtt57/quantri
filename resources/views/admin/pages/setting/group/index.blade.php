@@ -6,7 +6,7 @@ Quản lý nhóm cài đặt
 
 @section('css')
 <!-- DataTables -->
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="{{  url('public/admin/plugins/datatables/css/dataTables.bootstrap.css') }}">
 @endsection
 
 @section('content')
@@ -14,11 +14,18 @@ Quản lý nhóm cài đặt
 	<div class="col-lg-12">
 		<h1 class="page-header">Nhóm cài đặt</h1>
 	</div>
+	<div class="col-lg-offset-3 col-lg-6">
+    @if (Session::has('flash_message'))
+        <div id="flash_message" class="text-center alert alert-{!! Session::get('message_level') !!}"><i class="icon fa fa-{!! Session::get('message_icon') !!}"></i> 
+        {!! Session::get('flash_message') !!}
+        </div>
+    @endif
+    </div>
 	<div class="col-xs-12 no-padding-left no-padding-right">
 		<div class="row">
 			<div class="col-xs-12 col-sm-9 col-lg-10">
 				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/group/add') }}"><i class="fa fa-plus" aria-hidden="true"></i> Thêm nhóm cài đặt</a>
-				<a class="btn btn-primary" style="margin-top:5px" href="#">Quản lý loại cài đặt</a>
+				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/type') }}">Quản lý loại cài đặt</a>
 				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting') }}">Quản lý cài đặt</a>
 			</div>
 			<div class="col-xs-12 col-sm-12 col-lg-12" >		
@@ -41,16 +48,18 @@ Quản lý nhóm cài đặt
 								</tr>
 							</tfoot>
 							<tbody>
+								@foreach($groups as $group)
 								<tr>
-									<td><a href="#"><i class="fa fa-pencil"></i></a></td>
+									<td><a href="{{ url('setting/group/edit/'.$group->id) }}"><i class="fa fa-pencil"></i></a></td>
 									<td></td>
 									<td>
-										<input type="text" class="form-control disabled" readonly="readonly" required="required" name="" id="" value="C" placeholder="Key..."/>
+										<input type="text" class="form-control disabled" readonly="readonly" required="required" name="" id="" value="{{ $group->key }}" placeholder="Key..."/>
 									</td>
-									<td style="border-right:0px, line-height: 25px;">
-										<textarea name="" class="form-control" placeholder="Value..." style="margin: 0px; overflow: hidden; word-wrap: break-word; height: 50px;width: 100%;" rows="1" cols="30" id="">false</textarea>
+									<td>
+										<textarea name="" class="form-control" placeholder="Value..." style="word-wrap: break-word; width: 100%;" rows="2" cols="30" id="">{{ $group->name }}</textarea>
 									</td>
 								</tr>
+								@endforeach
 							</tbody>
 						</table>
 					</div>
@@ -121,6 +130,8 @@ Quản lý nhóm cài đặt
 	        } );
 	    } ).draw();
 	} );
+
+	$('#flash_message').delay(3000).slideUp();
 </script>
 <!-- DataTables -->
 <script src="{{  url('public/admin/plugins/datatables/js/jquery.dataTables.min.js') }}"></script>

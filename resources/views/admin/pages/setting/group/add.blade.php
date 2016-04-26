@@ -6,63 +6,72 @@ Thêm nhóm cài đặt
 @section('css')
 <link rel="stylesheet" href="{{  url('public/admin/plugins/datatables/css/dataTables.bootstrap.css') }}">
 <style type="text/css">
-	.btn-cancel{
-	background-color: #abbac3!important;
-    border-color: #abbac3;
-    color: #fff;
-	}
-	.center{
-		    text-align: center!important;
-	}
+.btn-cancel{
+background-color: #abbac3!important;
+border-color: #abbac3;
+color: #fff;
+}
+.center{
+	    text-align: center!important;
+}
 </style>
 @endsection
+
 @section('content')
 <div class="row">
 	<div class="col-lg-12">
 		<h1 class="page-header">Thêm nhóm cài đặt</h1>
 	</div>
 	<div class="col-xs-12 col-sm-9 col-md-8 col-lg-7 ">
-		<form class="form-horizontal" method="post" action="{{asset('/setting/group/add')}}" enctype="multipart/form-data">
+		<form class="form-horizontal" method="POST" action="{{ url('setting/group/add') }}">
 			<input type="hidden" name="_token" value="{{ csrf_token() }}">
-
-			<div class="form-group required">
-				<label for="SettingGroupKey" class="col-xs-12 col-sm-3 control-label no-padding-right">Key</label>
-				<div class="col-xs-12 col-sm-9">
-					<input name="key" isbridge="1" class="form-control" maxlength="50" type="text" id="SettingGroupKey" required="required">
-				</div>
-			</div>
-			<div class="form-group required">
-				<label for="SettingGroupKey" class="col-xs-12 col-sm-3 control-label no-padding-right">Name</label>
-				<div class="col-xs-12 col-sm-9">
-					<input name="name" isbridge="1" class="form-control" maxlength="50" type="text" id="SettingGroupKey" required="required">
-				</div>
-			</div>
-
 			<div class="form-group">
-				<label for="SettingGroupDescription" class="col-xs-12 col-sm-3 control-label no-padding-right">Description</label>
+				<label for="groupSettingKey" class="col-xs-12 col-sm-3 control-label no-padding-right">Key</label>
 				<div class="col-xs-12 col-sm-9">
-					<textarea name="description" class="form-control" isbridge="1" cols="30" rows="6" id="SettingGroupDescription"></textarea>
+					<input name="key" class="form-control" type="text" id="groupSettingKey" value="{{ old('key') }}">
+					@if ($errors->has('key'))
+			        <div class="alert alert-danger fade in">
+			        <a href="#" class="close" data-dismiss="alert" aria-label="close" title="Tắt">&times;</a>
+			        <strong>{{ $errors->first('key') }}</strong>
+			        </div>
+			        @endif
 				</div>
 			</div>
-
-			<!-- <div class="form-group required">
-				<label for="SettingGroupKey" class="col-xs-12 col-sm-3 control-label no-padding-right">System</label>
-				<div class="col-xs-12 col-sm-9">
-					<input name="data[SettingGroup][key]" isbridge="1" class="form-control" maxlength="50" type="text" id="SettingGroupKey" required="required">
-				</div>
-			</div> -->
 			<div class="form-group">
-				<label for="SettingGroupOrdernum" class="col-xs-12 col-sm-3 control-label no-padding-right">Ordernum</label>
+				<label for="groupSettingName" class="col-xs-12 col-sm-3 control-label no-padding-right">Name</label>
 				<div class="col-xs-12 col-sm-9">
-					<input name="order" isbridge="1" class="form-control" type="number" id="SettingGroupOrdernum">
+					<input name="name" class="form-control" type="text" id="groupSettingName" value="{{ old('name') }}">
+					@if ($errors->has('name'))
+			        <div class="alert alert-danger fade in">
+			        <a href="#" class="close" data-dismiss="alert" aria-label="close" title="Tắt">&times;</a>
+			        <strong>{{ $errors->first('name') }}</strong>
+			        </div>
+			        @endif
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="groupSettingDescription" class="col-xs-12 col-sm-3 control-label no-padding-right">Description</label>
+				<div class="col-xs-12 col-sm-9">
+					<textarea name="description" class="form-control" cols="30" rows="6" id="groupSettingDescription" >{{ old('description') }}</textarea>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="groupSettingOrder" class="col-xs-12 col-sm-3 control-label no-padding-right">Order</label>
+				<div class="col-xs-12 col-sm-9">
+					<input name="order" class="form-control" type="number" id="groupSettingOrder" value="{{ old('order') }}">
+					@if ($errors->has('order'))
+			        <div class="alert alert-danger fade in">
+			        <a href="#" class="close" data-dismiss="alert" aria-label="close" title="Tắt">&times;</a>
+			        <strong>{{ $errors->first('order') }}</strong>
+			        </div>
+			        @endif
 				</div>
 			</div>
 			<div class="center">
-		    <a href="{{asset('setting/group')}}" class="btn btn-cancel">Hủy</a>&nbsp;&nbsp;
-		    <button type="submit" id="frm_SettingGroup_save" class="btn btn-info"><i class="icon-ok bigger-110"></i> Thêm &amp; Đóng</button>  
+		    <a href="{{ url('setting/group') }}" class="btn btn-cancel">Hủy</a>&nbsp;&nbsp;
+		    <button type="submit" class="btn btn-info"><i class="fa fa-check"></i> Thêm &amp; Đóng</button>  
 		    </div>
 		</form>
-
 	</div>
 </div>
 <!-- /.row -->

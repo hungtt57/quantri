@@ -30,12 +30,12 @@ Cài đặt chung
 	      <p><i>Địa chỉ này chỉ sử dụng cho mục đích quản trị, chẳng hạn để gửi mail kích hoạt đăng ký, gửi thông báo đến thành viên...</i></p>
 	    </div>
 	  </div>
-	  <div class="form-group">
+	  {{-- <div class="form-group">
 	    <label class="control-label col-md-3" for="active_register">Mở/khóa đăng ký:</label>
 	    <div class="col-md-6">
 	      <input type="checkbox" id="active_register" name="active_register">
 	    </div>
-	  </div>
+	  </div> --}}
 	  <div class="form-group">
 	    <label class="control-label col-md-3" for="default_role">Role khi mới đăng ký:</label>
 	    <div class="col-md-6">

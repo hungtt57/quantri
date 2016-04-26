@@ -38,7 +38,7 @@ class UserRequest extends Request
             return [
                 'fullname' => 'required',
                 'email' => 'required|email|unique:users,email, ' . $id,
-                'password' => 'confirmed',
+                'password' => 'confirmed'
             ];
         }
         default:break;

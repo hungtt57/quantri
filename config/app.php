@@ -160,6 +160,7 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
         Pingpong\Modules\ModulesServiceProvider::class,
+        Illuminate\Html\HtmlServiceProvider::class,
     ],
 
     /*
@@ -206,9 +207,11 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
-        'Image'     => Intervention\Image\Facades\Image::class,
+        'Image' => Intervention\Image\Facades\Image::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'Module' => Pingpong\Modules\Facades\Module::class,
+        'Form'      => Illuminate\Html\FormFacade::class,
+        'View'      => Illuminate\Html\HtmlFacade::class,
     ],
 
 ];

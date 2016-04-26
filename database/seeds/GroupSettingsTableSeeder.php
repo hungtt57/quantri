@@ -33,5 +33,11 @@ class GroupSettingsTableSeeder extends Seeder
         $typeJs->name = 'Java Script';
         $typeJs->order = 3;
         $typeJs->save();
+
+        $groupOther = new GroupSetting();
+        $groupOther->key = 'other';
+        $groupOther->name = 'Other';
+        $groupOther->order = 2;
+        $groupOther->save();
     }
 }
