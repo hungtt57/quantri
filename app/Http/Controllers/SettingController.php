@@ -224,7 +224,7 @@ class SettingController extends Controller
           $group->save();
         }
       }
-
+      
       $inactiveModules = Module::getByStatus(0);
       foreach ($inactiveModules as $module) {
         $group = GroupSetting::where('key', $module->getLowerName())->first();
@@ -233,7 +233,6 @@ class SettingController extends Controller
           $group->save();
         }
       }
-
       return redirect('setting')->with(['flash_message' => 'Đã đồng bộ các module!', 'message_level' => 'success', 'message_icon' => 'check']);
     }
 }
