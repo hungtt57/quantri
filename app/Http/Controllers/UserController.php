@@ -9,7 +9,6 @@ use App\Http\Requests\UserRequest;
 use Response;
 use Auth;
 use App\Role;
-use App\Role_User;
 use Gate;
 use Validator;
 use File;
@@ -20,7 +19,7 @@ class UserController extends Controller
     public function listUser(){
         $users = User::where('id', '!=', Auth::id())->orderBy('id', 'DESC')->get();
         foreach ($users as $user) {
-            $user->roles = Role_User::rolesOfUser($user->id);
+            $user->roles = $user->roles;
         }
         return Response::json(['data' => $users]);
     }
@@ -59,7 +58,7 @@ class UserController extends Controller
             abort(403);
         }
         $user = User::findOrFail($id);
-        $user->roles = Role_User::rolesOfUser($id);
+        $user->roles = $user->roles;
         return Response::json($user);
     }
 
@@ -68,7 +67,7 @@ class UserController extends Controller
            abort(403);
         }
         $user = User::findOrFail($id);
-        $user->roles = Role_User::rolesOfUser($id);
+        $user->roles = $user->roles;
         return Response::json($user);
     }
 
@@ -124,7 +123,7 @@ class UserController extends Controller
     }
 
     public function showProfile(){
-        $roles = Role_User::rolesOfUser(Auth::id());
+        $roles = Auth::user()->roles;
         return view('admin.pages.profile', array('roles' => $roles, 'menuActive' => 'Profile'));
     }
 

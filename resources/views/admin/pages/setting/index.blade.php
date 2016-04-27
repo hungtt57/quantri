@@ -14,30 +14,51 @@ Quản lý cài đặt
 	<div class="col-lg-12">
 		<h1 class="page-header">Cài đặt</h1>
 	</div>
+	<div class="col-lg-offset-3 col-lg-6">
+    @if (Session::has('flash_message'))
+        <div id="flash_message" class="text-center alert alert-{!! Session::get('message_level') !!}"><i class="icon fa fa-{!! Session::get('message_icon') !!}"></i> 
+        {!! Session::get('flash_message') !!}
+        </div>
+    @endif
+    </div>
 	<div class="col-xs-12 no-padding-left no-padding-right">
 		<div class="row">
 			<div class="col-xs-12 col-sm-9 col-lg-10">
 				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/add') }}"><i class="fa fa-plus" aria-hidden="true"></i> Thêm cài đặt</a>
 				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/type') }}">Quản lý loại cài đặt</a>
 				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/group') }}">Quản lý nhóm cài đặt</a>
+				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/synchronous') }}" onclick='return confirm("Bạn có chắc chắn thực hiện đồng bộ?")'>Đồng bộ các module</a>
 			</div>
 			<div class="col-xs-12 col-sm-3 col-lg-2 form-group" style="padding-top:5px">
-				<select class="form-control chosen-select">
+				<select class="form-control chosen-select" onchange="location = this.value;">
 					@foreach($groups as $group)
-					<option value="{{ $group->key }}">{{ $group->name }}</option>
+					<option value="{{ url('setting/'.$group->id) }}" {{ $selectedGroup == $group->id ? 'selected' : '' }}>{{ $group->name }}</option>
 					@endforeach
 				</select>
 			</div>
 			<div class="col-xs-12 col-sm-12 col-lg-12">
 				<ul class="nav nav-tabs padding-12 background-blue">
 					@foreach($types as $type)
-					<li class="type-header"><a href="#tab_{{ $type->key }}" data-toggle="tab">{{ $type->name }}</a></li>
+					<li class="
+					@if(Session::has('selectedType'))
+					{{ Session::get('selectedType') == $type->key ? 'active' : '' }}
+					@else
+					{{ $selectedType == $type->key ? 'active' : '' }}
+					@endif
+					"><a href="#tab_{{ $type->key }}" data-toggle="tab">{{ $type->name }}</a></li>
 					@endforeach
 				</ul>
 				<div class="tab-content">
 					@foreach($types as $type)
-					<div class="tab-pane type-content" id="tab_{{ $type->key }}">
-						<form style="margin-top: 15px;">
+					<div class="tab-pane 
+					@if(Session::has('selectedType'))
+					{{ Session::get('selectedType') == $type->key ? 'active' : '' }}
+					@else
+					{{ $selectedType == $type->key ? 'active' : '' }}
+					@endif
+					" id="tab_{{ $type->key }}">
+						<form style="margin-top: 15px;" method="POST" action="{{ url('setting/updateAll') }}">
+							<input type="hidden" name="_token" value="{{ csrf_token() }}">
 							<div >
 								<table id="{{ $type->key }}List" class="table table-striped table-bordered table-hover" cellspacing="0" width="100%">
 									<thead>
@@ -56,16 +77,19 @@ Quản lý cài đặt
 										</tr>
 									</tfoot>
 										<tbody>
+											@foreach($type->settings as $setting)
 											<tr>
-												<td><a href="#"><i class="fa fa-pencil"></i></a></td>
+												<td><a href="{{ url('setting/edit/'.$setting->id) }}"><i class="fa fa-pencil"></i></a></td>
 												<td></td>
 												<td>
-													<input type="text" class="form-control disabled" readonly="readonly" required="required" name="" id="" value="{{ $type->key }}" placeholder="Key..."/>
+													<input type="text" class="form-control disabled" readonly="readonly" required="required" name="key[]" id="" value="{{ $setting->key }}" placeholder="Key..."/>
 												</td>
 												<td>
-													<textarea name="" class="form-control" placeholder="Value..." style="word-wrap: break-word; width: 100%;" rows="2" cols="30" id="">{{ $type->name }}</textarea>
+													<textarea name="value[]" class="form-control" placeholder="Value..." style="word-wrap: break-word; width: 100%;" rows="2" cols="30" id="" required="required">{{ $setting->value }}</textarea>
+													<input type="hidden" name="id[]" value="{{ $setting->id }}" />
 												</td>
 											</tr>	
+											@endforeach
 										</tbody>
 								</table>
 							</div>
@@ -82,9 +106,6 @@ Quản lý cài đặt
 
 @section('js')
 <script type="text/javascript">
-	$(".type-header:first-child").addClass("active");
-    $(".type-content:first-child").addClass("active");
-
 	$(document).ready(function() {
 		// Lay ra mang cac id cua cac table
 		var tables = $(".table").map(function(){
@@ -155,6 +176,8 @@ Quản lý cài đặt
 		    } ).draw();
         });
 	});
+	
+	$('#flash_message').delay(3000).slideUp();
 </script>
 <!-- DataTables -->
 <script src="{{  url('public/admin/plugins/datatables/js/jquery.dataTables.min.js') }}"></script>

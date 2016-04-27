@@ -11,9 +11,7 @@ Route::get('auth/facebook', ['as' => 'Not.AuthController.redirectFacebook', 'use
 Route::get('auth/facebook/callback', ['as' => 'Not.AuthController.handleFacebook', 'uses' => 'Auth\AuthController@handleProviderCallback']);
 
 Route::group(['middleware' => 'auth'], function(){
-	Route::get('/', ['as' => 'Not.HomeController.dashboard', function(){
-		return view('admin.pages.dashboard');
-	}]);
+	Route::get('/', ['as' => 'Not.HomeController.dashboard', 'uses' => 'HomeController@index']);
 
 	//Role management
 	Route::get('role', ['as' => 'RoleController.index', 'uses' => 'RoleController@index']);
@@ -40,23 +38,28 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('general', ['as' => 'SettingController.general.show', 'uses' => 'SettingController@showGeneral']);
     Route::post('general', ['as' => 'SettingController.general.update', 'uses' => 'SettingController@updateGeneral']);
     Route::group(['prefix' => 'setting'], function () {
-	    Route::get('/', ['as' => 'SettingController.index', 'uses' => 'SettingController@index']);
+	    Route::get('{id?}', ['as' => 'SettingController.index', 'uses' => 'SettingController@index'])->where(['id' => '[0-9]+']);
 	    Route::get('add', ['as' => 'SettingController.add', 'uses' => 'SettingController@add']);
 	    Route::post('add', ['as' => 'SettingController.store', 'uses' => 'SettingController@store']);
 	    Route::get('edit/{id}', ['as' => 'SettingController.edit', 'uses' => 'SettingController@edit']);
 	    Route::patch('update/{id}', ['as' => 'SettingController.update', 'uses' => 'SettingController@update']);
+	    Route::post('updateAll', ['as' => 'SettingController.updateAll', 'uses' => 'SettingController@updateAll']);
 
 	    Route::get('group', ['as' => 'SettingController.group.index', 'uses' => 'SettingController@groupIndex']);
 	    Route::get('group/add', ['as' => 'SettingController.group.add', 'uses' => 'SettingController@groupAdd']);
 	    Route::post('group/add', ['as' => 'SettingController.group.store', 'uses' => 'SettingController@groupStore']);
 	    Route::get('group/edit/{id}', ['as' => 'SettingController.group.edit', 'uses' => 'SettingController@groupEdit']);
 	    Route::patch('group/update/{id}', ['as' => 'SettingController.group.update', 'uses' => 'SettingController@groupUpdate']);
+	    Route::post('group/updateAll', ['as' => 'SettingController.group.updateAll', 'uses' => 'SettingController@groupUpdateAll']);
 
-	    Route::get('type', ['as' => 'SettingController.type.index', 'uses' => 'SettingController@typeIndex']);
+	    Route::get('type/{id?}', ['as' => 'SettingController.type.index', 'uses' => 'SettingController@typeIndex'])->where(['id' => '[0-9]+']);
 	    Route::get('type/add', ['as' => 'SettingController.type.add', 'uses' => 'SettingController@typeAdd']);
 	    Route::post('type/add', ['as' => 'SettingController.type.store', 'uses' => 'SettingController@typeStore']);
 	    Route::get('type/edit/{id}', ['as' => 'SettingController.type.edit', 'uses' => 'SettingController@typeEdit']);
 	    Route::patch('type/update/{id}', ['as' => 'SettingController.type.update', 'uses' => 'SettingController@typeUpdate']);
+	    Route::post('type/updateAll', ['as' => 'SettingController.type.updateAll', 'uses' => 'SettingController@typeUpdateAll']);
+
+	    Route::get('synchronous', ['as' => 'SettingController.synchronous', 'uses' => 'SettingController@synchronous']);
 	});
 
 });

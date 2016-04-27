@@ -13,6 +13,12 @@ class GroupSettingsTableSeeder extends Seeder
         $groupSystem->order = 1;
         $groupSystem->save();
 
+        $groupOther = new GroupSetting();
+        $groupOther->key = 'other';
+        $groupOther->name = 'Other';
+        $groupOther->order = 2;
+        $groupOther->save();
+
         $typeApp = new GroupSetting();
         $typeApp->parent_id = 1;
         $typeApp->key = 'app';
@@ -26,18 +32,12 @@ class GroupSettingsTableSeeder extends Seeder
         $typeCss->name = 'CSS';
         $typeCss->order = 2;
         $typeCss->save();
-
+        
         $typeJs = new GroupSetting();
         $typeJs->parent_id = 1;
         $typeJs->key = 'javascript';
         $typeJs->name = 'Java Script';
         $typeJs->order = 3;
         $typeJs->save();
-
-        $groupOther = new GroupSetting();
-        $groupOther->key = 'other';
-        $groupOther->name = 'Other';
-        $groupOther->order = 2;
-        $groupOther->save();
     }
 }

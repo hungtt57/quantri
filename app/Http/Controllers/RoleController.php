@@ -6,7 +6,6 @@ use App\Http\Requests;
 use App\Role;
 use App\Http\Requests\RoleRequest;
 use Response;
-use App\Permission_Role;
 use App\Permission;
 use Route;
 use Session;
@@ -17,9 +16,8 @@ class RoleController extends Controller
 	  public function index(){
         $roles = Role::all();
         $role_first = Role::first();
-        $role_permission = Permission_Role::permissionsOfRole($role_first->id);
+        $role_permission = $role_first->permissions;
         $permissions = Permission::all();
-       
         return view('admin.pages.role', array('roles' => $roles, 'menuActive' => 'role','role_permission' => $role_permission,'permissions' => $permissions));
     }
 
@@ -29,7 +27,8 @@ class RoleController extends Controller
     }
 
     public function synchronous(){
-      $update = Permission::updateAll(); // update lai active permission về 0
+      // Update lai active permission về 0
+      $update = Permission::updateAll();
       $routes= Route::getRoutes();
    
       foreach ($routes as $value) {
@@ -40,15 +39,18 @@ class RoleController extends Controller
           $method = $array[1];
 
           $permission= Permission::where('name','=',$permissionName)->first();
-            if($controller=='Not'){
-                continue;
-            } //ko tao permission vs dashboard va auth
+
+          //Khong tao permission vs dashboard va auth
+          if($controller == 'Not'){
+              continue;
+          } 
 
           if($permission){ 
-            //Da co permission tương ứng controller
+            //Da co permission tương ứng voi controller
             $permission->label= trans('messages.'.$method);
+            //Update lai gia tri active thanh 1
             $permission->active='1';
-            $permission->save(); //update lai gia tri active thanh 1
+            $permission->save();
             continue;
           }else{ 
                 // Chua co permission
@@ -61,7 +63,8 @@ class RoleController extends Controller
                    $newPermission->active='1';
                    $newPermission->save();
                  
-                }else{ // chưa có controller cha;
+                }else{ 
+                    // Chưa có controller cha
                     $permissionParent = new Permission;
                     $permissionParent->name = $controller;
                     $permissionParent->parent_id = '0';
@@ -79,14 +82,14 @@ class RoleController extends Controller
           }
         }
       Permission::where('active', 0)->delete();
-      return redirect('role')->with('messages', 'Đồng bộ thành công!!');
+      return redirect('role')->with('messages', 'Đồng bộ thành công!');
     }
 
     public function destroy($id){
-      $role=Role::find($id);
+      $role = Role::find($id);
       $name = $role->name;
       $role->delete();
-      return redirect('role')->with('messages', 'Xóa quyền '.$name.' thành công!!');
+      return redirect('role')->with('messages', 'Đã xóa quyền '.$name.'!');
     }
 
     public function updatePermission(){
@@ -95,13 +98,11 @@ class RoleController extends Controller
             $id = explode(',',$data);
             $role_id = $id[0];
             
-            Permission_Role::where('role_id',$role_id)->delete();
+            $role = Role::findOrFail($role_id);
+            $role->removeAllPermissions();
 
-            for($i = 1 ;$i < sizeof($id);$i++){
-                   $permission_role = new Permission_Role();
-                   $permission_role->role_id = $role_id;
-                   $permission_role->permission_id = $id[$i];
-                   $permission_role->save();
+            for($i = 1; $i < sizeof($id); $i++){
+              $role->assignPermission(Permission::findOrFail($id[$i]));
             } 
             return 'oke';    
         } 

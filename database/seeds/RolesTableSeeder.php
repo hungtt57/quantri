@@ -2,53 +2,43 @@
 
 use Illuminate\Database\Seeder;
 use App\Role;
-use App\Permission_Role;
 use App\Permission;
-use App\Role_User;
 use App\User;
 
 class RolesTableSeeder extends Seeder
 {
     public function run()
     {
-        DB::table('roles')->insert([
-            'name' => 'Default'
-        ]);
+        $defaultRole = new Role();
+        $defaultRole->name = "Default";
+        $defaultRole->save();
 
-        DB::table('roles')->insert([
-            'name' => 'Admin'
-        ]);
+        $adminRole = new Role();
+        $adminRole->name = "Admin";
+        $adminRole->save();
+
+        $permissionManagement = new Permission();
+        $permissionManagement->name = "RoleController";
+        $permissionManagement->label = "Quản lý quyền";
+        $permissionManagement->save();
        
-        $permission = new Permission;
-        $permission->name = 'RoleController';
-        $permission->label= 'Quản lý quyền';
-        $permission->save();
+        $listPermission = new Permission();
+        $listPermission->name = "RoleController.index";
+        $listPermission->label = "Danh sách";
+        $listPermission->parent_id = $permissionManagement->id;
+        $listPermission->save();
 
-        $new = new Permission;
-        $new->name = 'RoleController.index';
-        $new->label = 'Danh sách';
-        $new->parent_id = $permission->id;
-        $new->save();
+        $syncPermission = new Permission();
+        $syncPermission->name = "RoleController.synchronous";
+        $syncPermission->label = "Đồng bộ quyền";
+        $syncPermission->parent_id = $permissionManagement->id;
+        $syncPermission->save();
 
-        $new1 = new Permission;
-        $new1->name = 'RoleController.synchronous';
-        $new1->label = 'Đồng bộ quyền';
-        $new1->parent_id = $permission->id;
-        $new1->save();
+        $adminRole->assignPermission($listPermission);
+        $adminRole->assignPermission($syncPermission);
 
-        $permission_role = new Permission_Role;
-        $permission_role->role_id = Role::where('name','=','Admin')->first()->id;
-        $permission_role->permission_id = Permission::where('name','=','RoleController.index')->first()->id;
-        $permission_role->save();
-
-        $user_role = new Role_User;
-        $user_role->role_id = Role::where('name','=','Admin')->first()->id;
-        $user_role->user_id = User::first()->id;
-        $user_role->save();
-
-        $permission_role = new Permission_Role;
-        $permission_role->role_id = Role::where('name','=','Admin')->first()->id;
-        $permission_role->permission_id = Permission::where('name','=','RoleController.synchronous')->first()->id;
-        $permission_role->save();
+        $firstUser = User::first();
+        $firstUser->assignRole($defaultRole);
+        $firstUser->assignRole($adminRole);
     }
 }

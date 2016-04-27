@@ -27,9 +27,11 @@ Quản lý nhóm cài đặt
 				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/group/add') }}"><i class="fa fa-plus" aria-hidden="true"></i> Thêm nhóm cài đặt</a>
 				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/type') }}">Quản lý loại cài đặt</a>
 				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting') }}">Quản lý cài đặt</a>
+				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/synchronous') }}" onclick='return confirm("Bạn có chắc chắn thực hiện đồng bộ?")'>Đồng bộ các module</a>
 			</div>
 			<div class="col-xs-12 col-sm-12 col-lg-12" >		
-				<form style="margin-top: 15px;">
+				<form style="margin-top: 15px;" method="POST" action="{{ url('setting/group/updateAll') }}">
+					<input type="hidden" name="_token" value="{{ csrf_token() }}">
 					<div >
 						<table id="groupSettingList" class="table table-striped table-bordered table-hover" cellspacing="0" width="100%">
 							<thead>
@@ -37,7 +39,7 @@ Quản lý nhóm cài đặt
 									<th></th>
 									<th>#</th>
 									<th>Key</th>
-									<th>Value</th>
+									<th>Name</th>
 								</tr>
 							</thead>
 							<tfoot>
@@ -53,10 +55,11 @@ Quản lý nhóm cài đặt
 									<td><a href="{{ url('setting/group/edit/'.$group->id) }}"><i class="fa fa-pencil"></i></a></td>
 									<td></td>
 									<td>
-										<input type="text" class="form-control disabled" readonly="readonly" required="required" name="" id="" value="{{ $group->key }}" placeholder="Key..."/>
+										<input type="text" class="form-control disabled" readonly="readonly" required="required" name="key[]" id="" value="{{ $group->key }}" placeholder="Key..."/>
 									</td>
 									<td>
-										<textarea name="" class="form-control" placeholder="Value..." style="word-wrap: break-word; width: 100%;" rows="2" cols="30" id="">{{ $group->name }}</textarea>
+										<textarea name="name[]" class="form-control" placeholder="Value..." style="word-wrap: break-word; width: 100%;" rows="2" cols="30" id="" required="required">{{ $group->name }}</textarea>
+										<input type="hidden" name="id[]" value="{{ $group->id }}" />
 									</td>
 								</tr>
 								@endforeach

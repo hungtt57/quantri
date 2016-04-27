@@ -38,7 +38,7 @@ class User extends Authenticatable
         return $this->roles()->detach($role->id);
     }
 
-    public function removeAllRole(){
+    public function removeAllRoles(){
         return $this->roles()->detach();
     }
 

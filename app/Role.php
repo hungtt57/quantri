@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Permission;
+
 class Role extends Model
 {
 	  protected $fillable = [
@@ -11,18 +12,23 @@ class Role extends Model
     ];
 
     public function permissions(){
-    	return $this->hasMany('App\Permission');
+    	return $this->belongsToMany('App\Permission');
     }
 
-    /**
-     * The users that belong to the role.
-     */
     public function users()
     {
         return $this->belongsToMany('App\User');
     }
 
-  	public function assign(Permission $permission){
-  		return $this->permissions()->save($permission);
-  	}
+    public function assignPermission(Permission $permission){
+        return $this->permissions()->attach($permission->id);
+    }
+
+    public function removePermission(Permission $permission){
+        return $this->permissions()->detach($permission->id);
+    }
+
+    public function removeAllPermissions(){
+        return $this->permissions()->detach();
+    }
 }

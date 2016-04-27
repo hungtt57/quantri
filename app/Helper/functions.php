@@ -9,18 +9,41 @@ function role_select($data, $select_name=""){
 		}
 	}
 }
+
+function group_select($data, $select_id=0){
+	foreach ($data as $value) {
+		$id = $value->id;
+		$name = $value->name;
+		if($select_id != 0 && $id == $select_id) {
+			echo "<option value='$id' selected='selected'>$name</option>";
+		} else {
+			echo "<option value='$id'>$name</option>";
+		}
+	}
+}
+
+function type_select($data, $parent_id=0, $str="", $select_id=0, $disabled="disabled"){
+	foreach ($data as $value) {
+		$id = $value->id;
+		$name = $value->name;
+		if($value->parent_id == $parent_id) {
+			if($select_id != 0 && $id == $select_id) {
+				echo "<option value='$id' selected='selected' $disabled>$str"."$name</option>";
+			} else {
+				echo "<option value='$id' $disabled>$str"."$name</option>";
+			}
+			type_select($data, $id, $str."&nbsp;&nbsp;&nbsp;&nbsp;", $select_id, "");
+		}
+	}
+}
+
 function check_format($type,$value){
 	if($value==config('setting.'.$type)){
-		
 		return 'checked';
 	}
 }
 
-
-
-
 function get_timezone_list(){
-
 	$timezone= timezone_list();
 
 	foreach ($timezone as $key => $value) {
@@ -28,13 +51,11 @@ function get_timezone_list(){
 			echo "<option value='$key' selected='selected'>$value</option>";
 		} else {
 			echo "<option value='$key'>$value</option>";
-		}
-		
+		}	
 	}
 }
 
-
-// get list time zone php
+// Get list time zone
 function timezone_list() {
     static $timezones = null;
 
@@ -51,7 +72,6 @@ function timezone_list() {
 
         array_multisort($offsets, $timezones);
     }
-
     return $timezones;
 }
 
@@ -67,5 +87,5 @@ function format_timezone_name($name) {
     $name = str_replace('St ', 'St. ', $name);
     return $name;
 }
-// end get list timezone php
+// End get list timezone
 ?>

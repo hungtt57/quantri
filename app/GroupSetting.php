@@ -11,6 +11,6 @@ class GroupSetting extends Model
     protected $fillable = array('parent_id', 'key', 'name', 'description', 'order');
 
     public function settings(){
-    	return $this->hasMany('App\Setting');
+    	return $this->hasMany('App\Setting', 'type_id', 'id');
     }
 }

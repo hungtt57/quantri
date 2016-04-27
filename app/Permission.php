@@ -8,7 +8,7 @@ use DB;
 class Permission extends Model
 {
     public function roles(){
-    	return $this->belongsToMany('App\Role');
+    	return $this->belongsToMany('App\Role', 'permission_role', 'permission_id', 'role_id');
     }
     
     public static function updateAll(){
