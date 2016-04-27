@@ -19,6 +19,7 @@ class CreateGroupSettingsTable extends Migration
             $table->string('name');
             $table->text('description');
             $table->integer('order');
+            $table->boolean('visible')->default(1);
             $table->timestamps();
         });
     }

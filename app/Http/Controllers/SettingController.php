@@ -18,11 +18,11 @@ use Module;
 class SettingController extends Controller
 {
     public function index($id = null){
-      $groups = GroupSetting::where('parent_id', 0)->orderBy('order', 'ASC')->get();
+      $groups = GroupSetting::where('parent_id', 0)->where('visible', 1)->orderBy('order', 'ASC')->get();
       if($id) {
         $types = GroupSetting::where('parent_id', $id)->orderBy('order', 'ASC')->get();
       } else {
-        $minGroupOrder = GroupSetting::where('parent_id', 0)->min('order');
+        $minGroupOrder = GroupSetting::where('parent_id', 0)->where('visible', 1)->min('order');
         $firstGroup = GroupSetting::where('parent_id', 0)->where('order', $minGroupOrder)->first();
         $types = GroupSetting::where('parent_id', $firstGroup->id)->orderBy('order', 'ASC')->get();
       }
@@ -35,7 +35,7 @@ class SettingController extends Controller
     }
 
     public function add(){
-      $groups = GroupSetting::all();
+      $groups = GroupSetting::where('visible', 1)->get();
       return view('admin.pages.setting.add', array('groups' => $groups ,'menuActive' => 'setting'));
     }
 
@@ -47,7 +47,7 @@ class SettingController extends Controller
 
     public function edit($id){
       $setting = Setting::findOrFail($id);
-      $groups = GroupSetting::all();
+      $groups = GroupSetting::where('visible', 1)->get();
       return view('admin.pages.setting.edit', array('setting' => $setting, 'groups' => $groups, 'menuActive' => 'setting'));
     }
 
@@ -119,7 +119,7 @@ class SettingController extends Controller
     }
 
     public function groupIndex(){
-      $groups = GroupSetting::where('parent_id', 0)->orderBy('order', 'ASC')->get();
+      $groups = GroupSetting::where('parent_id', 0)->where('visible', 1)->orderBy('order', 'ASC')->get();
       return view('admin.pages.setting.group.index', array('groups' => $groups, 'menuActive' => 'setting'));
     }
 
@@ -160,11 +160,11 @@ class SettingController extends Controller
     }
 
     public function typeIndex($id = null){
-      $groups = GroupSetting::where('parent_id', 0)->orderBy('order', 'ASC')->get();
+      $groups = GroupSetting::where('parent_id', 0)->where('visible', 1)->orderBy('order', 'ASC')->get();
       if($id) {
         $types = GroupSetting::where('parent_id', $id)->orderBy('order', 'ASC')->get();
       } else {
-        $minGroupOrder = GroupSetting::where('parent_id', 0)->min('order');
+        $minGroupOrder = GroupSetting::where('parent_id', 0)->where('visible', 1)->min('order');
         $firstGroup = GroupSetting::where('parent_id', 0)->where('order', $minGroupOrder)->first();
         $types = GroupSetting::where('parent_id', $firstGroup->id)->orderBy('order', 'ASC')->get();
       }
@@ -172,7 +172,7 @@ class SettingController extends Controller
     }
 
     public function typeAdd(){
-      $groups = GroupSetting::where('parent_id', 0)->orderBy('order', 'ASC')->get();
+      $groups = GroupSetting::where('parent_id', 0)->where('visible', 1)->orderBy('order', 'ASC')->get();
       return view('admin.pages.setting.type.add', array('groups' => $groups ,'menuActive' => 'setting'));
     }
 
@@ -183,7 +183,7 @@ class SettingController extends Controller
 
     public function typeEdit($id){
       $type = GroupSetting::findOrFail($id);
-      $groups = GroupSetting::where('parent_id', 0)->orderBy('order', 'ASC')->get();
+      $groups = GroupSetting::where('parent_id', 0)->where('visible', 1)->orderBy('order', 'ASC')->get();
       return view('admin.pages.setting.type.edit', array('type' => $type, 'groups' => $groups ,'menuActive' => 'setting'));
     }
 
@@ -210,17 +210,30 @@ class SettingController extends Controller
     }
 
     public function synchronous() {
-      $modules = Module::getByStatus(1);
-      foreach ($modules as $module) {
-        $group = GroupSetting::where('key', $module->getLowerName())->get();
+      $activeModules = Module::getByStatus(1);
+      foreach ($activeModules as $module) {
+        $group = GroupSetting::where('key', $module->getLowerName())->first();
         if(count($group) == 0) {
           $group = new GroupSetting();
           $group->key = $module->getLowerName();
           $group->name = $module->getStudlyName();
           $group->order = GroupSetting::where('parent_id', 0)->max('order') + 1;
           $group->save();
+        } else {
+          $group->visible = 1;
+          $group->save();
         }
       }
+
+      $inactiveModules = Module::getByStatus(0);
+      foreach ($inactiveModules as $module) {
+        $group = GroupSetting::where('key', $module->getLowerName())->first();
+        if(count($group)) {
+          $group->visible = 0;
+          $group->save();
+        }
+      }
+
       return redirect('setting')->with(['flash_message' => 'Đã đồng bộ các module!', 'message_level' => 'success', 'message_icon' => 'check']);
     }
 }
