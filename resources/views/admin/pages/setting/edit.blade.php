@@ -23,7 +23,7 @@ color: #fff;
 		<h1 class="page-header">Sửa cài đặt</h1>
 	</div>
 	<div class="col-xs-12 col-sm-9 col-md-8 col-lg-7 ">
-		{!! Form::model($setting,['method' => 'PATCH', 'class' => 'form-horizontal', 'route' => ['SettingController.update', $setting->id]]) !!}
+		{!! Form::model($setting,['method' => 'PATCH', 'class' => 'form-horizontal', 'route' => ['SettingController.updateSetting', $setting->id]]) !!}
 			<div class="form-group">
 				<label for="type_id" class="col-xs-12 col-sm-3 control-label no-padding-right">Thuộc loại</label>
 				<div class="col-xs-12 col-sm-9">

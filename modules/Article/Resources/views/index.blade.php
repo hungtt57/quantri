@@ -182,7 +182,7 @@ Quản lý bài viết
                 },
                 @if ( Gate::allows('ArticleController.show') | Gate::allows('ArticleController.edit') | Gate::allows('ArticleController.destroy') )
                 { 
-                    "defaultContent": '@can('ArticleController.show')<button class="btn btn-success open-view-article-modal"><span class="glyphicon glyphicon-eye-open"></span></button>@endcan @can('ArticleController.edit')<button class="btn btn-warning open-edit-article-modal"><span class="glyphicon glyphicon-pencil"></span></button>@endcan @can('ArticleController.destroy') <button class="btn btn-danger open-delete-article-modal"><span class="glyphicon glyphicon-trash"></span></button> @endcan', 
+                    "defaultContent": '@can('ArticleController.show')<button class="btn btn-success open-view-article-modal"><span class="glyphicon glyphicon-eye-open"></span></button>@endcan @can('ArticleController.update')<button class="btn btn-warning open-edit-article-modal"><span class="glyphicon glyphicon-pencil"></span></button>@endcan @can('ArticleController.destroy') <button class="btn btn-danger open-delete-article-modal"><span class="glyphicon glyphicon-trash"></span></button> @endcan', 
                     "visible": true, 
                     "searchable": false, 
                     "orderable": false,
@@ -466,7 +466,7 @@ Quản lý bài viết
             
             if (state == "update"){
                 type = "PATCH";
-                my_url = articleUrl + '/' + article_id;
+                my_url = articleUrl + '/edit/' + article_id;
             }
 
             $.ajax({

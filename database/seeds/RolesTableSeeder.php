@@ -24,12 +24,12 @@ class RolesTableSeeder extends Seeder
        
         $listPermission = new Permission();
         $listPermission->name = "RoleController.index";
-        $listPermission->label = "Danh sách";
+        $listPermission->label = "Xem danh sách";
         $listPermission->parent_id = $permissionManagement->id;
         $listPermission->save();
 
         $syncPermission = new Permission();
-        $syncPermission->name = "RoleController.synchronous";
+        $syncPermission->name = "RoleController.synchronousPermissions";
         $syncPermission->label = "Đồng bộ quyền";
         $syncPermission->parent_id = $permissionManagement->id;
         $syncPermission->save();

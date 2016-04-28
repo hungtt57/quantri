@@ -34,27 +34,27 @@ class SettingController extends Controller
       return view('admin.pages.setting.index', array('groups' => $groups, 'types' => $types, 'menuActive' => 'setting', 'selectedGroup' => $id));
     }
 
-    public function add(){
-      $groups = GroupSetting::where('visible', 1)->get();
-      return view('admin.pages.setting.add', array('groups' => $groups ,'menuActive' => 'setting'));
+    public function create(SettingRequest $request) {
+      if ($request->isMethod('post'))  {
+        $setting = Setting::create($request->all());
+        $type = GroupSetting::findOrFail($request->type_id);
+        return redirect('setting/'.$type->parent_id)->with(['flash_message' => 'Đã thêm cài đặt!', 'message_level' => 'success', 'message_icon' => 'check', 'selectedType' => $type->key]);
+      } else {
+        $groups = GroupSetting::where('visible', 1)->get();
+        return view('admin.pages.setting.add', array('groups' => $groups ,'menuActive' => 'setting'));
+      }
     }
 
-    public function store(SettingRequest $request){
-      $setting = Setting::create($request->all());
-      $type = GroupSetting::findOrFail($request->type_id);
-      return redirect('setting/'.$type->parent_id)->with(['flash_message' => 'Đã thêm cài đặt!', 'message_level' => 'success', 'message_icon' => 'check', 'selectedType' => $type->key]);
-    }
-
-    public function edit($id){
-      $setting = Setting::findOrFail($id);
-      $groups = GroupSetting::where('visible', 1)->get();
-      return view('admin.pages.setting.edit', array('setting' => $setting, 'groups' => $groups, 'menuActive' => 'setting'));
-    }
-
-    public function update($id, SettingRequest $request){
-      Setting::findOrFail($id)->update($request->all());
-      $type = GroupSetting::findOrFail($request->type_id);
-      return redirect('setting/'.$type->parent_id)->with(['flash_message' => 'Đã lưu cài đặt!', 'message_level' => 'success', 'message_icon' => 'check', 'selectedType' => $type->key]);
+    public function update($id, SettingRequest $request) {
+      if ($request->isMethod('patch'))  {
+        Setting::findOrFail($id)->update($request->all());
+        $type = GroupSetting::findOrFail($request->type_id);
+        return redirect('setting/'.$type->parent_id)->with(['flash_message' => 'Đã lưu cài đặt!', 'message_level' => 'success', 'message_icon' => 'check', 'selectedType' => $type->key]);
+      } else {
+        $setting = Setting::findOrFail($id);
+        $groups = GroupSetting::where('visible', 1)->get();
+        return view('admin.pages.setting.edit', array('setting' => $setting, 'groups' => $groups, 'menuActive' => 'setting'));
+      }
     }
 
     public function updateAll(Request $request){
@@ -74,14 +74,10 @@ class SettingController extends Controller
 
        return redirect('setting/'.$type->parent_id)->with(['flash_message' => 'Đã lưu loại cài đặt!', 'message_level' => 'success', 'message_icon' => 'check', 'selectedType' => $type->key]);
     }
-   
-    public function showGeneral(){
-        $roles = Role::all();
-        return view('admin.pages.setting.general', array('roles' => $roles, 'menuActive' => 'Setting General'));
-    }
 
-    public function updateGeneral(Request $request){
-       $arraySetting = config('setting');
+    public function updateGeneral(Request $request) {
+      if ($request->isMethod('post'))  {
+        $arraySetting = config('setting');
 
        $default_role_name = $request->default_role;
        $date_format = $request->date_format;
@@ -116,33 +112,37 @@ class SettingController extends Controller
         if(File::put(base_path() . '/config/setting.php', "<?php\n return $data ;")) {
           return redirect('setting-general')->with(['flash_message' => 'Đã lưu cài đặt!', 'message_level' => 'success', 'message_icon' => 'check']);
         }
+      } else {
+        $roles = Role::all();
+        return view('admin.pages.setting.general', array('roles' => $roles, 'menuActive' => 'Setting General'));
+      }
     }
 
-    public function groupIndex(){
+    public function indexGroup(){
       $groups = GroupSetting::where('parent_id', 0)->where('visible', 1)->orderBy('order', 'ASC')->get();
       return view('admin.pages.setting.group.index', array('groups' => $groups, 'menuActive' => 'setting'));
     }
 
-    public function groupAdd(){
-      return view('admin.pages.setting.group.add');
+    public function createGroup(GroupSettingRequest $request) {
+      if ($request->isMethod('post'))  {
+        $group = GroupSetting::create($request->all());
+        return redirect('setting/group')->with(['flash_message' => 'Đã thêm nhóm cài đặt!', 'message_level' => 'success', 'message_icon' => 'check']);
+      } else {
+        return view('admin.pages.setting.group.add');
+      }
     }
 
-    public function groupStore(GroupSettingRequest $request){
-      $group = GroupSetting::create($request->all());
-      return redirect('setting/group')->with(['flash_message' => 'Đã thêm nhóm cài đặt!', 'message_level' => 'success', 'message_icon' => 'check']);
+    public function updateGroup($id, GroupSettingRequest $request) {
+      if ($request->isMethod('patch'))  {
+        GroupSetting::findOrFail($id)->update($request->all());
+        return redirect('setting/group')->with(['flash_message' => 'Đã lưu nhóm cài đặt!', 'message_level' => 'success', 'message_icon' => 'check']);
+      } else {
+        $group = GroupSetting::findOrFail($id);
+        return view('admin.pages.setting.group.edit', array('group' => $group, 'menuActive' => 'setting'));
+      }
     }
 
-    public function groupEdit($id){
-      $group = GroupSetting::findOrFail($id);
-      return view('admin.pages.setting.group.edit', array('group' => $group, 'menuActive' => 'setting'));
-    }
-
-    public function groupUpdate($id, GroupSettingRequest $request){
-       GroupSetting::findOrFail($id)->update($request->all());
-       return redirect('setting/group')->with(['flash_message' => 'Đã lưu nhóm cài đặt!', 'message_level' => 'success', 'message_icon' => 'check']);
-    }
-
-    public function groupUpdateAll(Request $request){
+    public function updateAllGroup(Request $request){
        $ids = $request->id;
        $names = $request->name;
 
@@ -159,7 +159,7 @@ class SettingController extends Controller
        return redirect('setting/group')->with(['flash_message' => 'Đã lưu nhóm cài đặt!', 'message_level' => 'success', 'message_icon' => 'check']);
     }
 
-    public function typeIndex($id = null){
+    public function indexType($id = null){
       $groups = GroupSetting::where('parent_id', 0)->where('visible', 1)->orderBy('order', 'ASC')->get();
       if($id) {
         $types = GroupSetting::where('parent_id', $id)->orderBy('order', 'ASC')->get();
@@ -171,28 +171,28 @@ class SettingController extends Controller
       return view('admin.pages.setting.type.index', array('groups' => $groups, 'types' => $types, 'menuActive' => 'setting', 'selectedGroup' => $id));
     }
 
-    public function typeAdd(){
-      $groups = GroupSetting::where('parent_id', 0)->where('visible', 1)->orderBy('order', 'ASC')->get();
-      return view('admin.pages.setting.type.add', array('groups' => $groups ,'menuActive' => 'setting'));
+    public function createType(GroupSettingRequest $request) {
+      if ($request->isMethod('post'))  {
+        $type = GroupSetting::create($request->all());
+        return redirect('setting/type/'.$request->parent_id)->with(['flash_message' => 'Đã thêm loại cài đặt!', 'message_level' => 'success', 'message_icon' => 'check']);
+      } else {
+        $groups = GroupSetting::where('parent_id', 0)->where('visible', 1)->orderBy('order', 'ASC')->get();
+        return view('admin.pages.setting.type.add', array('groups' => $groups ,'menuActive' => 'setting'));
+      }
     }
 
-    public function typeStore(GroupSettingRequest $request){
-      $type = GroupSetting::create($request->all());
-      return redirect('setting/type/'.$request->parent_id)->with(['flash_message' => 'Đã thêm loại cài đặt!', 'message_level' => 'success', 'message_icon' => 'check']);
+    public function updateType($id, GroupSettingRequest $request) {
+      if ($request->isMethod('patch'))  {
+        GroupSetting::findOrFail($id)->update($request->all());
+        return redirect('setting/type/'.$request->parent_id)->with(['flash_message' => 'Đã lưu loại cài đặt!', 'message_level' => 'success', 'message_icon' => 'check']);
+      } else {
+        $type = GroupSetting::findOrFail($id);
+        $groups = GroupSetting::where('parent_id', 0)->where('visible', 1)->orderBy('order', 'ASC')->get();
+       return view('admin.pages.setting.type.edit', array('type' => $type, 'groups' => $groups ,'menuActive' => 'setting'));
+      }
     }
 
-    public function typeEdit($id){
-      $type = GroupSetting::findOrFail($id);
-      $groups = GroupSetting::where('parent_id', 0)->where('visible', 1)->orderBy('order', 'ASC')->get();
-      return view('admin.pages.setting.type.edit', array('type' => $type, 'groups' => $groups ,'menuActive' => 'setting'));
-    }
-
-    public function typeUpdate($id, GroupSettingRequest $request){
-      GroupSetting::findOrFail($id)->update($request->all());
-      return redirect('setting/type/'.$request->parent_id)->with(['flash_message' => 'Đã lưu loại cài đặt!', 'message_level' => 'success', 'message_icon' => 'check']);
-    }
-
-    public function typeUpdateAll(Request $request){
+    public function updateAllType(Request $request){
        $ids = $request->id;
        $names = $request->name;
        

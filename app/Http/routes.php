@@ -17,49 +17,43 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::get('role', ['as' => 'RoleController.index', 'uses' => 'RoleController@index']);
 	Route::get('role/destroy/{id}', ['as' => 'RoleController.destroy', 'uses' => 'RoleController@destroy']);
 	Route::post('role/add', ['as' => 'RoleController.store', 'uses' => 'RoleController@store']);
-	Route::get('synchronous', ['as' => 'RoleController.synchronous', 'uses' => 'RoleController@synchronous']);
-	Route::get('updatePermission', ['as' => 'Not.RoleController.permission.update', 'uses' => 'RoleController@updatePermission']);
+	Route::get('synchronous', ['as' => 'RoleController.synchronousPermissions', 'uses' => 'RoleController@synchronous']);
+	Route::get('updatePermission', ['as' => 'Not.RoleController.updatePermission', 'uses' => 'RoleController@updatePermission']);
 	 
 	//User management
 	Route::get('listUser', ['as' => 'Not.UserController.list', 'uses' => 'UserController@listUser']);
     Route::get('user', ['as' => 'UserController.index', 'uses' => 'UserController@index']);
-	Route::get('user/edit/{id}', ['as' => 'UserController.edit', 'uses' => 'UserController@edit']);
 	Route::get('user/show/{id}', ['as' => 'UserController.show', 'uses' => 'UserController@show']);
 	Route::post('user/add', ['as' => 'UserController.store', 'uses' => 'UserController@store']);
-	Route::patch('user/{id}', ['as' => 'UserController.update', 'uses' => 'UserController@update']);
+	Route::match(['get', 'patch'], 'user/edit/{id}', ['as' => 'UserController.update', 'uses' => 'UserController@update']);
 	Route::delete('user/destroy', ['as' => 'UserController.destroy', 'uses' => 'UserController@destroy']);
 
     Route::get('profile', ['as' => 'Not.UserController.profile.show', 'uses' => 'UserController@showProfile']);
     Route::post('profile', ['as' => 'Not.UserController.profile.update', 'uses' => 'UserController@updateProfile']);
     Route::get('password', ['as' => 'Not.UserController.password.show', 'uses' => 'UserController@showPassword']);
     Route::post('password', ['as' => 'Not.UserController.password.update', 'uses' => 'UserController@updatePassword']);
+    Route::match(['get', 'post'], 'general', ['as' => 'SettingController.updateGeneral', 'uses' => 'SettingController@updateGeneral']);
 
     // Setting 
-    Route::get('general', ['as' => 'SettingController.general.show', 'uses' => 'SettingController@showGeneral']);
-    Route::post('general', ['as' => 'SettingController.general.update', 'uses' => 'SettingController@updateGeneral']);
     Route::group(['prefix' => 'setting'], function () {
-	    Route::get('{id?}', ['as' => 'SettingController.index', 'uses' => 'SettingController@index'])->where(['id' => '[0-9]+']);
-	    Route::get('add', ['as' => 'SettingController.add', 'uses' => 'SettingController@add']);
-	    Route::post('add', ['as' => 'SettingController.store', 'uses' => 'SettingController@store']);
-	    Route::get('edit/{id}', ['as' => 'SettingController.edit', 'uses' => 'SettingController@edit']);
-	    Route::patch('update/{id}', ['as' => 'SettingController.update', 'uses' => 'SettingController@update']);
-	    Route::post('updateAll', ['as' => 'SettingController.updateAll', 'uses' => 'SettingController@updateAll']);
+	    Route::get('{id?}', ['as' => 'SettingController.indexSetting', 'uses' => 'SettingController@index'])->where(['id' => '[0-9]+']);
+	    Route::match(['get', 'post'], 'create', ['as' => 'SettingController.createSetting', 'uses' => 'SettingController@create']);
+	    Route::match(['get', 'patch'], 'edit/{id}', ['as' => 'SettingController.updateSetting', 'uses' => 'SettingController@update']);
+	    Route::post('updateAll', ['as' => 'SettingController.updateAllSetting', 'uses' => 'SettingController@updateAll']);
 
-	    Route::get('group', ['as' => 'SettingController.group.index', 'uses' => 'SettingController@groupIndex']);
-	    Route::get('group/add', ['as' => 'SettingController.group.add', 'uses' => 'SettingController@groupAdd']);
-	    Route::post('group/add', ['as' => 'SettingController.group.store', 'uses' => 'SettingController@groupStore']);
-	    Route::get('group/edit/{id}', ['as' => 'SettingController.group.edit', 'uses' => 'SettingController@groupEdit']);
-	    Route::patch('group/update/{id}', ['as' => 'SettingController.group.update', 'uses' => 'SettingController@groupUpdate']);
-	    Route::post('group/updateAll', ['as' => 'SettingController.group.updateAll', 'uses' => 'SettingController@groupUpdateAll']);
+	    //Type setting
+	    Route::get('type/{id?}', ['as' => 'SettingController.indexType', 'uses' => 'SettingController@indexType'])->where(['id' => '[0-9]+']);
+	    Route::match(['get', 'post'], 'type/create', ['as' => 'SettingController.createType', 'uses' => 'SettingController@createType']);
+	    Route::match(['get', 'patch'], 'type/edit/{id}', ['as' => 'SettingController.updateType', 'uses' => 'SettingController@updateType']);
+	    Route::post('type/updateAll', ['as' => 'SettingController.updateAllType', 'uses' => 'SettingController@updateAllType']);
 
-	    Route::get('type/{id?}', ['as' => 'SettingController.type.index', 'uses' => 'SettingController@typeIndex'])->where(['id' => '[0-9]+']);
-	    Route::get('type/add', ['as' => 'SettingController.type.add', 'uses' => 'SettingController@typeAdd']);
-	    Route::post('type/add', ['as' => 'SettingController.type.store', 'uses' => 'SettingController@typeStore']);
-	    Route::get('type/edit/{id}', ['as' => 'SettingController.type.edit', 'uses' => 'SettingController@typeEdit']);
-	    Route::patch('type/update/{id}', ['as' => 'SettingController.type.update', 'uses' => 'SettingController@typeUpdate']);
-	    Route::post('type/updateAll', ['as' => 'SettingController.type.updateAll', 'uses' => 'SettingController@typeUpdateAll']);
+	    //Group setting
+	    Route::get('group', ['as' => 'SettingController.indexGroup', 'uses' => 'SettingController@indexGroup']);
+	    Route::match(['get', 'post'], 'group/create', ['as' => 'SettingController.createGroup', 'uses' => 'SettingController@createGroup']);
+	    Route::match(['get', 'patch'], 'group/edit/{id}', ['as' => 'SettingController.updateGroup', 'uses' => 'SettingController@updateGroup']);
+	    Route::post('group/updateAll', ['as' => 'SettingController.updateAllGroup', 'uses' => 'SettingController@updateAllGroup']);
 
-	    Route::get('synchronous', ['as' => 'SettingController.synchronous', 'uses' => 'SettingController@synchronous']);
+	    Route::get('synchronous', ['as' => 'SettingController.synchronousModules', 'uses' => 'SettingController@synchronous']);
 	});
 
 });

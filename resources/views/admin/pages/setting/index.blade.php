@@ -24,7 +24,7 @@ Quản lý cài đặt
 	<div class="col-xs-12 no-padding-left no-padding-right">
 		<div class="row">
 			<div class="col-xs-12 col-sm-9 col-lg-10">
-				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/add') }}"><i class="fa fa-plus" aria-hidden="true"></i> Thêm cài đặt</a>
+				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/create') }}"><i class="fa fa-plus" aria-hidden="true"></i> Thêm cài đặt</a>
 				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/type') }}">Quản lý loại cài đặt</a>
 				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/group') }}">Quản lý nhóm cài đặt</a>
 				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/synchronous') }}" onclick='return confirm("Bạn có chắc chắn thực hiện đồng bộ?")'>Đồng bộ các module</a>

@@ -36,20 +36,17 @@ class ArticleController extends Controller {
         return Response::json($article);
     }
 
-    public function edit($id){
-        if (Gate::denies('ArticleController.edit')){
+    public function update($id, ArticleRequest $request) {
+      if (Gate::denies('ArticleController.update')) {
             abort(403);
-        }
-        $article = Article::findOrFail($id);
-        return Response::json($article);
-    }
-
-    public function update($id, ArticleRequest $request){
-        if (Gate::denies('ArticleController.update')){
-            abort(403);
-        }
+      }
+      if ($request->isMethod('patch'))  {
         Article::findOrFail($id)->update($request->all());
         return Response::json(['flash_message' => 'Đã cập nhật bài viết!', 'message_level' => 'success', 'message_icon' => 'check']);
+      } else {
+        $article = Article::findOrFail($id);
+        return Response::json($article);
+      }
     }
 
     public function destroy(ArticleRequest $request){

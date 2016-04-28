@@ -62,19 +62,11 @@ class UserController extends Controller
         return Response::json($user);
     }
 
-    public function edit($id){
-        if (Gate::denies('UserController.edit')){
-           abort(403);
-        }
-        $user = User::findOrFail($id);
-        $user->roles = $user->roles;
-        return Response::json($user);
-    }
-
-    public function update($id, UserRequest $request){
-        if (Gate::denies('UserController.update')){
-           abort(403);
-        }
+    public function update($id, UserRequest $request) {
+      if (Gate::denies('UserController.update')) {
+            abort(403);
+      }
+      if ($request->isMethod('patch'))  {
         $user = User::findOrFail($id);
         $user->fullname = $request->fullname;
         $user->email = $request->email;
@@ -90,6 +82,11 @@ class UserController extends Controller
         }
 
         return Response::json(['flash_message' => 'Đã cập nhật thông tin người dùng!', 'message_level' => 'success', 'message_icon' => 'check']);
+      } else {
+        $user = User::findOrFail($id);
+        $user->roles = $user->roles;
+        return Response::json($user);
+      }
     }
 
     public function destroy(UserRequest $request){

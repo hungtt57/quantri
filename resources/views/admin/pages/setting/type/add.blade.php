@@ -23,7 +23,7 @@ color: #fff;
 		<h1 class="page-header">Thêm loại cài đặt</h1>
 	</div>
 	<div class="col-xs-12 col-sm-9 col-md-8 col-lg-7 ">
-		<form class="form-horizontal" method="POST" action="{{ url('setting/type/add') }}">
+		<form class="form-horizontal" method="POST" action="{{ url('setting/type/create') }}">
 			<input type="hidden" name="_token" value="{{ csrf_token() }}">
 			<div class="form-group">
 				<label for="parent_id" class="col-xs-12 col-sm-3 control-label no-padding-right">Thuộc nhóm</label>

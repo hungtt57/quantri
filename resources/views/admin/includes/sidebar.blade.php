@@ -61,17 +61,23 @@
                 <a href="{{ url('article') }}"><i class="fa fa-book"></i> Bài viết</a>
             </li>
             @endcan
+            @if ( Gate::allows('SettingController.updateGeneral') | Gate::allows('SettingController.indexSetting') )
             <li>
                 <a href="#"><i class="fa fa-user"></i> Cài đặt<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
+                    @can('SettingController.updateGeneral')
                     <li>
                          <a href="{{ url('general') }}">Chung</a>
                     </li>
+                    @endcan
+                    @can('SettingController.indexSetting')
                     <li>
                          <a href="{{ url('setting') }}">Quản lý cài đặt</a>
                     </li>
+                    @endcan
                 </ul>
             </li>
+            @endif
         </ul>
     </div>
     <!-- /.sidebar-collapse -->

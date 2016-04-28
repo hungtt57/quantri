@@ -267,7 +267,7 @@ Quản lý người dùng
                     "searchable": false, 
                     "orderable": false,
                     "data": null,
-                    "defaultContent": '@can('UserController.show')<button class="btn btn-success open-view-user-modal"><span class="glyphicon glyphicon-eye-open"></span></button>@endcan @can('UserController.edit') <button class="btn btn-warning open-edit-user-modal"><span class="glyphicon glyphicon-pencil"></span></button> @endcan @can('UserController.destroy')<button class="btn btn-danger open-delete-user-modal"><span class="glyphicon glyphicon-trash"></span></button> @endcan'
+                    "defaultContent": '@can('UserController.show')<button class="btn btn-success open-view-user-modal"><span class="glyphicon glyphicon-eye-open"></span></button>@endcan @can('UserController.update') <button class="btn btn-warning open-edit-user-modal"><span class="glyphicon glyphicon-pencil"></span></button> @endcan @can('UserController.destroy')<button class="btn btn-danger open-delete-user-modal"><span class="glyphicon glyphicon-trash"></span></button> @endcan'
                 }
                 @endif
             ],
@@ -589,7 +589,7 @@ Quản lý người dùng
             
             if (state == "update"){
                 type = "PATCH";
-               	my_url = userUrl + '/' + user_id;
+               	my_url = userUrl + '/edit/' + user_id;
             }
 
             $.ajax({

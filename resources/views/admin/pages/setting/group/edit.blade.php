@@ -23,7 +23,7 @@ color: #fff;
 		<h1 class="page-header">Sửa nhóm cài đặt</h1>
 	</div>
 	<div class="col-xs-12 col-sm-9 col-md-8 col-lg-7 ">
-		{!! Form::model($group,['method' => 'PATCH', 'class' => 'form-horizontal', 'route' => ['SettingController.group.update', $group->id]]) !!}
+		{!! Form::model($group,['method' => 'PATCH', 'class' => 'form-horizontal', 'route' => ['SettingController.updateGroup', $group->id]]) !!}
 			<div class="form-group">
 				<label for="groupSettingKey" class="col-xs-12 col-sm-3 control-label no-padding-right">Key</label>
 				<div class="col-xs-12 col-sm-9">

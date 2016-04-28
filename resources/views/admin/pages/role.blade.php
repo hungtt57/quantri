@@ -207,132 +207,131 @@ Quản lý phân quyền
 
 @section('content')
 <div class="row" style="margin-bottom: 100px">
-  <div class="col-lg-12">
-    <div class="col-lg-6 col-lg-offset-3" id="roleAlert">
-
-    </div>
-  </div>
-
   <div class="cotaniner" style="margin-top: 20px;
   margin-left: 50px;">
-  @can('RoleController.store')
-  <button class="btn btn-primary open-add-role-modal">Thêm role mới</button>
-  @endcan
-  @can('RoleController.synchronous')
-  <a href="{{asset('synchronous')}}" onclick='return confirm("Bạn có chắc chắn thực hiện?")'><button class="btn btn-primary ">Đồng bộ quyền</button></a>
-  @endcan
-</div>
-@if (Session::has('messages'))
-<div class="alert alert-info" style="margin-top: 10px;">{{ Session::get('messages') }}</div>
-@endif
+    @can('RoleController.store')
+    <button class="btn btn-primary open-add-role-modal">Thêm role mới</button>
+    @endcan
+    @can('RoleController.synchronousPermissions')
+    <a href="{{ url('synchronous') }}" onclick='return confirm("Bạn có chắc chắn thực hiện?")'><button class="btn btn-primary ">Đồng bộ quyền</button></a>
+    @endcan
+  </div>
 
-<!-- Add role modal -->
-<div class="modal fade" id="roleAddModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-  <div class="modal-dialog" role="document">
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Đóng"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="roleAddModalTitle">Thêm role</h4>
+  <div class="col-lg-offset-3 col-lg-6" id="roleAlert">
+  @if (Session::has('flash_message'))
+      <div id="flash_message" class="text-center alert alert-{!! Session::get('message_level') !!}"><i class="icon fa fa-{!! Session::get('message_icon') !!}"></i> 
+      {!! Session::get('flash_message') !!}
       </div>
+  @endif
+  </div>
 
-      <form id="roleAddForm">
-        <div class="modal-body">
-          <div class="form-group">
-            <label for="name">Tên role</label>:
-            <input type="text" value="{{ old('name') }}" name="name" class="form-control" placeholder="" id="name">
-            <div id="errorRoleName">
+  <!-- Add role modal -->
+  <div class="modal fade" id="roleAddModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Đóng"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="roleAddModalTitle">Thêm role</h4>
+        </div>
+
+        <form id="roleAddForm">
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="name">Tên role</label>:
+              <input type="text" value="{{ old('name') }}" name="name" class="form-control" placeholder="" id="name">
+              <div id="errorRoleName">
+              </div>
             </div>
           </div>
-        </div>
-      </form>
+        </form>
 
-      <div class="modal-footer">
-        <button id="btn-reset-role" class="btn btn-default">Xóa trắng</button>
-        <button class="btn" id="btn-add-role">Thêm</button>
+        <div class="modal-footer">
+          <button id="btn-reset-role" class="btn btn-default">Xóa trắng</button>
+          <button class="btn" id="btn-add-role">Thêm</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<!-- End modal -->
+  <!-- End modal -->
 
-<div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 bhoechie-tab-container">
-  <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 bhoechie-tab-menu">
-    <div class="list-group ">
+  <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 bhoechie-tab-container">
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 bhoechie-tab-menu">
+      <div class="list-group ">
+        @foreach ($roles as $role)
+        <a href="{{$role->id}}"  class="list-group-item text-center">
+          <h4 class="fa fa-user"></h4><br/>
+          <span id="rolename{{$role->id}}">{{ $role->name }}</span>
+        </a>
+        @endforeach
+      </div>
+    </div>
+    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 bhoechie-tab">
+    <?php $temp = 0;?>
       @foreach ($roles as $role)
-      <a href="{{$role->id}}"  class="list-group-item text-center">
-        <h4 class="fa fa-user"></h4><br/>
-        <span id="rolename{{$role->id}}">{{ $role->name }}</span>
-      </a>
-      @endforeach
-    </div>
-  </div>
-  <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 bhoechie-tab">
-  <?php $temp = 0;?>
-    @foreach ($roles as $role)
-    <div id='{{$role->id}}' class="bhoechie-tab-content">
-      <div class="col-sm-8">
-        <div class="acidjs-css3-treeview">
-          <ul>
-            <li>
-               <input type="checkbox" id="node-<?php echo $temp;?>" checked="checked" /><label><input type="checkbox" /><span class="all_cb"></span></label><label style="margin-left: 5px;" for="node-<?php echo $temp;?>">Tất cả</label>
-              <ul>
-              <?php $temp++;
-              $temp1 = 0; 
-             ?>
-               @foreach($permissions as $permission)
-            
-               @if ($permission_childs = DB::table('permissions')->where('parent_id','=',$permission->id)->get())
-               <li>
-                  <input type="checkbox" id="node-<?php echo $temp;?>-<?php echo $temp1;?>"  checked="checked"/><label><input type="checkbox" id = '{{$permission->name}}'/><span class="role_cb"></span></label>
-                  <label for="node-<?php echo $temp;?>-<?php echo $temp1;?>">{{$permission->label}}</label>
-                    <?php $temp1++; ?>
-                 <ul>
-                   @foreach($permission_childs as $permission_child)
-                   
-                   <li class="role_li">
-                    <?php 
+      <div id='{{$role->id}}' class="bhoechie-tab-content">
+        <div class="col-sm-8">
+          <div class="acidjs-css3-treeview">
+            <ul>
+              <li>
+                 <input type="checkbox" id="node-<?php echo $temp;?>" checked="checked" /><label><input type="checkbox" /><span class="all_cb"></span></label><label style="margin-left: 5px;" for="node-<?php echo $temp;?>">Tất cả</label>
+                <ul>
+                <?php $temp++;
+                $temp1 = 0; 
+               ?>
+                 @foreach($permissions as $permission)
+              
+                 @if ($permission_childs = DB::table('permissions')->where('parent_id','=',$permission->id)->get())
+                 <li>
+                    <input type="checkbox" id="node-<?php echo $temp;?>-<?php echo $temp1;?>"  checked="checked"/><label><input type="checkbox" id = '{{$permission->name}}'/><span class="role_cb"></span></label>
+                    <label for="node-<?php echo $temp;?>-<?php echo $temp1;?>">{{$permission->label}}</label>
+                      <?php $temp1++; ?>
+                   <ul>
+                     @foreach($permission_childs as $permission_child)
                      
-                    $check=DB::table('permission_role')->where('role_id','=',$role->id)->where('permission_id','=',$permission_child->id)->first();
-                    if($check){
-                      $check = 'checked';
-                    }
-                    ?>
+                     <li class="role_li">
+                      <?php 
+                       
+                      $check=DB::table('permission_role')->where('role_id','=',$role->id)->where('permission_id','=',$permission_child->id)->first();
+                      if($check){
+                        $check = 'checked';
+                      }
+                      ?>
 
-                     <label><input type = "checkbox" class="check_permission" <?php echo $check; ?> value='{{$permission_child->id}}' id ='{{$permission_child->name}}'/><span></span></label>
+                       <label><input type = "checkbox" class="check_permission" <?php echo $check; ?> value='{{$permission_child->id}}' id ='{{$permission_child->name}}'/><span></span></label>
 
-                    <label >{{$permission_child->label}}</label>
-                  </li>
-                  @endforeach
-                </ul>
-              </li>
-              @endif
-              @endforeach 
-            </ul>
+                      <label >{{$permission_child->label}}</label>
+                    </li>
+                    @endforeach
+                  </ul>
+                </li>
+                @endif
+                @endforeach 
+              </ul>
 
-          </li>
-        </ul>
-      </div>
-    </div>
-    <div class="col-sm-4"> 
-      <div class="sidebar-search">
-        <div class="input-group custom-search-form">
-          <input type="text" class="form-control search_role" role="{{$role->id}}" placeholder="Tìm kiếm...">
-          <span class="input-group-btn">
-            <button class="btn btn-default" type="button">
-              <i class="fa fa-search"></i>
-            </button>
-          </span>
+            </li>
+          </ul>
         </div>
-      
       </div>
-      <br>
-      <button  value='{{$role->id}}' class="btn btn-primary updater-permission">Cập nhật quyền</button>
-      <a href="{{asset('/role/destroy/'.$role->id)}}" onclick="return confirm('Bạn có chắn chắn muốn xóa?')" style="margin-top: 10px;display: block;"><button  class="btn btn-primary updater-permission">Xóa quyền {{$role->name}}</button></a>
+      <div class="col-sm-4"> 
+        <div class="sidebar-search">
+          <div class="input-group custom-search-form">
+            <input type="text" class="form-control search_role" role="{{$role->id}}" placeholder="Tìm kiếm...">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button">
+                <i class="fa fa-search"></i>
+              </button>
+            </span>
+          </div>
+        
+        </div>
+        <br>
+        <button  value='{{$role->id}}' class="btn btn-primary updater-permission">Cập nhật quyền</button>
+        <a href="{{asset('/role/destroy/'.$role->id)}}" onclick="return confirm('Bạn có chắn chắn muốn xóa?')" style="margin-top: 10px;display: block;"><button  class="btn btn-primary updater-permission">Xóa role {{$role->name}}</button></a>
+      </div>
     </div>
+    @endforeach              
   </div>
-  @endforeach              
-</div>
 </div>
 </div>
 @endsection
@@ -394,7 +393,7 @@ Quản lý phân quyền
             dataType: 'json',
             success: function (data) {
               $('#roleAddModal').modal('hide');
-              $('#roleAlert').append('<div class="text-center alert alert-'+data.message_level+'"><button id="closeRoleAlert" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><h4> <i class="icon fa fa-'+data.message_icon+'"></i>'+data.flash_message+'</h4></div>');
+              $('#roleAlert').append('<div class="text-center alert alert-'+data.message_level+'"><i class="icon fa fa-'+data.message_icon+'"></i> '+data.flash_message+'</div>');
               location.reload();
             },
             error: function (data) {
@@ -454,7 +453,8 @@ Quản lý phân quyền
         });
       })(jQuery);
     </script>
-    <!-- button update permission -->
+
+    <!-- Update permission -->
     <script type="text/javascript">
       $('.updater-permission').click(function(){
         var baseUrl = $('meta[name="base_url"]').attr('content');
@@ -472,29 +472,24 @@ Quản lý phân quyền
           data: { 'data': string },
           dataType: 'text',
           success: function (data) {
-            if(data=='oke'){
+            if(data=='OK'){
               var roleName = $('#rolename'+ role).text();
-                // $('#roleAlert').append('<div class="text-center alert alert-success"><button id="closeUserAlert" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><h4>Cập nhật quyền thành công cho role : '+ roleName +'</h4></div>');
-                toastr.success('Cập nhật quyền thành công cho role ' + roleName);
+                toastr.success('Đã cập nhật quyền thành công cho role ' + roleName + '!');
               }
             },
             error: function (data) {
-                // var errors = data.responseJSON;
-                // if (errors.name){
-                //     $('#errorRoleName').append('<div class="alert alert-warning alert-dismissable"><button id="closeErrorRoleName" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+errors.name+'</div>');
-                // }
-                toastr.success('Đã xảy ra lỗi,vui lòng thử lại', 'Cập nhật quyền!!');
+                toastr.success('Đã xảy ra lỗi, vui lòng thử lại!', 'Cập nhật quyền!');
               }
             });
 
-       }); //end button update permission
+       });
      </script>
 
      <script type="text/javascript">
       $("div.alert").delay(3000).slideUp();
     </script>
 
-    <!-- search role -->
+    <!-- Search role -->
     <script type="text/javascript">
      $(".search_role").on("input", function() {
       var e = $(this).val();
@@ -538,5 +533,4 @@ Quản lý phân quyền
       return str;  
     }
   </script>
-  <!-- end search role -->
-    @endsection
+@endsection

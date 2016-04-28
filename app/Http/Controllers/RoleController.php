@@ -30,7 +30,7 @@ class RoleController extends Controller
       // Update lai active permission về 0
       $update = Permission::updateAll();
       $routes= Route::getRoutes();
-   
+
       foreach ($routes as $value) {
           $array = array();
           $array = explode('.',$value->getName());
@@ -58,18 +58,17 @@ class RoleController extends Controller
                 if($permissionParent){ // đã có controller cha
                    $newPermission = new Permission;
                    $newPermission->parent_id = $permissionParent->id;
-                   $newPermission->name=$permissionName;
-                   $newPermission->label= trans('messages.'.$method);
-                   $newPermission->active='1';
+                   $newPermission->name = $permissionName;
+                   $newPermission->label = trans('messages.'.$method);
+                   $newPermission->active ='1';
                    $newPermission->save();
-                 
-                }else{ 
+                } else { 
                     // Chưa có controller cha
                     $permissionParent = new Permission;
                     $permissionParent->name = $controller;
                     $permissionParent->parent_id = '0';
                     $permissionParent->active = '1';
-                    $permissionParent->label= trans('messages.'.$controller);
+                    $permissionParent->label = trans('messages.'.$controller);
                     $permissionParent->save();
 
                     $newPermission = new Permission;
@@ -82,14 +81,14 @@ class RoleController extends Controller
           }
         }
       Permission::where('active', 0)->delete();
-      return redirect('role')->with('messages', 'Đồng bộ thành công!');
+      return redirect('role')->with(['flash_message' => 'Đã đồng bộ quyền!', 'message_level' => 'success', 'message_icon' => 'check']);
     }
 
     public function destroy($id){
       $role = Role::find($id);
       $name = $role->name;
       $role->delete();
-      return redirect('role')->with('messages', 'Đã xóa quyền '.$name.'!');
+      return redirect('role')->with(['flash_message' => 'Đã xóa role!', 'message_level' => 'success', 'message_icon' => 'check']);
     }
 
     public function updatePermission(){
@@ -104,7 +103,7 @@ class RoleController extends Controller
             for($i = 1; $i < sizeof($id); $i++){
               $role->assignPermission(Permission::findOrFail($id[$i]));
             } 
-            return 'oke';    
+            return 'OK';    
         } 
     }
 }
