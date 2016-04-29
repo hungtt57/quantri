@@ -1,7 +1,8 @@
 {
-    "DemoSystem": {
-        "DemoApp": {
-            "Demojavascript": "Javascript"
-        }
+    "system": {
+        "app": ""
+    },
+    "sssssssssss": {
+        "aa": null
     }
 }
