@@ -171,7 +171,13 @@ class SettingController extends Controller
     }
 
     public function destroyGroup($id) {
-
+      $group = GroupSetting::findOrFail($id);
+      if(GroupSetting::where('parent_id', $id)->count()) {
+        return redirect('setting/group')->with(['flash_message' => 'Không thể xóa nhóm cài đặt này!', 'message_level' => 'danger', 'message_icon' => 'ban']);
+      } else {
+        $group->delete();
+        return redirect('setting/group')->with(['flash_message' => 'Đã xóa nhóm cài đặt!', 'message_level' => 'success', 'message_icon' => 'check']);
+      }
     }
 
     public function indexType($id = null){
@@ -228,7 +234,13 @@ class SettingController extends Controller
     }
 
     public function destroyType($id) {
-
+      $type = GroupSetting::findOrFail($id);
+      if($type->settings()->count()) {
+        return redirect('setting/type/'.$type->parent_id)->with(['flash_message' => 'Không thể xóa loại cài đặt này!', 'message_level' => 'danger', 'message_icon' => 'ban']);
+      } else {
+        $type->delete();
+        return redirect('setting/type/'.$type->parent_id)->with(['flash_message' => 'Đã xóa loại cài đặt!', 'message_level' => 'success', 'message_icon' => 'check']);
+      }
     }
 
     public function synchronous($selectedGroup, $selectedType = null) {
