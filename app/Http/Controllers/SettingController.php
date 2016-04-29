@@ -15,10 +15,14 @@ use MultipleIterator;
 use ArrayIterator;
 use Module;
 use FileSetting;
+use Gate;
 
 class SettingController extends Controller
 {
     public function index($id = null){
+      if (Gate::denies('SettingController.indexSetting')){
+           abort(403);
+      }
       $groups = GroupSetting::where('parent_id', 0)->where('visible', 1)->orderBy('order', 'ASC')->get();
       if($id) {
         $types = GroupSetting::where('parent_id', $id)->orderBy('order', 'ASC')->get();
@@ -37,6 +41,9 @@ class SettingController extends Controller
     }
 
     public function create(SettingRequest $request) {
+      if (Gate::denies('SettingController.createSetting')){
+           abort(403);
+      }
       if ($request->isMethod('post'))  {
         $setting = Setting::create($request->all());
         $type = GroupSetting::findOrFail($request->type_id);
@@ -50,8 +57,11 @@ class SettingController extends Controller
     }
 
     public function update($id, SettingRequest $request) {
+      if (Gate::denies('SettingController.updateSetting')){
+           abort(403);
+      }
       if ($request->isMethod('patch'))  {
-        $setting =Setting::findOrFail($id);
+        $setting = Setting::findOrFail($id);
         $keysetting = $setting->key;
         $setting->update($request->all());
         $type = GroupSetting::findOrFail($request->type_id);
@@ -69,6 +79,9 @@ class SettingController extends Controller
     }
 
     public function updateAll(Request $request){
+       if (Gate::denies('SettingController.updateAllSetting')){
+           abort(403);
+       }
        $ids = $request->id;
        $values = $request->value;
        
@@ -80,20 +93,33 @@ class SettingController extends Controller
           $setting = Setting::findOrFail($id);
           $setting->value = $value;
           $setting->save();
+
+          $type = GroupSetting::findOrFail($setting->type_id);
+          $group = GroupSetting::findOrFail($type->parent_id);
+          FileSetting::forget($group->key.'.'.$type->key.'.'.$setting->key);
+          FileSetting::set($group->key.'.'.$type->key.'.'.$setting->key, $setting->value);
        }
        $type = GroupSetting::findOrFail($setting->type_id);
 
-       return redirect('setting/'.$type->parent_id)->with(['flash_message' => 'Đã lưu loại cài đặt!', 'message_level' => 'success', 'message_icon' => 'check', 'selectedType' => $type->key]);
+       return redirect('setting/'.$type->parent_id)->with(['flash_message' => 'Đã lưu cài đặt!', 'message_level' => 'success', 'message_icon' => 'check', 'selectedType' => $type->key]);
     }
 
     public function destroy($id) {
+        if (Gate::denies('SettingController.destroySetting')){
+           abort(403);
+        }
         $setting = Setting::findOrFail($id);
         $type = GroupSetting::findOrFail($setting->type_id);
         $setting->delete();
+        $group = GroupSetting::findOrFail($type->parent_id);
+        FileSetting::forget($group->key.'.'.$type->key.'.'.$setting->key);
         return redirect('setting/'.$type->parent_id)->with(['flash_message' => 'Đã xóa cài đặt!', 'message_level' => 'success', 'message_icon' => 'check', 'selectedType' => $type->key]);
     }
 
     public function updateGeneral(Request $request) {
+      if (Gate::denies('SettingController.updateGeneral')){
+           abort(403);
+      }
       if ($request->isMethod('post'))  {
        $arraySetting = config('general');
 
@@ -137,11 +163,17 @@ class SettingController extends Controller
     }
 
     public function indexGroup(){
+      if (Gate::denies('SettingController.indexGroup')){
+           abort(403);
+      }
       $groups = GroupSetting::where('parent_id', 0)->where('visible', 1)->orderBy('order', 'ASC')->get();
       return view('admin.pages.setting.group.index', array('groups' => $groups, 'menuActive' => 'setting'));
     }
 
     public function createGroup(GroupSettingRequest $request) {
+      if (Gate::denies('SettingController.createGroup')){
+           abort(403);
+      }
       if ($request->isMethod('post'))  {
         $group = GroupSetting::create($request->all());
         FileSetting::set($request->key,'');
@@ -152,6 +184,9 @@ class SettingController extends Controller
     }
 
     public function updateGroup($id, GroupSettingRequest $request) {
+      if (Gate::denies('SettingController.updateGroup')){
+           abort(403);
+      }
       if ($request->isMethod('patch'))  {
         $group = GroupSetting::findOrFail($id);
         $oldname = $group->key;
@@ -165,6 +200,9 @@ class SettingController extends Controller
     }
 
     public function updateAllGroup(Request $request){
+       if (Gate::denies('SettingController.updateAllGroup')){
+           abort(403);
+       }
        $ids = $request->id;
        $names = $request->name;
        $orders = $request->order;
@@ -184,6 +222,9 @@ class SettingController extends Controller
     }
 
     public function destroyGroup($id) {
+      if (Gate::denies('SettingController.destroyGroup')){
+           abort(403);
+      }
       $group = GroupSetting::findOrFail($id);
       if(GroupSetting::where('parent_id', $id)->count()) {
         return redirect('setting/group')->with(['flash_message' => 'Không thể xóa nhóm cài đặt này!', 'message_level' => 'danger', 'message_icon' => 'ban']);
@@ -195,6 +236,9 @@ class SettingController extends Controller
     }
 
     public function indexType($id = null){
+      if (Gate::denies('SettingController.indexType')){
+           abort(403);
+      }
       $groups = GroupSetting::where('parent_id', 0)->where('visible', 1)->orderBy('order', 'ASC')->get();
       if($id) {
         $types = GroupSetting::where('parent_id', $id)->orderBy('order', 'ASC')->get();
@@ -207,6 +251,9 @@ class SettingController extends Controller
     }
 
     public function createType(GroupSettingRequest $request) {
+      if (Gate::denies('SettingController.createType')){
+           abort(403);
+      }
       if ($request->isMethod('post'))  {
         $type = GroupSetting::create($request->all());
         $group = GroupSetting::find($request->parent_id);
@@ -219,6 +266,9 @@ class SettingController extends Controller
     }
 
     public function updateType($id, GroupSettingRequest $request) {
+      if (Gate::denies('SettingController.updateType')){
+           abort(403);
+      }
       if ($request->isMethod('patch'))  {
          $group = GroupSetting::find($request->parent_id);
          $type =GroupSetting::findOrFail($id);
@@ -234,6 +284,9 @@ class SettingController extends Controller
     }
 
     public function updateAllType(Request $request){
+       if (Gate::denies('SettingController.updateAllType')){
+           abort(403);
+       }
        $ids = $request->id;
        $names = $request->name;
        $orders = $request->order;
@@ -253,6 +306,9 @@ class SettingController extends Controller
     }
 
     public function destroyType($id) {
+      if (Gate::denies('SettingController.destroyType')){
+           abort(403);
+      }
       $type = GroupSetting::findOrFail($id);
       if($type->settings()->count()) {
         return redirect('setting/type/'.$type->parent_id)->with(['flash_message' => 'Không thể xóa loại cài đặt này!', 'message_level' => 'danger', 'message_icon' => 'ban']);
@@ -265,6 +321,9 @@ class SettingController extends Controller
     }
 
     public function synchronous($selectedGroup, $selectedType = null) {
+      if (Gate::denies('SettingController.synchronousModules')){
+           abort(403);
+      }
       $activeModules = Module::getByStatus(1);
       foreach ($activeModules as $module) {
         $group = GroupSetting::where('key', $module->getLowerName())->first();

@@ -24,10 +24,18 @@ Quản lý cài đặt
 	<div class="col-xs-12 no-padding-left no-padding-right">
 		<div class="row">
 			<div class="col-xs-12 col-sm-9 col-lg-10">
+				@can('SettingController.createSetting')
 				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/create') }}"><i class="fa fa-plus" aria-hidden="true"></i> Thêm cài đặt</a>
+				@endcan
+				@can('SettingController.indexType')
 				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/type') }}">Quản lý loại cài đặt</a>
+				@endcan
+				@can('SettingController.indexGroup')
 				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/group') }}">Quản lý nhóm cài đặt</a>
+				@endcan
+				@can('SettingController.synchronousModules')
 				<a class="btn btn-primary" style="margin-top:5px" onclick='return confirm("Bạn có chắc chắn thực hiện đồng bộ?")' id="syncModules">Đồng bộ module</a>
+				@endcan
 			</div>
 			<div class="col-xs-12 col-sm-3 col-lg-2 form-group" style="padding-top:5px">
 				<select class="form-control chosen-select" onchange="location = this.value;">
@@ -63,25 +71,41 @@ Quản lý cài đặt
 								<table id="{{ $type->key }}List" class="table table-striped table-bordered table-hover" cellspacing="0" width="100%">
 									<thead>
 										<tr>
+											@can('SettingController.updateSetting')
 											<th></th>
+											@endcan
 											<th>#</th>
 											<th>Key</th>
 											<th>Value</th>
 										</tr>
 									</thead>
 									@if(count($type->settings))
-									<tfoot>
-										<tr>
-											<th colspan="4" rowspan="1">
-												<button type="submit" id="" class="btn btn-info"><i class="fa fa-check"></i> Lưu</button>
-											</th>
-										</tr>
-									</tfoot>
+										@if( Gate::allows('SettingController.updateAllSetting') )
+											@if ( Gate::allows('SettingController.updateSetting') )
+											<tfoot>
+												<tr>
+													<th colspan="4" rowspan="1">
+														<button type="submit" id="" class="btn btn-info"><i class="fa fa-check"></i> Lưu</button>
+													</th>
+												</tr>
+											</tfoot>
+											@else
+											<tfoot>
+												<tr>
+													<th colspan="3" rowspan="1">
+														<button type="submit" id="" class="btn btn-info"><i class="fa fa-check"></i> Lưu</button>
+													</th>
+												</tr>
+											</tfoot>
+											@endif
+										@endif
 									@endif
 									<tbody>
 										@foreach($type->settings as $setting)
 										<tr>
+											@can('SettingController.updateSetting')
 											<td><a href="{{ url('setting/edit/'.$setting->id) }}"><i class="fa fa-pencil"></i></a></td>
+											@endcan
 											<td></td>
 											<td>
 												<input type="text" class="form-control disabled" readonly="readonly" required="required" name="key[]" id="" value="{{ $setting->key }}" placeholder="Key..."/>
@@ -120,14 +144,17 @@ Quản lý cài đặt
             	// Phai co dong nay de dam bao do rong cua cac cot khong bi ve 0 khi an table di
             	autoWidth: false,
 				columns: [
+					@can('SettingController.updateSetting')
 	                {
 	                	"width": "2%",
 	                    "visible": true, 
 	                    "searchable": false, 
 	                    "orderable": false
 	                },
+	                @endcan
 	                {
 	                	"width": "2%",
+	                	"name": "indexColumn",
 	                	//"className": "dt-center",
 	                    "visible": true, 
 	                    "searchable": false, 
@@ -172,7 +199,7 @@ Quản lý cài đặt
 			});
 
 			table.on( 'order.dt search.dt', function () {
-		        table.column(1, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+		        table.column('indexColumn:name', {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
 		            cell.innerHTML = i+1;
 		        } );
 		    } ).draw();

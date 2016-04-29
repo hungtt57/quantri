@@ -24,9 +24,15 @@ Quản lý nhóm cài đặt
 	<div class="col-xs-12 no-padding-left no-padding-right">
 		<div class="row">
 			<div class="col-xs-12 col-sm-9 col-lg-10">
+				@can('SettingController.createGroup')
 				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/group/create') }}"><i class="fa fa-plus" aria-hidden="true"></i> Thêm nhóm cài đặt</a>
+				@endcan
+				@can('SettingController.indexType')
 				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/type') }}">Quản lý loại cài đặt</a>
+				@endcan
+				@can('SettingController.indexSetting')
 				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting') }}">Quản lý cài đặt</a>
+				@endcan
 			</div>
 			<div class="col-xs-12 col-sm-12 col-lg-12" >		
 				<form style="margin-top: 15px;" method="POST" action="{{ url('setting/group/updateAll') }}">
@@ -35,7 +41,9 @@ Quản lý nhóm cài đặt
 						<table id="groupSettingList" class="table table-striped table-bordered table-hover" cellspacing="0" width="100%">
 							<thead>
 								<tr>
+									@can('SettingController.updateGroup')
 									<th></th>
+									@endcan
 									<th>#</th>
 									<th>Key</th>
 									<th>Name</th>
@@ -43,18 +51,32 @@ Quản lý nhóm cài đặt
 								</tr>
 							</thead>
 							@if(count($groups))
-							<tfoot>
-								<tr>
-									<td colspan="5" rowspan="1">
-										<button type="submit" id="" class="btn btn-info"><i class="fa fa-check"></i> Lưu</button>
-									</td>
-								</tr>
-							</tfoot>
+								@if( Gate::allows('SettingController.updateAllGroup') )
+									@if ( Gate::allows('SettingController.updateGroup') )
+									<tfoot>
+										<tr>
+											<td colspan="5" rowspan="1">
+												<button type="submit" id="" class="btn btn-info"><i class="fa fa-check"></i> Lưu</button>
+											</td>
+										</tr>
+									</tfoot>
+									@else
+									<tfoot>
+										<tr>
+											<td colspan="4" rowspan="1">
+												<button type="submit" id="" class="btn btn-info"><i class="fa fa-check"></i> Lưu</button>
+											</td>
+										</tr>
+									</tfoot>
+									@endif
+								@endif
 							@endif
 							<tbody>
 								@foreach($groups as $group)
 								<tr>
+									@can('SettingController.updateGroup')
 									<td><a href="{{ url('setting/group/edit/'.$group->id) }}"><i class="fa fa-pencil"></i></a></td>
+									@endcan
 									<td></td>
 									<td>
 										<input type="text" class="form-control disabled" readonly="readonly" required="required" name="key[]" id="" value="{{ $group->key }}" placeholder="Key..."/>
@@ -82,14 +104,17 @@ Quản lý nhóm cài đặt
 	$(document).ready(function() {
 		var groupSettingList = $('#groupSettingList').DataTable({
 			columns: [
+				@can('SettingController.updateGroup')
                 {
                 	"width": "3%",
                     "visible": true, 
                     "searchable": false, 
                     "orderable": false
                 },
+                @endcan
                 {
                 	"width": "2%",
+                	"name": "indexColumn",
                     "visible": true, 
                     "searchable": false, 
                     "orderable": false
@@ -140,7 +165,7 @@ Quản lý nhóm cài đặt
 		});
 
 		groupSettingList.on( 'order.dt search.dt', function () {
-	        groupSettingList.column(1, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+	        groupSettingList.column('indexColumn:name', {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
 	            cell.innerHTML = i+1;
 	        } );
 	    } ).draw();

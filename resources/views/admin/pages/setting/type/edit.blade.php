@@ -82,8 +82,11 @@ color: #fff;
 			</div>
 			<div class="center">
 				<a href="{{ url('setting/type') }}" class="btn btn-cancel"><i class="fa fa-close"></i> Hủy</a>&nbsp;&nbsp;
-			    <button type="submit" class="btn btn-info"><i class="fa fa-check"></i> Lưu &amp; Đóng</button>&nbsp;&nbsp;
+			    <button type="submit" class="btn btn-info"><i class="fa fa-check"></i> Lưu &amp; Đóng</button>
+				@can('SettingController.destroyType')
+			    &nbsp;&nbsp;
 		    	<a onclick='return confirm("Bạn có chắc chắn muốn xóa?")' href="{{ url('setting/type/destroy/'.$type->id) }}" class="btn btn-danger"><i class="fa fa-trash"></i> Xóa</a>
+		    	@endcan
 		    </div>
 		{!! Form::close() !!}
 	</div>

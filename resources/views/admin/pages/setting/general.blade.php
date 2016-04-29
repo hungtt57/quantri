@@ -26,7 +26,7 @@ Cài đặt chung
 	  <div class="form-group">
 	    <label class="control-label col-md-3" for="email">Địa chỉ email:</label>
 	    <div class="col-md-6">
-	      <input type="email" class="form-control" name="email" id="email" placeholder="" value="{{config('setting.email')}}">
+	      <input type="email" class="form-control" name="email" id="email" placeholder="" value="{{config('general.email')}}">
 	      <p><i>Địa chỉ này chỉ sử dụng cho mục đích quản trị, chẳng hạn để gửi mail kích hoạt đăng ký, gửi thông báo đến thành viên...</i></p>
 	    </div>
 	  </div>
@@ -41,7 +41,7 @@ Cài đặt chung
 	    <div class="col-md-6">
 
 	      <select class="form-control" id="default_role" name="default_role">
-		    <?php role_select($roles, config('setting.default_role')); ?>
+		    <?php role_select($roles, config('general.default_role')); ?>
 		  </select>
 	    </div>
 	  </div>

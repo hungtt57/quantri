@@ -1,5 +1,11 @@
 {
-    "sssssssssss": {
-        "aa": null
+    "system": {
+        "js": "",
+        "app": {
+            "sitename": "Vietnam Esports TV"
+        }
+    },
+    "article": {
+        "app": ""
     }
 }

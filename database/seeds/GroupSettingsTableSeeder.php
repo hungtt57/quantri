@@ -14,6 +14,7 @@ class GroupSettingsTableSeeder extends Seeder
         $groupSystem->order = 1;
         $groupSystem->save();
 
+        Setting::clear();
         Setting::set('system', '');
     }
 }
