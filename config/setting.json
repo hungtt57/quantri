@@ -1,11 +1,7 @@
 {
-    "names": {
-        "firstName": "Phil",
-        "surname": "F"
-    },
     "system": {
-        "App": {
-            "Name": "Phil"
+        "app": {
+            "javascript1": "javascript2"
         }
     }
 }
