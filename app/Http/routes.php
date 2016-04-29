@@ -53,7 +53,8 @@ Route::group(['middleware' => 'auth'], function(){
 	    Route::match(['get', 'patch'], 'group/edit/{id}', ['as' => 'SettingController.updateGroup', 'uses' => 'SettingController@updateGroup']);
 	    Route::post('group/updateAll', ['as' => 'SettingController.updateAllGroup', 'uses' => 'SettingController@updateAllGroup']);
 
-	    Route::get('synchronous/{selectedGroup}/{selectedType}', ['as' => 'SettingController.synchronousModules', 'uses' => 'SettingController@synchronous']);
+	    // Route::get('synchronous/{selectedGroup}/{selectedType}', ['as' => 'SettingController.synchronousModules', 'uses' => 'SettingController@synchronous']);
+	    Route::get('synchronous', ['as' => 'SettingController.synchronousModules', 'uses' => 'SettingController@synchronous']);
 	});
 
 });

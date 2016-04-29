@@ -184,7 +184,8 @@ Quản lý cài đặt
 	$('#syncModules').click(function() {
       var selectedGroup = $('.list-group-item.choose').attr('selectedGroup');
       var selectedType = $('.tab-pane.active').attr('value');
-      location.href = 'synchronous/'+selectedGroup+'/'+selectedType;
+      // location.href = 'synchronous/'+selectedGroup+'/'+selectedType;
+      location.href = 'synchronous';
     });
 </script>
 <!-- DataTables -->

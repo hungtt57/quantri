@@ -210,7 +210,8 @@ class SettingController extends Controller
        return redirect('setting/type/'.$type->parent_id)->with(['flash_message' => 'Đã lưu loại cài đặt!', 'message_level' => 'success', 'message_icon' => 'check']);
     }
 
-    public function synchronous($selectedGroup, $selectedType) {
+    //public function synchronous($selectedGroup, $selectedType) {
+    public function synchronous() {
       $activeModules = Module::getByStatus(1);
       foreach ($activeModules as $module) {
         $group = GroupSetting::where('key', $module->getLowerName())->first();
@@ -234,6 +235,7 @@ class SettingController extends Controller
           $group->save();
         }
       }
-      return redirect('setting/'.$selectedGroup)->with(['flash_message' => 'Đã đồng bộ các module!', 'message_level' => 'success', 'message_icon' => 'check', 'selectedType' => $selectedType]);
+      // return redirect('setting/'.$selectedGroup)->with(['flash_message' => 'Đã đồng bộ các module!', 'message_level' => 'success', 'message_icon' => 'check', 'selectedType' => $selectedType]);
+      return redirect('setting')->with(['flash_message' => 'Đã đồng bộ các module!', 'message_level' => 'success', 'message_icon' => 'check']);
     }
 }
