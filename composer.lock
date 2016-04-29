@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "294d46e0e8d606f76929940eed86c556",
-    "content-hash": "140bbde3c28a4e39e33ddcfdd148a6ab",
+    "hash": "220037197ca6ee2e77221e1330a2fb9c",
+    "content-hash": "31c8ad41491879ce00cfda68e8a38282",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -1406,16 +1406,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.21",
+            "version": "1.0.22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "35a83cf67d80d7040f306c77b0a84b9fbcc4fbfb"
+                "reference": "bd73a91703969a2d20ab4bfbf971d6c2cbe36612"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/35a83cf67d80d7040f306c77b0a84b9fbcc4fbfb",
-                "reference": "35a83cf67d80d7040f306c77b0a84b9fbcc4fbfb",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/bd73a91703969a2d20ab4bfbf971d6c2cbe36612",
+                "reference": "bd73a91703969a2d20ab4bfbf971d6c2cbe36612",
                 "shasum": ""
             },
             "require": {
@@ -1485,7 +1485,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2016-04-22 10:56:25"
+            "time": "2016-04-28 06:53:12"
         },
         {
             "name": "league/oauth1-client",
@@ -2952,6 +2952,56 @@
             "time": "2016-03-10 10:34:12"
         },
         {
+            "name": "thetispro/laravel5-setting",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thetispro/laravel5-setting.git",
+                "reference": "72ef2b922bf00b6653bb36038b8cea68b18b5295"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thetispro/laravel5-setting/zipball/72ef2b922bf00b6653bb36038b8cea68b18b5295",
+                "reference": "72ef2b922bf00b6653bb36038b8cea68b18b5295",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "~5",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Thetispro\\Setting\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Phil Foulston",
+                    "email": "info@weztec.com"
+                },
+                {
+                    "name": "Eric Leroy",
+                    "email": "thetispro@me.com"
+                }
+            ],
+            "description": "Persistent configuration settings for Laravel 5 - Create, Read, Update and Delete settings stored in files using JSON",
+            "homepage": "https://github.com/thetispro/laravel5-setting",
+            "keywords": [
+                "config",
+                "laravel",
+                "setting"
+            ],
+            "time": "2015-08-15 14:38:54"
+        },
+        {
             "name": "vlucas/phpdotenv",
             "version": "v2.2.1",
             "source": {
@@ -4231,7 +4281,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "intervention/image": 20
+        "intervention/image": 20,
+        "thetispro/laravel5-setting": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
