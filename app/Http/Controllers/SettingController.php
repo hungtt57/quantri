@@ -77,7 +77,10 @@ class SettingController extends Controller
     }
 
     public function destroy($id) {
-
+        $setting = Setting::findOrFail($id);
+        $type = GroupSetting::findOrFail($setting->type_id);
+        $setting->delete();
+        return redirect('setting/'.$type->parent_id)->with(['flash_message' => 'Đã xóa cài đặt!', 'message_level' => 'success', 'message_icon' => 'check', 'selectedType' => $type->key]);
     }
 
     public function updateGeneral(Request $request) {

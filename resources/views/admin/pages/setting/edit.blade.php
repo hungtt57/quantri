@@ -71,7 +71,7 @@ color: #fff;
 			<div class="center">
 				<a href="{{ url('setting') }}" class="btn btn-cancel"><i class="fa fa-close"></i> Hủy</a>&nbsp;&nbsp;
 			    <button type="submit" class="btn btn-info"><i class="fa fa-check"></i> Lưu &amp; Đóng</button>&nbsp;&nbsp;
-		    	<a href="#" class="btn btn-danger"><i class="fa fa-trash"></i> Xóa</a>
+		    	<a onclick='return confirm("Bạn có chắc chắn muốn xóa?")' href="{{ url('setting/destroy/'.$setting->id) }}" class="btn btn-danger"><i class="fa fa-trash"></i> Xóa</a>
 		    </div>
 		{!! Form::close() !!}
 	</div>
