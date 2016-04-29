@@ -213,7 +213,7 @@ return [
         'Module' => Pingpong\Modules\Facades\Module::class,
         'Form'      => Illuminate\Html\FormFacade::class,
         'View'      => Illuminate\Html\HtmlFacade::class,
-        'Setting' => Thetispro\Setting\Facades\Setting::class,
+        'FileSetting' => Thetispro\Setting\Facades\Setting::class,
     ],
 
 ];
