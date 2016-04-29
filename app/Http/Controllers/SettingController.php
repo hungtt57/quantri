@@ -15,6 +15,7 @@ use MultipleIterator;
 use ArrayIterator;
 use Module;
 use FileSetting;
+
 class SettingController extends Controller
 {
     public function index($id = null){
@@ -41,7 +42,6 @@ class SettingController extends Controller
         $type = GroupSetting::findOrFail($request->type_id);
         $group = GroupSetting::findOrFail($type->parent_id);
         FileSetting::set($group->key.'.'.$type->key.'.'.$request->key,$request->value);
-
         return redirect('setting/'.$type->parent_id)->with(['flash_message' => 'Đã thêm cài đặt!', 'message_level' => 'success', 'message_icon' => 'check', 'selectedType' => $type->key]);
       } else {
         $groups = GroupSetting::where('visible', 1)->get();
@@ -57,7 +57,6 @@ class SettingController extends Controller
         $type = GroupSetting::findOrFail($request->type_id);
 
         $group = GroupSetting::findOrFail($type->parent_id);
-
         FileSetting::forget($group->key.'.'.$type->key.'.'.$keysetting);
         FileSetting::set($group->key.'.'.$type->key.'.'.$request->key,$request->value);
 
@@ -96,7 +95,7 @@ class SettingController extends Controller
 
     public function updateGeneral(Request $request) {
       if ($request->isMethod('post'))  {
-        $arraySetting = config('general');
+       $arraySetting = config('general');
 
        $default_role_name = $request->default_role;
        $date_format = $request->date_format;
@@ -157,11 +156,7 @@ class SettingController extends Controller
         $group = GroupSetting::findOrFail($id);
         $oldname = $group->key;
         $group->update($request->all());
-
-
         FileSetting::edit($oldname,$request->key);
-
-
         return redirect('setting/group')->with(['flash_message' => 'Đã lưu nhóm cài đặt!', 'message_level' => 'success', 'message_icon' => 'check']);
       } else {
         $group = GroupSetting::findOrFail($id);
@@ -185,7 +180,6 @@ class SettingController extends Controller
           $group->order = $order;
           $group->save();
        }
-
        return redirect('setting/group')->with(['flash_message' => 'Đã lưu nhóm cài đặt!', 'message_level' => 'success', 'message_icon' => 'check']);
     }
 
@@ -215,11 +209,8 @@ class SettingController extends Controller
     public function createType(GroupSettingRequest $request) {
       if ($request->isMethod('post'))  {
         $type = GroupSetting::create($request->all());
-
         $group = GroupSetting::find($request->parent_id);
         FileSetting::set($group->key.'.'.$request->key,'');
-
-
         return redirect('setting/type/'.$request->parent_id)->with(['flash_message' => 'Đã thêm loại cài đặt!', 'message_level' => 'success', 'message_icon' => 'check']);
       } else {
         $groups = GroupSetting::where('parent_id', 0)->where('visible', 1)->orderBy('order', 'ASC')->get();
@@ -229,20 +220,16 @@ class SettingController extends Controller
 
     public function updateType($id, GroupSettingRequest $request) {
       if ($request->isMethod('patch'))  {
-        $group = GroupSetting::find($request->parent_id);
+         $group = GroupSetting::find($request->parent_id);
          $type =GroupSetting::findOrFail($id);
          $nametype=$type->key;
          $type->update($request->all());
-
          FileSetting::edit($group->key.'.'.$nametype,$request->key);
-
-
-
-        return redirect('setting/type/'.$request->parent_id)->with(['flash_message' => 'Đã lưu loại cài đặt!', 'message_level' => 'success', 'message_icon' => 'check']);
+         return redirect('setting/type/'.$request->parent_id)->with(['flash_message' => 'Đã lưu loại cài đặt!', 'message_level' => 'success', 'message_icon' => 'check']);
       } else {
         $type = GroupSetting::findOrFail($id);
         $groups = GroupSetting::where('parent_id', 0)->where('visible', 1)->orderBy('order', 'ASC')->get();
-       return view('admin.pages.setting.type.edit', array('type' => $type, 'groups' => $groups ,'menuActive' => 'setting'));
+        return view('admin.pages.setting.type.edit', array('type' => $type, 'groups' => $groups ,'menuActive' => 'setting'));
       }
     }
 
@@ -262,13 +249,11 @@ class SettingController extends Controller
           $type->order = $order;
           $type->save();
        }
-
        return redirect('setting/type/'.$type->parent_id)->with(['flash_message' => 'Đã lưu loại cài đặt!', 'message_level' => 'success', 'message_icon' => 'check']);
     }
 
     public function destroyType($id) {
       $type = GroupSetting::findOrFail($id);
-
       if($type->settings()->count()) {
         return redirect('setting/type/'.$type->parent_id)->with(['flash_message' => 'Không thể xóa loại cài đặt này!', 'message_level' => 'danger', 'message_icon' => 'ban']);
       } else {
@@ -303,7 +288,7 @@ class SettingController extends Controller
           $group->save();
         }
       }
-
+      
       if($selectedType) {
         return redirect('setting/'.$selectedGroup)->with(['flash_message' => 'Đã đồng bộ các module!', 'message_level' => 'success', 'message_icon' => 'check', 'selectedType' => $selectedType]);
       }
