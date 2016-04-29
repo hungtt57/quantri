@@ -9,9 +9,8 @@ Route::post('login', ['as' => 'Not.AuthController.login', 'uses' => 'Auth\AuthCo
 Route::get('logout', ['as' => 'Not.AuthController.logout', 'uses' => 'Auth\AuthController@logout']);
 /*Route::get('auth/facebook', ['as' => 'Not.AuthController.redirectFacebook', 'uses' => 'Auth\AuthController@redirectToProvider']);
 Route::get('auth/facebook/callback', ['as' => 'Not.AuthController.handleFacebook', 'uses' => 'Auth\AuthController@handleProviderCallback']);*/
-
-Route::get('/social/redirect/{provider}',   ['as' => 'social.redirect',   'uses' => 'Auth\AuthController@getSocialRedirect']);
-Route::get('/social/handle/{provider}',     ['as' => 'social.handle',     'uses' => 'Auth\AuthController@getSocialHandle']);
+Route::get('/social/redirect/{provider}', ['as' => 'Not.AuthController.redirect', 'uses' => 'Auth\AuthController@getSocialRedirect']);
+Route::get('/social/handle/{provider}', ['as' => 'Not.AuthController.handle', 'uses' => 'Auth\AuthController@getSocialHandle']);
 
 Route::group(['middleware' => 'auth'], function(){
 	

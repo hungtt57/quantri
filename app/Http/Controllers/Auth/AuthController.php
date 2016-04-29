@@ -141,7 +141,7 @@ class AuthController extends Controller
         }
         else
         {
-            $sameSocialId = Social::where('social_id', '=', $user->id)->where('provider', '=', $provider )->get();
+            $sameSocialId = Social::where('social_id', '=', $user->id)->where('provider', '=', $provider )->first();
 
             if(empty($sameSocialId))
             {
