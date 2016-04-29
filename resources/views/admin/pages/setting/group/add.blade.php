@@ -68,9 +68,8 @@ color: #fff;
 				</div>
 			</div>
 			<div class="center">
-		    <a href="{{ url('setting/group') }}" class="btn btn-cancel">Hủy</a>&nbsp;&nbsp;
-		    <button type="submit" class="btn btn-info"><i class="fa fa-check"></i> Thêm &amp; Đóng</button>  
-		    </div>
+		    <a href="{{ url('setting/group') }}" class="btn btn-cancel"><i class="fa fa-close"></i> Hủy</a>&nbsp;&nbsp;
+		    <button type="submit" class="btn btn-info"><i class="fa fa-check"></i> Thêm &amp; Đóng</button>
 		</form>
 	</div>
 </div>

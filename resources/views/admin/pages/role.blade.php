@@ -481,25 +481,23 @@ Quản lý phân quyền
           string = string + ',';
           string = string + val;
         });
-        console.log(string);
         $.ajax({
           type: 'get',
           url: baseUrl+'/updatePermission',
           data: { 'data': string },
-          dataType: 'text',
+          dataType: 'json',
           success: function (data) {
-            if(data=='OK'){
-              var roleName = $('#rolename'+ role).text();
-                toastr.success('Đã cập nhật quyền thành công cho role ' + roleName + '!');
-              }
-            },
-            error: function (data) {
-                toastr.success('Đã xảy ra lỗi, vui lòng thử lại!', 'Cập nhật quyền!');
-              }
-            });
-
-       });
-     </script>
+            $('#roleAlert').append('<div class="text-center alert alert-'+data.message_level+'"><i class="icon fa fa-'+data.message_icon+'"></i> '+data.flash_message+'</div>');
+            location.reload();
+          },
+          error: function (data) {
+            // $('#roleAlert').append('<div class="text-center alert alert-danger"><i class="icon fa fa-ban"></i> Đã xảy ra lỗi, vui lòng thử lại!</div>');
+            // location.reload();
+            toastr.success('Đã xảy ra lỗi, vui lòng thử lại!', 'Cập nhật quyền!');
+          }
+        });
+    });
+    </script>
 
      <script type="text/javascript">
       $("div.alert").delay(3000).slideUp();

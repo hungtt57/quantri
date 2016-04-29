@@ -50,6 +50,7 @@ class SettingController extends Controller
     }
   }
 
+
   public function update($id, SettingRequest $request) {
     if ($request->isMethod('patch'))  {
        $key = Setting::find($id)->key;
@@ -59,6 +60,37 @@ class SettingController extends Controller
        $group = GroupSetting::findOrFail($type->parent_id);
  
        FileSetting::forget($group->key.'.'.$type->key.'.'.$key); // delete setting old
+
+    public function destroy($id) {
+        $setting = Setting::findOrFail($id);
+        $type = GroupSetting::findOrFail($setting->type_id);
+        $setting->delete();
+        return redirect('setting/'.$type->parent_id)->with(['flash_message' => 'Đã xóa cài đặt!', 'message_level' => 'success', 'message_icon' => 'check', 'selectedType' => $type->key]);
+    }
+
+    public function updateGeneral(Request $request) {
+      if ($request->isMethod('post'))  {
+        $arraySetting = config('general');
+
+       $default_role_name = $request->default_role;
+       $date_format = $request->date_format;
+       $time_format = $request->time_format;
+       $timezone = $request->timezone;
+       $arraySetting['default_role'] = $default_role_name;
+       $arraySetting['date_format'] = $date_format;
+       $arraySetting['time_format'] = $time_format;
+       $arraySetting['timezone'] = $timezone;
+
+       $email = $request->email;
+       if($email){
+           $arraySetting['email'] = $email;
+       }
+
+       $lang = $request->lang;
+       if($lang){
+           $arraySetting['lang'] = $lang;
+       }
+
        
         FileSetting::set($group->key.'.'.$type->key.'.'.$request->key,$request->value);
 
@@ -78,6 +110,7 @@ class SettingController extends Controller
    $multiIterator->attachIterator(new ArrayIterator($ids));
    $multiIterator->attachIterator(new ArrayIterator($values));
 
+
    foreach($multiIterator as list($id, $value)) {
     $setting = Setting::findOrFail($id);
     $setting->value = $value;
@@ -92,6 +125,23 @@ public function updateGeneral(Request $request) {
   if ($request->isMethod('post'))  {
     $arraySetting = config('general');
 
+    public function updateAllGroup(Request $request){
+       $ids = $request->id;
+       $names = $request->name;
+       $orders = $request->order;
+
+       $multiIterator = new MultipleIterator();
+       $multiIterator->attachIterator(new ArrayIterator($ids));
+       $multiIterator->attachIterator(new ArrayIterator($names));
+       $multiIterator->attachIterator(new ArrayIterator($orders));
+
+       foreach($multiIterator as list($id, $name, $order)) {
+          $group = GroupSetting::findOrFail($id);
+          $group->name = $name;
+          $group->order = $order;
+          $group->save();
+       }
+
     $default_role_name = $request->default_role;
     $date_format = $request->date_format;
     $time_format = $request->time_format;
@@ -101,10 +151,34 @@ public function updateGeneral(Request $request) {
     $arraySetting['time_format'] = $time_format;
     $arraySetting['timezone'] = $timezone;
 
+
     $email = $request->email;
     if($email){
      $arraySetting['email'] = $email;
    }
+
+    public function destroyGroup($id) {
+      $group = GroupSetting::findOrFail($id);
+      if(GroupSetting::where('parent_id', $id)->count()) {
+        return redirect('setting/group')->with(['flash_message' => 'Không thể xóa nhóm cài đặt này!', 'message_level' => 'danger', 'message_icon' => 'ban']);
+      } else {
+        $group->delete();
+        return redirect('setting/group')->with(['flash_message' => 'Đã xóa nhóm cài đặt!', 'message_level' => 'success', 'message_icon' => 'check']);
+      }
+    }
+
+    public function indexType($id = null){
+      $groups = GroupSetting::where('parent_id', 0)->where('visible', 1)->orderBy('order', 'ASC')->get();
+      if($id) {
+        $types = GroupSetting::where('parent_id', $id)->orderBy('order', 'ASC')->get();
+      } else {
+        $minGroupOrder = GroupSetting::where('parent_id', 0)->where('visible', 1)->min('order');
+        $firstGroup = GroupSetting::where('parent_id', 0)->where('order', $minGroupOrder)->first();
+        $types = GroupSetting::where('parent_id', $firstGroup->id)->orderBy('order', 'ASC')->get();
+      }
+      return view('admin.pages.setting.type.index', array('groups' => $groups, 'types' => $types, 'menuActive' => 'setting', 'selectedGroup' => $id));
+    }
+
 
    $lang = $request->lang;
    if($lang){
@@ -119,6 +193,7 @@ public function updateGeneral(Request $request) {
     $logo='public/'.$filename;
   }
   $arraySetting['logo'] = $logo;
+
 
   $data = var_export($arraySetting, 1);
 
@@ -211,6 +286,24 @@ public function updateType($id, GroupSettingRequest $request) {
   if ($request->isMethod('patch'))  {
     GroupSetting::findOrFail($id)->update($request->all());
 
+=======
+    public function updateAllType(Request $request){
+       $ids = $request->id;
+       $names = $request->name;
+       $orders = $request->order;
+       
+       $multiIterator = new MultipleIterator();
+       $multiIterator->attachIterator(new ArrayIterator($ids));
+       $multiIterator->attachIterator(new ArrayIterator($names));
+       $multiIterator->attachIterator(new ArrayIterator($orders));
+
+       foreach($multiIterator as list($id, $name, $order)) {
+          $type = GroupSetting::findOrFail($id);
+          $type->name = $name;
+          $type->order = $order;
+          $type->save();
+       }
+
 
     $group= GroupSetting::find($request->parent_id);
 
@@ -264,6 +357,47 @@ public function synchronous($selectedGroup, $selectedType = null) {
     if(count($group)) {
       $group->visible = 0;
       $group->save();
+
+    public function destroyType($id) {
+      $type = GroupSetting::findOrFail($id);
+      if($type->settings()->count()) {
+        return redirect('setting/type/'.$type->parent_id)->with(['flash_message' => 'Không thể xóa loại cài đặt này!', 'message_level' => 'danger', 'message_icon' => 'ban']);
+      } else {
+        $type->delete();
+        return redirect('setting/type/'.$type->parent_id)->with(['flash_message' => 'Đã xóa loại cài đặt!', 'message_level' => 'success', 'message_icon' => 'check']);
+      }
+    }
+
+    public function synchronous($selectedGroup, $selectedType = null) {
+      $activeModules = Module::getByStatus(1);
+      foreach ($activeModules as $module) {
+        $group = GroupSetting::where('key', $module->getLowerName())->first();
+        if(count($group) == 0) {
+          $group = new GroupSetting();
+          $group->key = $module->getLowerName();
+          $group->name = $module->getStudlyName();
+          $group->order = GroupSetting::where('parent_id', 0)->max('order') + 1;
+          $group->save();
+        } else {
+          $group->visible = 1;
+          $group->save();
+        }
+      }
+      
+      $inactiveModules = Module::getByStatus(0);
+      foreach ($inactiveModules as $module) {
+        $group = GroupSetting::where('key', $module->getLowerName())->first();
+        if(count($group)) {
+          $group->visible = 0;
+          $group->save();
+        }
+      }
+
+      if($selectedType) {
+        return redirect('setting/'.$selectedGroup)->with(['flash_message' => 'Đã đồng bộ các module!', 'message_level' => 'success', 'message_icon' => 'check', 'selectedType' => $selectedType]);
+      }
+      return redirect('setting/'.$selectedGroup)->with(['flash_message' => 'Đã đồng bộ các module!', 'message_level' => 'success', 'message_icon' => 'check']);
+
     }
   }
 

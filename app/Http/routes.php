@@ -41,18 +41,21 @@ Route::group(['middleware' => 'auth'], function(){
 	    Route::match(['get', 'post'], 'create', ['as' => 'SettingController.createSetting', 'uses' => 'SettingController@create']);
 	    Route::match(['get', 'patch'], 'edit/{id}', ['as' => 'SettingController.updateSetting', 'uses' => 'SettingController@update']);
 	    Route::post('updateAll', ['as' => 'SettingController.updateAllSetting', 'uses' => 'SettingController@updateAll']);
+	    Route::get('destroy/{id}', ['as' => 'SettingController.destroySetting', 'uses' => 'SettingController@destroy']);
 
 	    //Type setting
 	    Route::get('type/{id?}', ['as' => 'SettingController.indexType', 'uses' => 'SettingController@indexType'])->where(['id' => '[0-9]+']);
 	    Route::match(['get', 'post'], 'type/create', ['as' => 'SettingController.createType', 'uses' => 'SettingController@createType']);
 	    Route::match(['get', 'patch'], 'type/edit/{id}', ['as' => 'SettingController.updateType', 'uses' => 'SettingController@updateType']);
 	    Route::post('type/updateAll', ['as' => 'SettingController.updateAllType', 'uses' => 'SettingController@updateAllType']);
+	    Route::get('type/destroy/{id}', ['as' => 'SettingController.destroyType', 'uses' => 'SettingController@destroyType']);
 
 	    //Group setting
 	    Route::get('group', ['as' => 'SettingController.indexGroup', 'uses' => 'SettingController@indexGroup']);
 	    Route::match(['get', 'post'], 'group/create', ['as' => 'SettingController.createGroup', 'uses' => 'SettingController@createGroup']);
 	    Route::match(['get', 'patch'], 'group/edit/{id}', ['as' => 'SettingController.updateGroup', 'uses' => 'SettingController@updateGroup']);
 	    Route::post('group/updateAll', ['as' => 'SettingController.updateAllGroup', 'uses' => 'SettingController@updateAllGroup']);
+	    Route::get('group/destroy/{id}', ['as' => 'SettingController.destroyGroup', 'uses' => 'SettingController@destroyGroup']);
 
 	    Route::get('synchronous/{selectedGroup}/{selectedType?}', ['as' => 'SettingController.synchronousModules', 'uses' => 'SettingController@synchronous'])->where(['selectedGroup' => '[0-9]+']);
 	});
