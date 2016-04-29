@@ -78,7 +78,7 @@ class SettingController extends Controller
 
     public function updateGeneral(Request $request) {
       if ($request->isMethod('post'))  {
-        $arraySetting = config('setting');
+        $arraySetting = config('general');
 
        $default_role_name = $request->default_role;
        $date_format = $request->date_format;
@@ -110,7 +110,7 @@ class SettingController extends Controller
 
         $data = var_export($arraySetting, 1);
 
-        if(File::put(base_path() . '/config/setting.php', "<?php\n return $data ;")) {
+        if(File::put(base_path() . '/config/general.php', "<?php\n return $data ;")) {
           return redirect('general')->with(['flash_message' => 'Đã lưu cài đặt!', 'message_level' => 'success', 'message_icon' => 'check']);
         }
       } else {
