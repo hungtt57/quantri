@@ -146,14 +146,17 @@ class SettingController extends Controller
     public function updateAllGroup(Request $request){
        $ids = $request->id;
        $names = $request->name;
+       $orders = $request->order;
 
        $multiIterator = new MultipleIterator();
        $multiIterator->attachIterator(new ArrayIterator($ids));
        $multiIterator->attachIterator(new ArrayIterator($names));
+       $multiIterator->attachIterator(new ArrayIterator($orders));
 
-       foreach($multiIterator as list($id, $name)) {
+       foreach($multiIterator as list($id, $name, $order)) {
           $group = GroupSetting::findOrFail($id);
           $group->name = $name;
+          $group->order = $order;
           $group->save();
        }
 
@@ -196,14 +199,17 @@ class SettingController extends Controller
     public function updateAllType(Request $request){
        $ids = $request->id;
        $names = $request->name;
+       $orders = $request->order;
        
        $multiIterator = new MultipleIterator();
        $multiIterator->attachIterator(new ArrayIterator($ids));
        $multiIterator->attachIterator(new ArrayIterator($names));
+       $multiIterator->attachIterator(new ArrayIterator($orders));
 
-       foreach($multiIterator as list($id, $name)) {
+       foreach($multiIterator as list($id, $name, $order)) {
           $type = GroupSetting::findOrFail($id);
           $type->name = $name;
+          $type->order = $order;
           $type->save();
        }
 

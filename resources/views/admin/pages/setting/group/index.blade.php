@@ -39,12 +39,13 @@ Quản lý nhóm cài đặt
 									<th>#</th>
 									<th>Key</th>
 									<th>Name</th>
+									<th>Order</th>
 								</tr>
 							</thead>
 							@if(count($groups))
 							<tfoot>
 								<tr>
-									<td colspan="4" rowspan="1">
+									<td colspan="5" rowspan="1">
 										<button type="submit" id="" class="btn btn-info"><i class="fa fa-check"></i> Lưu</button>
 									</td>
 								</tr>
@@ -61,6 +62,9 @@ Quản lý nhóm cài đặt
 									<td>
 										<textarea name="name[]" class="form-control" placeholder="Value..." style="word-wrap: break-word; width: 100%;" rows="2" cols="30" id="" required="required">{{ $group->name }}</textarea>
 										<input type="hidden" name="id[]" value="{{ $group->id }}" />
+									</td>
+									<td>
+										<input type="number" class="form-control" required="required" name="order[]" id="" value="{{ $group->order }}" placeholder="Order..."/>
 									</td>
 								</tr>
 								@endforeach
@@ -79,7 +83,7 @@ Quản lý nhóm cài đặt
 		var groupSettingList = $('#groupSettingList').DataTable({
 			columns: [
                 {
-                	"width": "2%",
+                	"width": "3%",
                     "visible": true, 
                     "searchable": false, 
                     "orderable": false
@@ -97,6 +101,13 @@ Quản lý nhóm cài đặt
                     "orderable": false
                 },
                 {
+                	"width": "70%",
+                    "visible": true, 
+                    "searchable": true, 
+                    "orderable": false
+                },
+                {
+                	"width": "5%",
                     "visible": true, 
                     "searchable": true, 
                     "orderable": false
