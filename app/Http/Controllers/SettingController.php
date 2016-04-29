@@ -76,6 +76,10 @@ class SettingController extends Controller
        return redirect('setting/'.$type->parent_id)->with(['flash_message' => 'Đã lưu loại cài đặt!', 'message_level' => 'success', 'message_icon' => 'check', 'selectedType' => $type->key]);
     }
 
+    public function destroy($id) {
+
+    }
+
     public function updateGeneral(Request $request) {
       if ($request->isMethod('post'))  {
         $arraySetting = config('general');
@@ -163,6 +167,10 @@ class SettingController extends Controller
        return redirect('setting/group')->with(['flash_message' => 'Đã lưu nhóm cài đặt!', 'message_level' => 'success', 'message_icon' => 'check']);
     }
 
+    public function destroyGroup($id) {
+
+    }
+
     public function indexType($id = null){
       $groups = GroupSetting::where('parent_id', 0)->where('visible', 1)->orderBy('order', 'ASC')->get();
       if($id) {
@@ -214,6 +222,10 @@ class SettingController extends Controller
        }
 
        return redirect('setting/type/'.$type->parent_id)->with(['flash_message' => 'Đã lưu loại cài đặt!', 'message_level' => 'success', 'message_icon' => 'check']);
+    }
+
+    public function destroyType($id) {
+
     }
 
     public function synchronous($selectedGroup, $selectedType = null) {
