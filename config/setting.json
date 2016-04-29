@@ -1,7 +1,7 @@
 {
-    "system": {
-        "app": {
-            "javascript1": "javascript2"
+    "DemoSystem": {
+        "DemoApp": {
+            "Demojavascript": "Javascript"
         }
     }
 }

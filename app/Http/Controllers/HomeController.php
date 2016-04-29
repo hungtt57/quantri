@@ -14,7 +14,7 @@ class HomeController extends Controller
 	// echo $array;
 	// exit();
 	//FileSetting::set('testgroup.App2',$array);
-    	FileSetting::edit('App');
+    	FileSetting::edit('sssssssssss.demo2','aa');
 		  return view('admin.pages.dashboard');
   //   	$path = base_path() . '/config/setting.php';
 		// $contents = File::get();
