@@ -16,6 +16,8 @@ class GroupSettingRequest extends Request
         $segments = $this->segments();
         $id = intval(end($segments));
 
+        $parent_id = $this->parent_id;
+
         switch($this->method())
         {
         case 'GET':
@@ -27,7 +29,7 @@ class GroupSettingRequest extends Request
         {
             return [
                 'name' => 'required',
-                'key' => 'required|unique:group_settings,key',
+                'key' => 'required|type_key',
                 'order' => 'required'
             ];
         }
@@ -50,7 +52,8 @@ class GroupSettingRequest extends Request
             'name.required' => 'Không được để trống.',
             'key.unique' => 'Key này đã được sử dụng.',
             'key.required' => 'Không được để trống.',
-            'order.required' => 'Không được để trống.'
+            'order.required' => 'Không được để trống.',
+            'key.type_key' => 'Key này đã được sử dụng.',
         ];
     }
 }

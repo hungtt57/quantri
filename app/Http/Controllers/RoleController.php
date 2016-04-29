@@ -95,18 +95,18 @@ class RoleController extends Controller
     }
 
     public function updatePermission(){
-        if(Request::ajax()){
-            $data = Request::input('data');
-            $id = explode(',',$data);
-            $role_id = $id[0];
-            
-            $role = Role::findOrFail($role_id);
-            $role->removeAllPermissions();
+      $data = Request::input('data');
+      $id = explode(',',$data);
+      $role_id = $id[0];
 
-            for($i = 1; $i < sizeof($id); $i++){
-              $role->assignPermission(Permission::findOrFail($id[$i]));
-            } 
-            return 'OK';    
-        } 
+      $role = Role::findOrFail($role_id);
+      $role->removeAllPermissions();
+
+      for($i = 1; $i < sizeof($id); $i++){
+        $role->assignPermission(Permission::findOrFail($id[$i]));
+      } 
+
+      Session::flash('selectedRole', $role->name);
+      return Response::json(['flash_message' => 'Đã cập nhật quyền thành công cho role '.$role->name.'!', 'message_level' => 'success', 'message_icon' => 'check']);
     }
 }

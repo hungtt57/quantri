@@ -15,7 +15,7 @@ class CreateGroupSettingsTable extends Migration
         Schema::create('group_settings', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('parent_id')->unsigned()->default(0);
-            $table->string('key')->unique();
+            $table->string('key');
             $table->string('name');
             $table->text('description');
             $table->integer('order');
