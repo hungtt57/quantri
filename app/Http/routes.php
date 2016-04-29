@@ -11,6 +11,7 @@ Route::get('auth/facebook', ['as' => 'Not.AuthController.redirectFacebook', 'use
 Route::get('auth/facebook/callback', ['as' => 'Not.AuthController.handleFacebook', 'uses' => 'Auth\AuthController@handleProviderCallback']);
 
 Route::group(['middleware' => 'auth'], function(){
+	
 	Route::get('/', ['as' => 'Not.HomeController.dashboard', 'uses' => 'HomeController@index']);
 
 	//Role management
