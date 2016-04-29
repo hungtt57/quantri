@@ -382,13 +382,13 @@ Quản lý người dùng
                         userList.colReorder.reset();
                     }
                 },
-                // {
-                //     text: 'Tải lại danh sách',
-                //     titleAttr: 'Tải lại danh sách',
-                //     action: function (e) {
-                //         userList.ajax.reload(null, false);
-                //     }  
-                // },
+                {
+                    text: 'Tải lại',
+                    titleAttr: 'Tải lại danh sách',
+                    action: function (e) {
+                        userList.ajax.reload(null, false);
+                    }  
+                },
                 @can('UserController.destroy')
                 // {
                 //     text: 'Chọn tất cả',

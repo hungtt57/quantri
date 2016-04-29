@@ -12,7 +12,7 @@ use App\Role;
 use Gate;
 use Validator;
 use File;
-use Cache;
+use Session;
 
 class UserController extends Controller
 {   
@@ -193,8 +193,8 @@ class UserController extends Controller
             $user->password = bcrypt($request->password);
             $user->save();
             
-            if(Cache::has('changePasswordMessage')){
-                Cache::forget('changePasswordMessage');
+            if(Session::has('changePasswordMessage')){
+                Session::forget('changePasswordMessage');
             }
 
             return redirect('password')->with(['flash_message' => 'Đã cập nhật mật khẩu!', 'message_level' => 'success', 'message_icon' => 'check']);

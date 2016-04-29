@@ -40,13 +40,14 @@
                 <a href="{{ url('role') }}"><i class="fa fa-lock"></i> Phân quyền</a>
             </li>
             @endcan
-            @can('UserController.index')
             <li>
                 <a href="#"><i class="fa fa-user"></i> Người dùng<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
+                    @can('UserController.index')
                     <li>
                         <a href="{{ url('user') }}">Danh sách người dùng</a>
                     </li>
+                    @endcan
                     <li>
                         <a href="{{ url('profile') }}">Hồ sơ của bạn</a>
                     </li>
@@ -55,7 +56,6 @@
                     </li>
                 </ul>
             </li>
-            @endcan
             @can('ArticleController.index')
             <li>
                 <a href="{{ url('article') }}"><i class="fa fa-book"></i> Bài viết</a>
@@ -63,7 +63,7 @@
             @endcan
             @if ( Gate::allows('SettingController.updateGeneral') | Gate::allows('SettingController.indexSetting') )
             <li>
-                <a href="#"><i class="fa fa-user"></i> Cài đặt<span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-cog"></i> Cài đặt<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     @can('SettingController.updateGeneral')
                     <li>

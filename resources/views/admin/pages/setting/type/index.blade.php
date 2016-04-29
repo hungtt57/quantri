@@ -27,7 +27,6 @@ Quản lý loại cài đặt
 				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/type/create') }}"><i class="fa fa-plus" aria-hidden="true"></i> Thêm loại cài đặt</a>
 				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/group') }}">Quản lý nhóm cài đặt</a>
 				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting') }}">Quản lý cài đặt</a>
-				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/synchronous') }}" onclick='return confirm("Bạn có chắc chắn thực hiện đồng bộ?")'>Đồng bộ các module</a>
 			</div>
 			<div class="col-xs-12 col-sm-3 col-lg-2 form-group" style="padding-top:5px">
 				<select class="form-control chosen-select" onchange="location = this.value;">
@@ -49,6 +48,7 @@ Quản lý loại cài đặt
 									<th>Name</th>
 								</tr>
 							</thead>
+							@if(count($types))
 							<tfoot>
 								<tr>
 									<td colspan="4" rowspan="1">
@@ -56,6 +56,7 @@ Quản lý loại cài đặt
 									</td>
 								</tr>
 							</tfoot>
+							@endif
 							<tbody>
 								@foreach($types as $type)
 								<tr>

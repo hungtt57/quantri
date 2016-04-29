@@ -15,18 +15,19 @@ class RoleController extends Controller
 {
 	  public function index(){
         $roles = Role::all();
-        $role_first = Role::first();
-        $role_permission = $role_first->permissions;
+        $firstRole = Role::first();
+        $role_permission = $firstRole->permissions;
         $permissions = Permission::all();
-        return view('admin.pages.role', array('roles' => $roles, 'menuActive' => 'role','role_permission' => $role_permission,'permissions' => $permissions));
+        return view('admin.pages.role', array('roles' => $roles, 'menuActive' => 'role','role_permission' => $role_permission,'permissions' => $permissions, 'selectedRole' => $firstRole->name));
     }
 
     public function store(RoleRequest $request){
         $role = Role::create($request->all());
+        Session::flash('selectedRole', $role->name);
         return Response::json(['flash_message' => 'Đã thêm role!', 'message_level' => 'success', 'message_icon' => 'check']);
     }
 
-    public function synchronous(){
+    public function synchronous($selectedRole){
       // Update lai active permission về 0
       $update = Permission::updateAll();
       $routes= Route::getRoutes();
@@ -81,14 +82,16 @@ class RoleController extends Controller
           }
         }
       Permission::where('active', 0)->delete();
-      return redirect('role')->with(['flash_message' => 'Đã đồng bộ quyền!', 'message_level' => 'success', 'message_icon' => 'check']);
+      return redirect('role')->with(['flash_message' => 'Đã đồng bộ quyền!', 'message_level' => 'success', 'message_icon' => 'check', 'selectedRole' => $selectedRole]);
     }
 
     public function destroy($id){
       $role = Role::find($id);
       $name = $role->name;
       $role->delete();
-      return redirect('role')->with(['flash_message' => 'Đã xóa role!', 'message_level' => 'success', 'message_icon' => 'check']);
+
+      $firstRole = Role::first();
+      return redirect('role')->with(['flash_message' => 'Đã xóa role!', 'message_level' => 'success', 'message_icon' => 'check', 'selectedRole' => $firstRole->name]);
     }
 
     public function updatePermission(){

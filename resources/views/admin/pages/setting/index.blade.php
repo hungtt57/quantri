@@ -27,12 +27,12 @@ Quản lý cài đặt
 				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/create') }}"><i class="fa fa-plus" aria-hidden="true"></i> Thêm cài đặt</a>
 				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/type') }}">Quản lý loại cài đặt</a>
 				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/group') }}">Quản lý nhóm cài đặt</a>
-				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/synchronous') }}" onclick='return confirm("Bạn có chắc chắn thực hiện đồng bộ?")'>Đồng bộ các module</a>
+				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/synchronous') }}" onclick='return confirm("Bạn có chắc chắn thực hiện đồng bộ?")' id="syncModules">Đồng bộ module</a>
 			</div>
 			<div class="col-xs-12 col-sm-3 col-lg-2 form-group" style="padding-top:5px">
 				<select class="form-control chosen-select" onchange="location = this.value;">
 					@foreach($groups as $group)
-					<option value="{{ url('setting/'.$group->id) }}" {{ $selectedGroup == $group->id ? 'selected' : '' }}>{{ $group->name }}</option>
+					<option value="{{ url('setting/'.$group->id) }}" selectedGroup="{{ $group->id }}" class="list-group-item {{ $selectedGroup == $group->id ? 'choose' : '' }}" {{ $selectedGroup == $group->id ? 'selected' : '' }}>{{ $group->name }}</option>
 					@endforeach
 				</select>
 			</div>
@@ -56,7 +56,7 @@ Quản lý cài đặt
 					@else
 					{{ $selectedType == $type->key ? 'active' : '' }}
 					@endif
-					" id="tab_{{ $type->key }}">
+					" id="tab_{{ $type->key }}" value="{{ $type->key }}">
 						<form style="margin-top: 15px;" method="POST" action="{{ url('setting/updateAll') }}">
 							<input type="hidden" name="_token" value="{{ csrf_token() }}">
 							<div >
@@ -69,6 +69,7 @@ Quản lý cài đặt
 											<th>Value</th>
 										</tr>
 									</thead>
+									@if(count($type->settings))
 									<tfoot>
 										<tr>
 											<th colspan="4" rowspan="1">
@@ -76,21 +77,22 @@ Quản lý cài đặt
 											</th>
 										</tr>
 									</tfoot>
-										<tbody>
-											@foreach($type->settings as $setting)
-											<tr>
-												<td><a href="{{ url('setting/edit/'.$setting->id) }}"><i class="fa fa-pencil"></i></a></td>
-												<td></td>
-												<td>
-													<input type="text" class="form-control disabled" readonly="readonly" required="required" name="key[]" id="" value="{{ $setting->key }}" placeholder="Key..."/>
-												</td>
-												<td>
-													<textarea name="value[]" class="form-control" placeholder="Value..." style="word-wrap: break-word; width: 100%;" rows="2" cols="30" id="" required="required">{{ $setting->value }}</textarea>
-													<input type="hidden" name="id[]" value="{{ $setting->id }}" />
-												</td>
-											</tr>	
-											@endforeach
-										</tbody>
+									@endif
+									<tbody>
+										@foreach($type->settings as $setting)
+										<tr>
+											<td><a href="{{ url('setting/edit/'.$setting->id) }}"><i class="fa fa-pencil"></i></a></td>
+											<td></td>
+											<td>
+												<input type="text" class="form-control disabled" readonly="readonly" required="required" name="key[]" id="" value="{{ $setting->key }}" placeholder="Key..."/>
+											</td>
+											<td>
+												<textarea name="value[]" class="form-control" placeholder="Value..." style="word-wrap: break-word; width: 100%;" rows="2" cols="30" id="" required="required">{{ $setting->value }}</textarea>
+												<input type="hidden" name="id[]" value="{{ $setting->id }}" />
+											</td>
+										</tr>	
+										@endforeach
+									</tbody>
 								</table>
 							</div>
 						</form>
@@ -178,6 +180,12 @@ Quản lý cài đặt
 	});
 	
 	$('#flash_message').delay(3000).slideUp();
+
+	$('#syncModules').click(function() {
+      var selectedGroup = $('.list-group-item.choose').attr('selectedGroup');
+      var selectedType = $('.tab-pane.active').attr('value');
+      location.href = 'synchronous/'+selectedGroup+'/'+selectedType;
+    });
 </script>
 <!-- DataTables -->
 <script src="{{  url('public/admin/plugins/datatables/js/jquery.dataTables.min.js') }}"></script>

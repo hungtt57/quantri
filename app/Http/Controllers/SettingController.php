@@ -25,6 +25,7 @@ class SettingController extends Controller
         $minGroupOrder = GroupSetting::where('parent_id', 0)->where('visible', 1)->min('order');
         $firstGroup = GroupSetting::where('parent_id', 0)->where('order', $minGroupOrder)->first();
         $types = GroupSetting::where('parent_id', $firstGroup->id)->orderBy('order', 'ASC')->get();
+        $id = $firstGroup->id;
       }
       if(count($types)) {
         $minTypeOrder = $types->min('order');
@@ -110,7 +111,7 @@ class SettingController extends Controller
         $data = var_export($arraySetting, 1);
 
         if(File::put(base_path() . '/config/setting.php', "<?php\n return $data ;")) {
-          return redirect('setting-general')->with(['flash_message' => 'Đã lưu cài đặt!', 'message_level' => 'success', 'message_icon' => 'check']);
+          return redirect('general')->with(['flash_message' => 'Đã lưu cài đặt!', 'message_level' => 'success', 'message_icon' => 'check']);
         }
       } else {
         $roles = Role::all();
@@ -209,7 +210,7 @@ class SettingController extends Controller
        return redirect('setting/type/'.$type->parent_id)->with(['flash_message' => 'Đã lưu loại cài đặt!', 'message_level' => 'success', 'message_icon' => 'check']);
     }
 
-    public function synchronous() {
+    public function synchronous($selectedGroup, $selectedType) {
       $activeModules = Module::getByStatus(1);
       foreach ($activeModules as $module) {
         $group = GroupSetting::where('key', $module->getLowerName())->first();
@@ -233,6 +234,6 @@ class SettingController extends Controller
           $group->save();
         }
       }
-      return redirect('setting')->with(['flash_message' => 'Đã đồng bộ các module!', 'message_level' => 'success', 'message_icon' => 'check']);
+      return redirect('setting/'.$selectedGroup)->with(['flash_message' => 'Đã đồng bộ các module!', 'message_level' => 'success', 'message_icon' => 'check', 'selectedType' => $selectedType]);
     }
 }

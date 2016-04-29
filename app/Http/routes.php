@@ -17,7 +17,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::get('role', ['as' => 'RoleController.index', 'uses' => 'RoleController@index']);
 	Route::get('role/destroy/{id}', ['as' => 'RoleController.destroy', 'uses' => 'RoleController@destroy']);
 	Route::post('role/add', ['as' => 'RoleController.store', 'uses' => 'RoleController@store']);
-	Route::get('synchronous', ['as' => 'RoleController.synchronousPermissions', 'uses' => 'RoleController@synchronous']);
+	Route::get('synchronous/{selectedRole}', ['as' => 'RoleController.synchronousPermissions', 'uses' => 'RoleController@synchronous']);
 	Route::get('updatePermission', ['as' => 'Not.RoleController.updatePermission', 'uses' => 'RoleController@updatePermission']);
 	 
 	//User management
@@ -53,7 +53,7 @@ Route::group(['middleware' => 'auth'], function(){
 	    Route::match(['get', 'patch'], 'group/edit/{id}', ['as' => 'SettingController.updateGroup', 'uses' => 'SettingController@updateGroup']);
 	    Route::post('group/updateAll', ['as' => 'SettingController.updateAllGroup', 'uses' => 'SettingController@updateAllGroup']);
 
-	    Route::get('synchronous', ['as' => 'SettingController.synchronousModules', 'uses' => 'SettingController@synchronous']);
+	    Route::get('synchronous/{selectedGroup}/{selectedType}', ['as' => 'SettingController.synchronousModules', 'uses' => 'SettingController@synchronous']);
 	});
 
 });

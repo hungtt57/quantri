@@ -27,7 +27,6 @@ Quản lý nhóm cài đặt
 				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/group/create') }}"><i class="fa fa-plus" aria-hidden="true"></i> Thêm nhóm cài đặt</a>
 				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/type') }}">Quản lý loại cài đặt</a>
 				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting') }}">Quản lý cài đặt</a>
-				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/synchronous') }}" onclick='return confirm("Bạn có chắc chắn thực hiện đồng bộ?")'>Đồng bộ các module</a>
 			</div>
 			<div class="col-xs-12 col-sm-12 col-lg-12" >		
 				<form style="margin-top: 15px;" method="POST" action="{{ url('setting/group/updateAll') }}">
@@ -42,6 +41,7 @@ Quản lý nhóm cài đặt
 									<th>Name</th>
 								</tr>
 							</thead>
+							@if(count($groups))
 							<tfoot>
 								<tr>
 									<td colspan="4" rowspan="1">
@@ -49,6 +49,7 @@ Quản lý nhóm cài đặt
 									</td>
 								</tr>
 							</tfoot>
+							@endif
 							<tbody>
 								@foreach($groups as $group)
 								<tr>

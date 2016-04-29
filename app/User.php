@@ -8,7 +8,7 @@ use Carbon\Carbon;
 class User extends Authenticatable
 {
     protected $fillable = [
-        'full_name', 'email', 'password', 'phone', 'address', 'bio', 'avatar', 'last_login'
+        'fullname', 'email', 'password', 'phone', 'address', 'bio', 'avatar', 'last_login'
     ];
 
     protected $hidden = [

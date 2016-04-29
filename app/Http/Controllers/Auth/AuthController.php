@@ -11,8 +11,8 @@ use Illuminate\Http\Request;
 use Auth;
 use Socialite;
 use App\Role;
-use Cache;
 use Session;
+use App\Social;
 
 class AuthController extends Controller
 {
@@ -91,17 +91,25 @@ class AuthController extends Controller
         }
  
         $newUser = User::create([
-            'first_name' => $facebookUser->name,
-            'password' => bcrypt('123456'),
+            'fullname' => $facebookUser->name,
+            'password' => bcrypt($facebookUser->email),
             'email' => $facebookUser->email,
             'avatar' => $facebookUser->avatar
         ]);
+
+        Social::create([
+            'provider' => 'facebook',
+            'social_id' => $facebookUser->id,
+            'user_id' => $newUser->id
+        ]);
+
+        $defaultPassword = $newUser->email;
 
         $default_role_name = config('setting.default_role');
         $default_role = Role::where('name', '=', $default_role_name)->firstOrFail();
         $newUser->assignRole($default_role);
 
-        Cache::forever('changePasswordMessage', 'Mật khẩu mặc định khi đăng nhập bằng tài khoản mạng xã hội là <b>123456</b>. Vui lòng <a href="password">đổi mật khẩu</a> để bảo mật!');
+        Session::set('changePasswordMessage', 'Mật khẩu mặc định khi đăng nhập bằng tài khoản mạng xã hội của bạn là <b>'.$defaultPassword.'</b><br>Vui lòng <a href="password">đổi mật khẩu</a> để bảo mật!');
 
         return $newUser;
     }

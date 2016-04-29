@@ -72,9 +72,9 @@
             </nav>
             <div id="page-wrapper" style="height: 100%;">
                 <div>
-                    @if (Cache::has('changePasswordMessage'))
+                    @if (Session::has('changePasswordMessage'))
                         <div class="text-center alert alert-danger">
-                        {!! Cache::get('changePasswordMessage') !!}
+                        {!! Session::get('changePasswordMessage') !!}
                         </div>
                     @endif
                 </div>

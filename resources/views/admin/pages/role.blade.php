@@ -213,7 +213,7 @@ Quản lý phân quyền
     <button class="btn btn-primary open-add-role-modal">Thêm role mới</button>
     @endcan
     @can('RoleController.synchronousPermissions')
-    <a href="{{ url('synchronous') }}" onclick='return confirm("Bạn có chắc chắn thực hiện?")'><button class="btn btn-primary ">Đồng bộ quyền</button></a>
+    <a onclick='return confirm("Bạn có chắc chắn thực hiện?")' id="syncPermissions"><button class="btn btn-primary ">Đồng bộ quyền</button></a>
     @endcan
   </div>
 
@@ -259,7 +259,13 @@ Quản lý phân quyền
     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 bhoechie-tab-menu">
       <div class="list-group ">
         @foreach ($roles as $role)
-        <a href="{{$role->id}}"  class="list-group-item text-center">
+        <a href="{{ $role->id }}" value="{{ $role->name }}" class="list-group-item text-center 
+        @if(Session::has('selectedRole'))
+        {{ Session::get('selectedRole') == $role->name ? 'active' : '' }}
+        @else
+        {{ $selectedRole == $role->name ? 'active' : '' }}
+        @endif
+        ">
           <h4 class="fa fa-user"></h4><br/>
           <span id="rolename{{$role->id}}">{{ $role->name }}</span>
         </a>
@@ -269,7 +275,13 @@ Quản lý phân quyền
     <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 bhoechie-tab">
     <?php $temp = 0;?>
       @foreach ($roles as $role)
-      <div id='{{$role->id}}' class="bhoechie-tab-content">
+      <div id='{{$role->id}}' class="bhoechie-tab-content
+      @if(Session::has('selectedRole'))
+      {{ Session::get('selectedRole') == $role->name ? 'active' : '' }}
+      @else
+      {{ $selectedRole == $role->name ? 'active' : '' }}
+      @endif
+      ">
         <div class="col-sm-8">
           <div class="acidjs-css3-treeview">
             <ul>
@@ -327,7 +339,7 @@ Quản lý phân quyền
         </div>
         <br>
         <button  value='{{$role->id}}' class="btn btn-primary updater-permission">Cập nhật quyền</button>
-        <a href="{{asset('/role/destroy/'.$role->id)}}" onclick="return confirm('Bạn có chắn chắn muốn xóa?')" style="margin-top: 10px;display: block;"><button  class="btn btn-primary updater-permission">Xóa role {{$role->name}}</button></a>
+        <a href="{{url('/role/destroy/'.$role->id)}}" onclick="return confirm('Bạn có chắn chắn muốn xóa?')" style="margin-top: 10px;display: block;"><button  class="btn btn-primary updater-permission">Xóa role {{$role->name}}</button></a>
       </div>
     </div>
     @endforeach              
@@ -406,11 +418,7 @@ Quản lý phân quyền
         });
       });
     </script>
-    <script type="text/javascript">
-      $(".list-group-item:first-child").addClass("active");
-      $(".bhoechie-tab-content:first-child").addClass("active");
-    </script>
-    <!-- tree checkbox -->
+    <!-- Tree checkbox -->
     <script type="text/javascript">
       $(".acidjs-css3-treeview").delegate("label input:checkbox", "change", function() {
         var checkbox = $(this),
@@ -452,6 +460,14 @@ Quản lý phân quyền
           !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
         });
       })(jQuery);
+    </script>
+
+    <!-- Sync permissions -->
+    <script type="text/javascript">
+    $('#syncPermissions').click(function() {
+      var selectedRole = $('.list-group-item.active').attr('value');
+      location.href = 'synchronous/'+selectedRole;
+    });
     </script>
 
     <!-- Update permission -->
