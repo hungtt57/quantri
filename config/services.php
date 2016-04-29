@@ -41,4 +41,10 @@ return [
         'redirect' => env('CALLBACK_URL'),
     ],
 
+    'google' => [
+        'client_id' => env('GOOGLE_APP_ID'),
+        'client_secret' => env('GOOGLE_APP_SECRET'),
+        'redirect' => env('GOOGLE_REDIRECT'),
+    ],
+
 ];

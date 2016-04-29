@@ -29,14 +29,14 @@ class AuthController extends Controller
     {
         $this->validate($request, [
             $this->loginUsername() => 'required|email|max:255', 'password' => 'required|min:4|max:60',
-        ], [
+            ], [
             $this->loginUsername().'.required' => 'Vui lòng điền địa chỉ email.',
             $this->loginUsername().'.max' => 'Địa chỉ email chỉ dài tối đa 255 kí tự.',
             $this->loginUsername().'.email' => 'Địa chỉ email không hợp lệ.',
             'password.required' => 'Vui lòng điền mật khẩu.',
             'password.min' => 'Mật khẩu phải dài tối thiểu 6 kí tự.',
             'password.max' => 'Mật khẩu chỉ dài tối đa 60 kí tự.'
-        ]);
+            ]);
 
         $throttles = $this->isUsingThrottlesLoginsTrait();
 
@@ -62,7 +62,7 @@ class AuthController extends Controller
         return "Tài khoản không có trong hệ thống hoặc bạn đã điền sai thông tin.";
     }
 
-    public function redirectToProvider()
+   /* public function redirectToProvider()
     {
         return Socialite::driver('facebook')->redirect();
     }
@@ -112,5 +112,70 @@ class AuthController extends Controller
         Session::set('changePasswordMessage', 'Mật khẩu mặc định khi đăng nhập bằng tài khoản mạng xã hội của bạn là <b>'.$defaultPassword.'</b><br>Vui lòng <a href="password">đổi mật khẩu</a> để bảo mật!');
 
         return $newUser;
+    }*/
+
+
+    public function getSocialRedirect( $provider )
+
+    {
+        return Socialite::driver( $provider )->redirect();
+    }
+
+    public function getSocialHandle( $provider )
+    {
+        try {
+            $user = Socialite::driver( $provider )->user();
+        } catch (Exception $e) {
+            return redirect('/social/redirect/'.$provider);
+        }
+
+       // $user = Socialite::driver( $provider )->user();
+
+        $socialUser = null;
+
+        //Check is this email present
+        $userCheck = User::where('email', '=', $user->email)->first();
+        if(!empty($userCheck))
+        {
+            $socialUser = $userCheck;
+        }
+        else
+        {
+            $sameSocialId = Social::where('social_id', '=', $user->id)->where('provider', '=', $provider )->get();
+
+            if(empty($sameSocialId))
+            {
+                //There is no combination of this social id and provider, so create new one
+                $newSocialUser = new User;
+                $newSocialUser->email = $user->email;
+                $newSocialUser->password =  bcrypt($user->email);
+                $newSocialUser->fullname = $user->name;
+                $newSocialUser->save();
+
+                $socialData = new Social;
+                $socialData->social_id = $user->id;
+                $socialData->provider= $provider;
+                $newSocialUser->socials()->save($socialData);
+
+                $defaultPassword = $newSocialUser->email;
+                // Add role
+                $default_role_name = config('general.default_role');
+                $default_role = Role::where('name', '=', $default_role_name)->firstOrFail();
+                $newSocialUser->assignRole($default_role);
+
+                Session::set('changePasswordMessage', 'Mật khẩu mặc định khi đăng nhập bằng tài khoản mạng xã hội của bạn là <b>'.$defaultPassword.'</b><br>Vui lòng <a href="password">đổi mật khẩu</a> để bảo mật!');
+               $socialUser =  $newSocialUser;
+            }
+            else
+            {
+                //Load this existing social user
+                $socialUser = $sameSocialId->user;
+            }
+
+        }
+
+        Auth::login($socialUser, true);
+
+        return redirect()->route('Not.HomeController.dashboard');
     }
 }
