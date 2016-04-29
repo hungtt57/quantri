@@ -67,7 +67,7 @@ class SettingController extends Controller
        $multiIterator->attachIterator(new ArrayIterator($values));
 
        foreach($multiIterator as list($id, $value)) {
-          $setting = Setting::findOrFail($id);
+          Setting::findOrFail($id)->update($request->all());
           $setting->value = $value;
           $setting->save();
        }
