@@ -27,7 +27,7 @@ Quản lý cài đặt
 				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/create') }}"><i class="fa fa-plus" aria-hidden="true"></i> Thêm cài đặt</a>
 				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/type') }}">Quản lý loại cài đặt</a>
 				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/group') }}">Quản lý nhóm cài đặt</a>
-				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/synchronous') }}" onclick='return confirm("Bạn có chắc chắn thực hiện đồng bộ?")' id="syncModules">Đồng bộ module</a>
+				<a class="btn btn-primary" style="margin-top:5px" onclick='return confirm("Bạn có chắc chắn thực hiện đồng bộ?")' id="syncModules">Đồng bộ module</a>
 			</div>
 			<div class="col-xs-12 col-sm-3 col-lg-2 form-group" style="padding-top:5px">
 				<select class="form-control chosen-select" onchange="location = this.value;">
@@ -181,11 +181,15 @@ Quản lý cài đặt
 	
 	$('#flash_message').delay(3000).slideUp();
 
+	var baseUrl = $('meta[name="base_url"]').attr('content');
+
 	$('#syncModules').click(function() {
       var selectedGroup = $('.list-group-item.choose').attr('selectedGroup');
       var selectedType = $('.tab-pane.active').attr('value');
-      // location.href = 'synchronous/'+selectedGroup+'/'+selectedType;
-      location.href = 'synchronous';
+      if(selectedType === undefined)
+      	location.href = baseUrl+'/setting/synchronous/'+selectedGroup;
+      else
+      	location.href = baseUrl+'/setting/synchronous/'+selectedGroup+'/'+selectedType;
     });
 </script>
 <!-- DataTables -->

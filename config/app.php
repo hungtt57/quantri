@@ -161,6 +161,7 @@ return [
         Laravel\Socialite\SocialiteServiceProvider::class,
         Pingpong\Modules\ModulesServiceProvider::class,
         Illuminate\Html\HtmlServiceProvider::class,
+        Thetispro\Setting\SettingServiceProvider::class,
     ],
 
     /*
@@ -212,6 +213,7 @@ return [
         'Module' => Pingpong\Modules\Facades\Module::class,
         'Form'      => Illuminate\Html\FormFacade::class,
         'View'      => Illuminate\Html\HtmlFacade::class,
+        'Setting' => Thetispro\Setting\Facades\Setting::class,
     ],
 
 ];
