@@ -28,10 +28,10 @@ Quản lý cài đặt
 				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/create') }}"><i class="fa fa-plus" aria-hidden="true"></i> Thêm cài đặt</a>
 				@endcan
 				@can('SettingController.indexType')
-				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/type') }}">Quản lý loại cài đặt</a>
+				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/type') }}">Quản lý loại </a>
 				@endcan
 				@can('SettingController.indexGroup')
-				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/group') }}">Quản lý nhóm cài đặt</a>
+				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/group') }}">Quản lý nhóm </a>
 				@endcan
 				@can('SettingController.synchronousModules')
 				<a class="btn btn-primary" style="margin-top:5px" onclick='return confirm("Bạn có chắc chắn thực hiện đồng bộ?")' id="syncModules">Đồng bộ module</a>

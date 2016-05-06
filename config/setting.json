@@ -1,11 +1,7 @@
 {
     "system": {
-        "js": "",
         "app": {
-            "sitename": "Vietnam Esports TV"
+            "javascript": "javascript"
         }
-    },
-    "article": {
-        "app": ""
     }
 }

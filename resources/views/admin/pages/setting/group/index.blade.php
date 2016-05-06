@@ -25,10 +25,10 @@ Quản lý nhóm cài đặt
 		<div class="row">
 			<div class="col-xs-12 col-sm-9 col-lg-10">
 				@can('SettingController.createGroup')
-				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/group/create') }}"><i class="fa fa-plus" aria-hidden="true"></i> Thêm nhóm cài đặt</a>
+				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/group/create') }}"><i class="fa fa-plus" aria-hidden="true"></i> Thêm nhóm</a>
 				@endcan
 				@can('SettingController.indexType')
-				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/type') }}">Quản lý loại cài đặt</a>
+				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting/type') }}">Quản lý loại</a>
 				@endcan
 				@can('SettingController.indexSetting')
 				<a class="btn btn-primary" style="margin-top:5px" href="{{ url('setting') }}">Quản lý cài đặt</a>

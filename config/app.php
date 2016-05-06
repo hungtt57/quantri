@@ -160,7 +160,7 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
         Pingpong\Modules\ModulesServiceProvider::class,
-        Illuminate\Html\HtmlServiceProvider::class,
+        Collective\Html\HtmlServiceProvider::class,
         Thetispro\Setting\SettingServiceProvider::class,
     ],
 
@@ -211,8 +211,8 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'Module' => Pingpong\Modules\Facades\Module::class,
-        'Form'      => Illuminate\Html\FormFacade::class,
-        'View'      => Illuminate\Html\HtmlFacade::class,
+       'Form' => Collective\Html\FormFacade::class,
+      'Html' => Collective\Html\HtmlFacade::class,
         'FileSetting' => Thetispro\Setting\Facades\Setting::class,
     ],
 
